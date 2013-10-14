@@ -23,6 +23,7 @@ class Camion:
     
     def receiveComm(self, event):
         if event.message == "START":
+            print "Camion: Starting the collector (pushing the limitswitch)"
             self.startCollector()
 
     def updateSwitchCollector(self, event):
@@ -43,6 +44,14 @@ class Camion:
             
     def startCollector(self):
         """ Hit the switch on the collector to grab the Camion. """
+        pass
+    
+    def dropWeight(self):
+        """ Lâcher le poid. """
+        pass
+    
+    def retrieveWeight(self):
+        """ Remonter le poids. """
         pass
 
     def releaseBalls(self):

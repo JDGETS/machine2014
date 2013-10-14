@@ -3,26 +3,22 @@
 import time
 
 from vacuum import Vacuum
-from rod import Rod
-from colordetector import ColorDetector
+from sorting import SortingModule
 from pieces.switches import LimitSwitch
 
 class Collector:
     """ Contient la logique du Collector (voir séquence Collector sur Google Drive)
-    TO-DO: Arrêter le vacuum entre les séquences
-    TO-DO: Ajouter une switch sur le rail pour quand le camion est monté en haut (il faut l'aligner avec la zone tampon du collector) """
+    TO-DO: Arrêter le vacuum entre les séquences """
     def __init__(self):
         print "Init Collector()"
         self.vacuum = Vacuum()
-        self.countBallsTriees = 0
-        # Il faut les mapper � chaque Rod physique, channel#, ou w.e...
-        self.whiteRod, self.orangeRod = Rod(), Rod()
-        self.colorDetector = ColorDetector()
-        self.colorDetector.add_callback(self.sortBall)
+        self.sortingModule = SortingModule()
         #Activée au début par le camion
         self.switchCamion = LimitSwitch(self.updateSwitchCamion)
+        self.switchCamionReady = LimitSwitch(self.updateSwitchCamionReady) #switch sur le rail pour quand le camion est monté en haut (il faut l'aligner avec la zone tampon du collector)
         #Présence camion devant trieuse et devant dump (pour dumper les balles)
         #TO-DO: On a vraiment besoin d'une switch devant la dump pour la trieuse?!
+        #Answer: Oui, pour savoir qu'il faut le ramener x secondes plus tard.
         self.switchCollector = LimitSwitch(self.updateSwitchCollector)
         self.switchDump = LimitSwitch(self.updateSwitchDump)
         #Pour le bouton sur lequel le CO va appuyer apres avoir mis les balles dans l'aquarium
@@ -30,50 +26,42 @@ class Collector:
         
     def start(self):
         """ Démarrer la trieuse (vacuum et rods) """
+        print "Collector: Starting up..."
         self.vacuum.start()
-        #Position de base = 1 rod pouss�e pour tenir la premiere balle devant les sensors
-        self.reinitRods()
-        self.whiteRod.push()
+        self.sortingModule.start()
         
     def stop(self):
         """ On l'arrête quand le camion n'est plus attaché après le rail. """
+        print "Collector: Stop."
         self.vacuum.stop()
-        self.reinitRods()
+        self.sortingModule.stop()
         #TO-DO: Kill switches ?
-
-    def sortBall(self, event):
-        self.countBallsTriees += 1
-        print "Sorting ball #"+str(self.countBallsTriees)+" (color:"+event.color+")"
-        self.reinitRods()
-        time.sleep(0.3) # Wait for the ball to fall. TO-DO: � OPTIMISER
-        if event.color == "WHITE":
-            self.whiteRod.push()
-        elif event.color == "ORANGE":
-            self.orangeRod.push()
-        else:
-            print "Invalid color in Collector::trier"
-
-    def reinitRods(self):
-        for rod in (self.whiteRod, self.orangeRod):
-            if rod.isPushed:
-                rod.goBack()
-                rod.wait()
 
     def updateSwitchCamion(self, event):
         if event.activated:
             self.start()
         else:
             pass
+            
+    def updateSwitchCamionReady(self, event):
+        if event.activated:
+            self.pushCamionToCollector() #Pour le pousser contre la switch
 
     def updateSwitchCollector(self, event):
+        """ TO-DO: Que faire si le camion arrive avant que l'on ait trié les 20 nouvelles balles ??? """
         if event.activated:
+            time.sleep(0.5) #TO-DO: À ajuster... Le temps que le poid du camion touche par terre
             self.releaseBalls()
+            time.sleep(1.0) #TO-DO: À ajuster...Le temps que toutes les balles tombent.
+            self.pushCamionToDump() 
         else:
             self.holdBalls()
             self.goUp()
             
     def updateSwitchDump(self, event):
-        pass
+        if event.activated:
+            time.sleep(1.5) #TO-DO: À ajuster...
+            self.pushCamionToCollector() 
                         
     def updateSwitchAquarium(self, event):
         if event.activated:
@@ -83,16 +71,31 @@ class Collector:
         
     def goDown(self):
         """ Descendre la trieuse au niveau de l'eau. """
+        print "Collector::goDown()"
         pass
 
     def goUp(self):
         """ Monter la trieuse 2po au dessus de l'eau. """
+        print "Collector::goUp()"
         pass
 
     def releaseBalls(self):
         """ Relacher les balles dans la zone tampon. """
+        print "Collector: releasing "+str(self.sortingModule.countNewBallsTriees)+" balls"
+        self.sortingModule.resetNewBallsCount()
         pass
     
     def holdBalls(self):
         """ Refermer la zone tampon. """
+        print "Collector::holdBalls()"
+        pass
+
+    def pushCamionToDump(self):
+        """ Pousser le camion vers le dump. """
+        print "Collector::pushCamionToDump()"
+        pass
+    
+    def pushCamionToCollector(self):
+        """ Ramener le camion vers le collector. """
+        print "Collector::pushCamionToCollector()"
         pass

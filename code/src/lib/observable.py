@@ -10,4 +10,4 @@ class Observable:
             callback(event)
 
     def add_callback(self, c):
-        self.callbacks.push(c);
+        self.callbacks.append(c);
