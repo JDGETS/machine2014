@@ -9,7 +9,8 @@ from pieces.switches import LimitSwitch
 
 class Collector:
     """ Contient la logique du Collector (voir séquence Collector sur Google Drive)
-    TO-DO: Arrêter le vacuum entre les séquences """
+    TO-DO: Arrêter le vacuum entre les séquences
+    TO-DO: Ajouter une switch sur le rail pour quand le camion est monté en haut (il faut l'aligner avec la zone tampon du collector) """
     def __init__(self):
         print "Init Collector()"
         self.vacuum = Vacuum()
@@ -18,7 +19,7 @@ class Collector:
         self.whiteRod, self.orangeRod = Rod(), Rod()
         self.colorDetector = ColorDetector()
         self.colorDetector.add_callback(self.sortBall)
-        #Activée au début quand le camion arrive en haut
+        #Activée au début par le camion
         self.switchCamion = LimitSwitch(self.updateSwitchCamion)
         #Présence camion devant trieuse et devant dump (pour dumper les balles)
         #TO-DO: On a vraiment besoin d'une switch devant la dump pour la trieuse?!
@@ -28,8 +29,7 @@ class Collector:
         self.switchAquarium = LimitSwitch(self.updateSwitchAquarium)
         
     def start(self):
-        """ Declenché quand la limit switch sur la plaque mobile est activee
-         par le camion qui arrive en haut. """
+        """ Démarrer la trieuse (vacuum et rods) """
         self.vacuum.start()
         #Position de base = 1 rod pouss�e pour tenir la premiere balle devant les sensors
         self.reinitRods()
@@ -63,7 +63,7 @@ class Collector:
         if event.activated:
             self.start()
         else:
-            self.stop()
+            pass
 
     def updateSwitchCollector(self, event):
         if event.activated:
