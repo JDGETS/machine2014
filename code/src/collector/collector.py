@@ -71,12 +71,10 @@ class Collector:
         
     def goDown(self):
         """ Descendre la trieuse au niveau de l'eau. """
-        print "Collector::goDown()"
         pass
 
     def goUp(self):
         """ Monter la trieuse 2po au dessus de l'eau. """
-        print "Collector::goUp()"
         pass
 
     def releaseBalls(self):
@@ -87,15 +85,12 @@ class Collector:
     
     def holdBalls(self):
         """ Refermer la zone tampon. """
-        print "Collector::holdBalls()"
         pass
 
     def pushCamionToDump(self):
         """ Pousser le camion vers le dump. """
-        print "Collector::pushCamionToDump()"
         pass
     
     def pushCamionToCollector(self):
         """ Ramener le camion vers le collector. """
-        print "Collector::pushCamionToCollector()"
         pass
