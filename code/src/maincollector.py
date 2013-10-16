@@ -6,6 +6,7 @@ import sys
 def mainSafe():
     try:
         collector = Collector()
+        collector.run()
 
     except:
         print "Exception raised  in maincollector::mainSafe", sys.exc_info()[0]
