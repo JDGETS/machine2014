@@ -33,6 +33,6 @@ Ubuntu Setup:
 6. copy .bashrc and .screenrc from the scripts folder to the home directory
 7. add your public key and copy the authorized_keys to ~/.ssh/ dont forget to commit the changes to authorized_keys
 8. copy interfaces file from the script folder to /etc/network/
-
+9. $ git config --global user.email "machine-jdg-2014@googlegroups.com"
 
 
