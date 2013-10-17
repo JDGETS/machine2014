@@ -4,9 +4,6 @@ import Adafruit_BBIO.GPIO as GPIO
 class LimitSwitch():
     """Simple GPIO limit switch driver"""
 
-    id = 0
-    callback = None
-
     def __init__(self, id, onChange):
         """Initialize the LimitSwitch from the pin ID and the callback
         Parameters:
@@ -17,15 +14,15 @@ class LimitSwitch():
 
         self.id = id
         GPIO.setup(self.id, GPIO.IN)
-        self.callback = callback
+        self.onChange = onChange
         self.lastValue = None
 
     def update(self):
         """Must be called to poll switch value and fire callback if needed"""
 
         # read pin value {True, False}
-        switchValue = GPIO.input(self.id):
+        switchValue = GPIO.input(self.id)
 
         if switchValue != self.lastValue:
-            callback(state = switchValue)
+            self.onChange(state = switchValue)
             self.lastValue = switchValue
