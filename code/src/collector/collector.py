@@ -3,7 +3,7 @@
 import time
 
 from vacuum import Vacuum
-from sorting import SortingModule
+from sorter import Sorter
 from device import LimitSwitch
 
 class Collector:
@@ -19,7 +19,7 @@ class Collector:
     def __init__(self):
         print "Init Collector()"
         self.vacuum = Vacuum()
-        self.sortingModule = SortingModule()
+        self.sorter = Sorter()
         #Activée au début par le camion
         self.switchCamion = LimitSwitch(self.CAMION_SWITCH, self.updateSwitchCamion)
         self.switchCamionReady = LimitSwitch(self.CAMION_READY_SWITCH, self.updateSwitchCamionReady) #switch sur le rail pour quand le camion est monté en haut (il faut l'aligner avec la zone tampon du collector)
@@ -31,6 +31,10 @@ class Collector:
         #Pour le bouton sur lequel le CO va appuyer apres avoir mis les balles dans l'aquarium
         self.switchAquarium = LimitSwitch(self.AQUARIUM_SWITCH, self.updateSwitchAquarium)
 
+    def run(self):
+        self.sorter.start()
+        while True:
+            self.sorter.update()
 
     def start(self):
         """ Démarrer la trieuse (vacuum et rods) """
