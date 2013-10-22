@@ -1,1 +1,3 @@
-from switches import LimitSwitch
+from switches import *
+from piston import *
+from color_sensor import *
