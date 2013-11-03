@@ -1,15 +1,21 @@
+from lib.state import State
 
+class Vacuum(State):
 
-class Vacuum:
+    RUNNING_DURATION = 10
+    IDLING_DURATION = 10
+
     def __init__(self):
         print "Init Vacuum()"
 
     def start(self):
-        print "Vacuum::start()"
-        pass
+        self.set_state(self.state_running)
 
-    def stop(self):
-        print "Vacuum::stop()"
-        pass
+    def state_running(self):
+        print "[Vacuum.state_running]"
+        return self.wait(self.RUNNING_DURATION, self.state_idling)
 
+    def state_idling(self):
+        print "[Vacuum.state_idling]"
+        return self.wait(self.IDLING_DURATION, self.state_running)
 
