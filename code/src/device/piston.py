@@ -1,12 +1,11 @@
-import time
 from lib.io.servo import Servo
 
 class Piston:
     """Piston controller"""
 
-    def __init__(self, id):
-        self.id = id
-        self.driver = Servo(self.id)
+    def __init__(self, pin):
+        self.pin = pin
+        self.driver = Servo(self.pin)
 
     def push(self):
         # set servo to push position

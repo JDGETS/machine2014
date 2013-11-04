@@ -1,7 +1,7 @@
 from lib.state import State
 
 from functools import partial
-from device import Piston, ColorSensor
+from device import Piston, ColorSensor, pin_from_id
 
 class Sorter(State):
     """Control the sorting function of the collector.
@@ -20,15 +20,15 @@ class Sorter(State):
     PULL_DELAY = 0.3
     PUSH_DELAY = 0.3
 
-    WHITE_PISTON_ID = "foo1"
-    ORANGE_PISTON_ID = "foo2"
-    COLOR_SENSOR_ID = "foo3"
+    WHITE_PISTON_ID = "white_piston"
+    ORANGE_PISTON_ID = "orange_piston"
+    COLOR_SENSOR_ID = "color_sensor"
 
     def __init__(self):
-        self.white_piston = Piston(self.WHITE_PISTON_ID)
-        self.orange_piston = Piston(self.ORANGE_PISTON_ID)
+        self.white_piston = Piston(pin_from_id(self.WHITE_PISTON_ID))
+        self.orange_piston = Piston(pin_from_id(self.ORANGE_PISTON_ID))
 
-        self.color_sensor = ColorSensor(self.COLOR_SENSOR_ID)
+        self.color_sensor = ColorSensor(pin_from_id(self.COLOR_SENSOR_ID))
 
         self.active_piston = self.white_piston
 

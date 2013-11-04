@@ -1,5 +1,5 @@
 from collector import Vacuum
-import ex_pdb
+from lib import ex_pdb
 
 ex_pdb.init()
 

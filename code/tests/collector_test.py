@@ -1,5 +1,5 @@
 from collector import Collector
-import ex_pdb
+from lib import ex_pdb
 
 ex_pdb.init()
 
