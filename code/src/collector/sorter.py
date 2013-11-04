@@ -1,4 +1,3 @@
-import time
 from lib.state import State
 
 from functools import partial
