@@ -1,7 +1,7 @@
 import time
 from functools import partial
 
-class State:
+class State(object):
     def update(self):
         try:
             state = self.state.next()

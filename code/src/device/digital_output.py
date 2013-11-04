@@ -1,6 +1,6 @@
 import Adafruit_BBIO.GPIO as GPIO
 
-class DigitalOutput(object):
+class DigitalOutput:
 
     def __init__(self, pin):
         self.pin = pin

@@ -1,20 +1,20 @@
-from lib.state import State
+from lib.component import Component
 from device import DigitalOutput, pin_from_id
 
-class Vacuum(State):
+class Vacuum(Component):
 
     RUNNING_DURATION = 10
     IDLING_DURATION = 10
     VACUUM_ID = "vacuum"
 
     def __init__(self):
-        print "Init Vacuum()"
+        super(Vacuum, self).__init__(self.state_running)
+
+        print "[Vacuum.__init__]"
         self.vacuum_output = DigitalOutput(pin_from_id(self.VACUUM_ID))
 
-    def start(self):
-        self.set_state(self.state_running)
-
     def stop(self):
+        print "[Vacuum.stop] Stop vacuum"
         self.vacuum_output.off()
 
     def state_running(self):

@@ -1,9 +1,9 @@
-from lib.state import State
+from lib.component import Component
 
 from functools import partial
 from device import Piston, ColorSensor, pin_from_id
 
-class Sorter(State):
+class Sorter(Component):
     """Control the sorting function of the collector.
     Implementation use a simple state machine generator. Each state yield None
     or the next state function. The state machine end when a state return instead
@@ -25,6 +25,10 @@ class Sorter(State):
     COLOR_SENSOR_ID = "color_sensor"
 
     def __init__(self):
+        super(Sorter, self).__init__(self.state_push)
+
+        print "[Sorter.__init__]"
+
         self.white_piston = Piston(pin_from_id(self.WHITE_PISTON_ID))
         self.orange_piston = Piston(pin_from_id(self.ORANGE_PISTON_ID))
 
@@ -32,11 +36,10 @@ class Sorter(State):
 
         self.active_piston = self.white_piston
 
-    def start(self):
-        self.set_state(self.state_push)
-
     def stop(self):
-        pass
+        print "[Sorter.stop] Stop pistons"
+        self.white_piston.stop()
+        self.orange_piston.stop()
 
     def state_push(self):
         """State that move one piston to push a ball
