@@ -35,6 +35,9 @@ class Sorter(State):
     def start(self):
         self.set_state(self.state_push)
 
+    def stop(self):
+        pass
+
     def state_push(self):
         """State that move one piston to push a ball
         change to 'state_pushed' after a small delay"""

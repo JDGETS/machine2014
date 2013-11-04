@@ -10,12 +10,12 @@ class Collector:
         self.components = [self.sorter, self.vacuum]
 
     def run(self):
-        self.sorter.start()
-        self.vacuum.start()
-
         for c in self.components:
             c.start()
 
         while True:
             for c in self.components:
                 c.update()
+
+    def stop(self):
+        pass
