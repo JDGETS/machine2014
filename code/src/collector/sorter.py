@@ -34,7 +34,7 @@ class Sorter(State):
         self.active_piston = self.white_piston
 
     def start(self):
-        self.set_state( self.state_push() )
+        self.set_state(self.state_push)
 
     def state_push(self):
         """State that move one piston to push a ball

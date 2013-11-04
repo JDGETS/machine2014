@@ -11,7 +11,7 @@ class State:
             print '[State.update] state machine done'
 
     def set_state(self, state):
-        self.state = state
+        self.state = state()
 
     def wait(self, delay, next_state):
         return partial(self.wait_state, delay, next_state)

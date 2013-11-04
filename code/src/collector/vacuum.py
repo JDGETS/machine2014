@@ -13,9 +13,9 @@ class Vacuum(State):
 
     def state_running(self):
         print "[Vacuum.state_running]"
-        return self.wait(self.RUNNING_DURATION, self.state_idling)
+        yield self.wait(self.RUNNING_DURATION, self.state_idling)
 
     def state_idling(self):
         print "[Vacuum.state_idling]"
-        return self.wait(self.IDLING_DURATION, self.state_running)
+        yield self.wait(self.IDLING_DURATION, self.state_running)
 
