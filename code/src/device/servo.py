@@ -1,8 +1,7 @@
 import Adafruit_BBIO.PWM as PWM
 
 class Servo:
-    DUTY = 1600
-    DUTY_CYCLE_PER_ANGLE = 400/45
+    DUTY = 1950
 
     def __init__(self, pin):
         self.pin = pin
