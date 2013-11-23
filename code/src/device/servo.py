@@ -1,18 +1,20 @@
 import Adafruit_BBIO.PWM as PWM
 
-class Servo:
-    DUTY_MIN = 1120
-    DUTY_MAX = 1920
-    ANGLE_MAX = 90
-    def __init__(self, pin):
-        self.pin = pin
-        PWM.start(self.pin, self.DUTY_MAX, freq=50)
+class Servo(object):
 
-    def set_angle(self, angle):
-        duty = angle/self.ANGLE_MAX. * (self.DUTY_MAX-self.DUTY_MIN) + self.DUTY_MIN
-        PWM.set_duty_cycle(self.pin, duty)
+    def __init__(self, pin, duty):
+        self.pin = pin
+        self.duty = duty
+        PWM.start(self.pin, self.duty, 50, 1)
+        print 'started', self.pin
+        return
+
+    def set(self, duty):
+        self.duty = duty
+        PWM.start(self.pin, self.duty, 50, 1)
+        PWM.set_duty_cycle(self.pin, self.duty)
         return
 
     def stop(self):
-        PWM.stop(self.pin)
-        PWM.cleanup()
+        #PWM.stop(self.pin)
+        return
