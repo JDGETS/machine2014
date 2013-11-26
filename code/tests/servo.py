@@ -2,7 +2,7 @@ import sys
 import time
 sys.path.append('../src')
 
-from device.sort_arm import SortArm
+from device import Servo
 from lib import ex_pdb
 
 ex_pdb.init()

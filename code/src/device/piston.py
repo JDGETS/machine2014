@@ -11,12 +11,12 @@ class Piston:
 
     def push(self):
         """set servo to push position"""
-        self.servo.set_angle(self.push_duty)
+        self.servo.set_duty(self.push_duty)
         pass
 
     def pull(self):
         """set servo to pull position"""
-        self.servo.set_angle(self.pull_duty)
+        self.servo.set_duty(self.pull_duty)
         pass
 
     def stop(self):
