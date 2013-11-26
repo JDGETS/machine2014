@@ -1,5 +1,6 @@
 from lib.component import Component
-from device import DigitalOutput, pin_from_id
+from device import DigitalOutput
+from lib import config
 
 class Vacuum(Component):
 
@@ -11,7 +12,7 @@ class Vacuum(Component):
         super(Vacuum, self).__init__(self.state_running)
 
         print "[Vacuum.__init__]"
-        self.vacuum_output = DigitalOutput(pin_from_id(self.VACUUM_ID))
+        self.vacuum_output = DigitalOutput(config.devices[self.VACUUM_ID])
 
     def stop(self):
         print "[Vacuum.stop] Stop vacuum"

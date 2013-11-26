@@ -1,7 +1,8 @@
 from lib.component import Component
 
 from functools import partial
-from device import Piston, ColorSensor, pin_from_id
+from device import Piston, ColorSensor
+from lib import config
 
 class Sorter(Component):
     """Control the sorting function of the collector.
@@ -29,10 +30,10 @@ class Sorter(Component):
 
         print "[Sorter.__init__]"
 
-        self.white_piston = Piston(pin_from_id(self.WHITE_PISTON_ID))
-        self.orange_piston = Piston(pin_from_id(self.ORANGE_PISTON_ID))
+        self.white_piston = Piston(**config.devices[self.WHITE_PISTON_ID])
+        self.orange_piston = Piston(**config.devices[self.ORANGE_PISTON_ID])
 
-        self.color_sensor = ColorSensor(pin_from_id(self.COLOR_SENSOR_ID))
+        self.color_sensor = ColorSensor(**config.devices[self.COLOR_SENSOR_ID])
 
         self.active_piston = self.white_piston
 
