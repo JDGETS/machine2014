@@ -18,8 +18,8 @@ class Sorter(Component):
     5. Go back to 2.
     """
 
-    PULL_DELAY = 0.3
-    PUSH_DELAY = 0.3
+    PULL_DELAY = 1
+    PUSH_DELAY = 1
 
     WHITE_PISTON_ID = "white_piston"
     ORANGE_PISTON_ID = "orange_piston"
@@ -61,7 +61,7 @@ class Sorter(Component):
         print "[Sorter.state_pushed] Piston in standby"
 
         ball_color = self.color_sensor.get_color()
-        while ball_color == ColorSensor.UNKOWN:
+        while ball_color == ColorSensor.UNKOWN or ball_color == ColorSensor.BLACK:
             yield
             ball_color = self.color_sensor.get_color()
 

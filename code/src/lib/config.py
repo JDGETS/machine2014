@@ -3,13 +3,13 @@ devices = {
         "pin": "P0_00"
     },
     "white_piston": {
-        "pin": "P9_14",
+        "pin": "P9_22",
         "pull_duty": 9.4,
         "standby_duty": 10.5,
         "push_duty": 11.5
     },
     "orange_piston": {
-        "pin": "P9_22",
+        "pin": "P9_14",
         "pull_duty": 5.5,
         "standby_duty": 7,
         "push_duty": 7.7
