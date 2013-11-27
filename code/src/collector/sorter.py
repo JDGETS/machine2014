@@ -18,8 +18,8 @@ class Sorter(Component):
     5. Go back to 2.
     """
 
-    PULL_DELAY = 1
-    PUSH_DELAY = 1
+    PULL_DELAY = 0.15
+    PUSH_DELAY = 0.15
 
     WHITE_PISTON_ID = "white_piston"
     ORANGE_PISTON_ID = "orange_piston"

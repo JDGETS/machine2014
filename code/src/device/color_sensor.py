@@ -32,7 +32,8 @@ class ColorSensor:
 
     def get_color(self):
         # Need to poll color twice to get last value (bug)
-        self.read_color()
+	for i in range(10):
+            self.read_color()
         color = self.read_color()
         for i in range(3):
             if compare_colors(color, self.colors[i]) < self.error:
