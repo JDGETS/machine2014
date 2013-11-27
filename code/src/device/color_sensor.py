@@ -33,7 +33,7 @@ class ColorSensor:
         color = self.read_color()
         for i in range(3):
             print "Compare ", color, "with color [", i, "]:", compare_colors(color, self.colors[i])
-            if compare_colors(color, self.colors[i]) < error:
+            if compare_colors(color, self.colors[i]) < self.error:
                 return i
 
         return self.UNKOWN
