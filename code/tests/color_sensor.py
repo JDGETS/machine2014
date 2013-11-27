@@ -12,4 +12,6 @@ color_sensor = ColorSensor(**config.devices["color_sensor"])
 colors = ["Black", "White", "Orange", "Unknown"]
 
 while True:
-    print "Color detected: ", colors[color_sensor.get_color()]
+    color = color_sensor.get_color()
+    print "Color: ", colors[color]
+    time.sleep(1)
