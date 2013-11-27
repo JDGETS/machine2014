@@ -25,14 +25,17 @@ class ColorSensor:
         self.colors = [self.black_val, self.white_val, self.orange_val]
 
     def read_color(self):
-        return [ADC.read(self.a_pin), ADC.read(self.b_pin), ADC.read(self.c_pin)]
+        while True
+            color = [ADC.read(self.a_pin), ADC.read(self.b_pin), ADC.read(self.c_pin)]
+            if all(map(lambda x: x>0, color)):
+                return color
 
     def get_color(self):
         # Need to poll color twice to get last value (bug)
         self.read_color()
         color = self.read_color()
         for i in range(3):
-            print "Compare ", color, "with color [", i, "]:", compare_colors(color, self.colors[i])
+            print "Compare with color [", i, "]:", compare_colors(color, self.colors[i])
             if compare_colors(color, self.colors[i]) < self.error:
                 return i
 
