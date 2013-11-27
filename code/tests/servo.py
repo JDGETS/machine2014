@@ -10,18 +10,11 @@ ex_pdb.init()
 pull = 13
 push = 10.3
 
-servo1 = SortArm("P8_19", pull, push)
-servo2 = SortArm("P8_13", pull, push)
+servo = Servo("P9_16", pull, push)
 
-servo1.round_trip(0.5)
-time.sleep(0.5)
-servo2.round_trip(0.5)
-
+servo.push()
 time.sleep(2)
+servo.pull()
 
 raw_input("Press key...")
-servo2.stop()
-servo1.stop()
-
-
-
+servo.stop()
