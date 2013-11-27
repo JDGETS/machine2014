@@ -57,6 +57,9 @@ class Sorter(Component):
 
         print "[Sorter.state_pushed]"
 
+        self.active_piston.standby()
+        print "[Sorter.state_pushed] Piston in standby"
+
         ball_color = self.color_sensor.get_color()
         while ball_color == ColorSensor.UNKOWN:
             yield

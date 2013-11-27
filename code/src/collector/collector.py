@@ -1,13 +1,15 @@
 from vacuum import Vacuum
 from sorter import Sorter
+from vacuum_shaker import VacuumShaker
 
 class Collector(object):
     def __init__(self):
         print "[Collector.__init__]"
-        self.vacuum = Vacuum()
+        self.vacuum_shaker = VacuumShaker()
+        self.vacuum = Vacuum(self.vacuum_shaker)
         self.sorter = Sorter()
 
-        self.components = [self.sorter, self.vacuum]
+        self.components = [self.sorter, self.vacuum, self.vacuum_shaker]
 
     def run(self):
         print "[Collector.run] Start collector"
