@@ -2,6 +2,9 @@ import device
 from lib import config
 import time
 
+from lib import ex_pdb
+ex_pdb.init()
+
 print "==== Color calibration tool ===="
 
 sample_size = 5
@@ -9,7 +12,7 @@ sample_size = 5
 def sample_info(sample):
     color_sum = reduce(lambda acc, c: map(sum, zip(acc,c)), sample, [0,0,0])
     color_mean = map(lambda x: x/len(sample), color_sum)
-    max_distance = max(map(lambda c: device.color_sensor.compare_color(color_mean, c), sample))
+    max_distance = max(map(lambda c: device.color_sensor.compare_colors(color_mean, c), sample))
     return (color_mean, max_distance)
 
 def print_sample_info(black_sample, white_sample, orange_sample):
@@ -44,21 +47,21 @@ def sample_colors(color_sensor, piston = None):
             time.sleep(1.0)
         else:
             time.sleep(1.0)
-
+    return colors
 
 color_sensor = device.ColorSensor(**config.devices["color_sensor"])
-piston_1 = device.Piston(**config.devices["white_piston"])
-piston_2 = device.Piston(**config.devices["orange_piston"])
+piston_1 = device.Piston(**config.devices["orange_piston"])
+piston_2 = device.Piston(**config.devices["white_piston"])
 
 piston_2.pull()
 time.sleep(1.0)
 piston_1.push()
 
 # Calibrate void space
-# print "Please remove any ball in the sorter"
-# raw_input("Press enter to continue...")
-# black_sample = sample_colors(color_sensor)
-# print "Black calibration done"
+print "Please remove any ball in the sorter"
+raw_input("Press enter to continue...")
+black_sample = sample_colors(color_sensor)
+print "Black calibration done"
 
 # Calibrate white ball
 print "Please insert %d whites balls" % sample_size
@@ -73,4 +76,4 @@ orange_sample = sample_colors(color_sensor, piston_1)
 print "Orange calibration done"
 
 print "==== Calibration done ===="
-print sample_info(black_sample, white_sample, orange_sample)
+print_sample_info(black_sample, white_sample, orange_sample)

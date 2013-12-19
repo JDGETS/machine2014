@@ -6,8 +6,8 @@ try:
     PWM.start(pin,5,50,1)
     value = float(raw_input("Value:"))
     PWM.set_duty_cycle(pin,value)
-except Exception e:
-    print e
+except:
     PWM.stop(pin)
     PWM.cleanup()
+    raise
 
