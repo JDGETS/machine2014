@@ -25,4 +25,9 @@ class Switch(object):
 		GPIO.wait_for_edge(self.pin, GPIO.FALLING)
 		GPIO.wait_for_edge(self.pin, GPIO.RISING)
 		return
+
+	def wait_pressed(self):
+		""" Wait for the switch to be pressed (waits for a falling edge). """
+		GPIO.wait_for_edge(self.pin, GPIO.FALLING)
+		return
 	
