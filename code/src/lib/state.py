@@ -18,8 +18,11 @@ class State(object):
 
     def wait_state(self, delay, next_state):
         start_time = time.clock()
+        print "[wait_state] start", start_time
         while(time.clock() - start_time < delay):
+            print "[wait_state] ", start_time, time.clock(), delay
             yield
 
+        print "[wait_state] done"
         yield next_state
 
