@@ -16,6 +16,9 @@ class ColorSensor:
         self.a_pin = a_pin
         self.b_pin = b_pin
         self.c_pin = c_pin
+        print self.a_pin 
+        print self.b_pin 
+        print self.c_pin
         self.black_val = black_val
         self.white_val = white_val
         self.orange_val = orange_val
