@@ -29,7 +29,7 @@ def sample_colors(color_sensor, piston = None):
     for i in range(sample_size):
         # Empty ADC buffer
         for i in range(10):
-            self.read_color()
+            color_sensor.read_color()
 
         # Sample color
         for i in range(5):
@@ -37,11 +37,10 @@ def sample_colors(color_sensor, piston = None):
 
         # Push ball to get next one
         if piston:
-            piston.push()
+            piston.pull()
             time.sleep(1.0)
             piston.push()
             time.sleep(1.0)
-            piston.standby()
         else:
             time.sleep(1.0)
 
@@ -54,10 +53,10 @@ piston_1.pull()
 piston_2.standby()
 
 # Calibrate void space
-print "Please remove any ball in the sorter"
-raw_input("Press enter to continue...")
-black_sample = sample_colors(color_sensor)
-print "Black calibration done"
+# print "Please remove any ball in the sorter"
+# raw_input("Press enter to continue...")
+# black_sample = sample_colors(color_sensor)
+# print "Black calibration done"
 
 # Calibrate white ball
 print "Please insert %d whites balls" % sample_size
