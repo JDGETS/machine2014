@@ -36,8 +36,11 @@ class ColorSensor:
             time.sleep(0)
             c3 = ADC.read(self.c_pin)
             time.sleep(0)
-            print "%d %d %d" % {c1,c2,c3}
-            color = [ADC.read(self.a_pin), ADC.read(self.b_pin), ADC.read(self.c_pin)]
+            print c1
+            print c2
+            print c3
+            color = [c1, c2, c3]           
+            #color = [ADC.read(self.a_pin), ADC.read(self.b_pin), ADC.read(self.c_pin)]
             if all(map(lambda x: x>0.00001, color)):
                 return color
 
