@@ -1,7 +1,6 @@
 import Adafruit_BBIO.ADC as ADC
 from math import sqrt
 
-ADC.setup()
 
 def compare_colors(color1, color2):
     return sqrt((color1[0]-color2[0])**2 + (color1[1]-color2[1])**2 + (color1[2]-color2[2])**2)
@@ -13,12 +12,10 @@ class ColorSensor:
     UNKOWN = 3
 
     def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val, error):
+        ADC.setup()
         self.a_pin = a_pin
         self.b_pin = b_pin
         self.c_pin = c_pin
-        print self.a_pin 
-        print self.b_pin 
-        print self.c_pin
         self.black_val = black_val
         self.white_val = white_val
         self.orange_val = orange_val
@@ -29,6 +26,9 @@ class ColorSensor:
 
     def read_color(self):
         while True:
+            print self.a_pin 
+            print self.b_pin 
+            print self.c_pin
             color = [ADC.read(self.a_pin), ADC.read(self.b_pin), ADC.read(self.c_pin)]
             if all(map(lambda x: x>0.00001, color)):
                 return color
