@@ -30,12 +30,12 @@ class ColorSensorWrapped:
     def read_color(self):
         while True:
             color = [0,0,0]
-			color[0] = ADC.read(self.a_pin)
-			time.sleep(0.01);
-			color[0] = ADC.read(self.b_pin)
-			time.sleep(0.01);
-			color[0] = ADC.read(self.c_pin)
-			time.sleep(0.01);
+            color[0] = ADC.read(self.a_pin)
+            time.sleep(0.01);
+            color[0] = ADC.read(self.b_pin)
+            time.sleep(0.01);
+            color[0] = ADC.read(self.c_pin)
+            time.sleep(0.01);
             if all(map(lambda x: x>0.00001, color)):
                 return color
 
