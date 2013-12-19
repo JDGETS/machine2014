@@ -46,9 +46,9 @@ class ColorSensorWrapped:
 
         color = self.read_color()
         color_distances = map(lambda c: (c[0], compare_colors(color, c[1])), self.colors)
-        color_distances = sorted(color_distances, key=lambda c: c[1])
+        best_match = sorted(color_distances, key=lambda c: c[1])[0]
 
-        return color_distances[0] if color_distances[1] < self.error else self.UNKOWN
+        return best_match[0] if best_match[1] < self.error else self.UNKOWN
 
 class ColorSensor(ColorSensorWrapped):
     """ To dump color hits and look for errors. FOR TEST USE ONLY. """
@@ -63,13 +63,13 @@ class ColorSensor(ColorSensorWrapped):
 
         color = self.read_color()
         color_distances = map(lambda c: (c[0], compare_colors(color, c[1])), self.colors)
-        color_distances = sorted(color_distances, key=lambda c: c[1])
-        
-        return_val = color_distances[0] if color_distances[1] < self.error else self.UNKOWN;
-        
+        best_match = sorted(color_distances, key=lambda c: c[1])[0]
+
+        return_val = best_match[0] if best_match[1] < self.error else self.UNKOWN
+
         self.file.write(str(color)+" => "+str(color_distances)+" => "+str(return_val)+"\n")
-        
+
         return return_val
-        
+
     def __exit__(self):
         self.file.close()
