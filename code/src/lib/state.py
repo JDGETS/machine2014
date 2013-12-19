@@ -17,12 +17,9 @@ class State(object):
         return partial(self.wait_state, delay, next_state)
 
     def wait_state(self, delay, next_state):
-        start_time = time.clock()
-        print "[wait_state] start", start_time
-        while(time.clock() - start_time < delay):
-            print "[wait_state] ", start_time, time.clock(), delay
+        start_time = time.time()
+        while(time.time() - start_time < delay):
             yield
 
-        print "[wait_state] done"
         yield next_state
 
