@@ -6,7 +6,7 @@ import time
 def compare_colors(color1, color2):
     return sqrt((color1[0]-color2[0])**2 + (color1[1]-color2[1])**2 + (color1[2]-color2[2])**2)
 
-class ColorSensor:
+class ColorSensorWrapped:
     BLACK = 0
     WHITE = 1
     ORANGE = 2
@@ -29,7 +29,13 @@ class ColorSensor:
 
     def read_color(self):
         while True:
-            color = [ADC.read(self.a_pin), ADC.read(self.b_pin), ADC.read(self.c_pin)]
+            color = [0,0,0]
+            color[0] = ADC.read(self.a_pin)
+            time.sleep(0.01);
+            color[0] = ADC.read(self.b_pin)
+            time.sleep(0.01);
+            color[0] = ADC.read(self.c_pin)
+            time.sleep(0.01);
             if all(map(lambda x: x>0.00001, color)):
                 return color
 
@@ -39,8 +45,31 @@ class ColorSensor:
             self.read_color()
 
         color = self.read_color()
-        color_distances = map(self.colors, lambda c: (c[0], compare_colors(color, c[1])))
+        color_distances = map(lambda c: (c[0], compare_colors(color, c[1])), self.colors)
         color_distances = sorted(color_distances, key=lambda c: c[1])
 
         return color_distances[0] if color_distances[1] < error else self.UNKOWN
 
+class ColorSensor(ColorSensorWrapped):
+    """ To dump color hits and look for errors. FOR TEST USE ONLY. """
+    def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val, error):
+        ColorSensorWrapped.__init__(self,a_pin, b_pin, c_pin, black_val, white_val, orange_val, error)
+        self.file = open('color_sensor.dump', 'w')
+
+    def get_color(self):
+        # Need to poll color twice to get last value (bug)
+        for i in range(10):
+            self.read_color()
+
+        color = self.read_color()
+        color_distances = map(self.colors, lambda c: (c[0], compare_colors(color, c[1])))
+        color_distances = sorted(color_distances, key=lambda c: c[1])
+        
+        return_val = color_distances[0] if color_distances[1] < error else self.UNKOWN;
+        
+        self.file.write(str(color)+" => "+str(color_distances)+" => "+return_val+"\n")
+        
+        return return_val
+        
+    def __exit__(self):
+        self.file.close()
