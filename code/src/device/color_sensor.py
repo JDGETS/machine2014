@@ -45,7 +45,7 @@ class ColorSensorWrapped:
         return color_distances[0] if color_distances[1] < error else self.UNKOWN
 
 class ColorSensor(ColorSensorWrapped):
-	""" To dump color hits and look for errors. FOR TEST USE ONLY. """
+    """ To dump color hits and look for errors. FOR TEST USE ONLY. """
     def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val, error):
         super(ColorSensorWrapped, self).__init__(a_pin, b_pin, c_pin, black_val, white_val, orange_val, error)
         self.file = open('color_sensor.dump', 'w')
@@ -58,12 +58,12 @@ class ColorSensor(ColorSensorWrapped):
         color = self.read_color()
         color_distances = map(self.colors, lambda c: (c[0], compare_colors(color, c[1])))
         color_distances = sorted(color_distances, key=lambda c: c[1])
-		
-		return_val = color_distances[0] if color_distances[1] < error else self.UNKOWN;
-		
-		self.file.write(str(color)+" => "+str(color_distances)+" => "+return_val+"\n")
-		
+        
+        return_val = color_distances[0] if color_distances[1] < error else self.UNKOWN;
+        
+        self.file.write(str(color)+" => "+str(color_distances)+" => "+return_val+"\n")
+        
         return return_val
-		
-	def __del__():
-		self.file.close()
+        
+    def __del__():
+        self.file.close()
