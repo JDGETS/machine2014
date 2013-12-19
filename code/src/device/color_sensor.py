@@ -32,9 +32,9 @@ class ColorSensorWrapped:
             color = [0,0,0]
             color[0] = ADC.read(self.a_pin)
             time.sleep(0.01);
-            color[0] = ADC.read(self.b_pin)
+            color[1] = ADC.read(self.b_pin)
             time.sleep(0.01);
-            color[0] = ADC.read(self.c_pin)
+            color[2] = ADC.read(self.c_pin)
             time.sleep(0.01);
             if all(map(lambda x: x>0.00001, color)):
                 return color
@@ -48,7 +48,7 @@ class ColorSensorWrapped:
         color_distances = map(lambda c: (c[0], compare_colors(color, c[1])), self.colors)
         color_distances = sorted(color_distances, key=lambda c: c[1])
 
-        return color_distances[0] if color_distances[1] < error else self.UNKOWN
+        return color_distances[0] if color_distances[1] < self.error else self.UNKOWN
 
 class ColorSensor(ColorSensorWrapped):
     """ To dump color hits and look for errors. FOR TEST USE ONLY. """
@@ -62,12 +62,12 @@ class ColorSensor(ColorSensorWrapped):
             self.read_color()
 
         color = self.read_color()
-        color_distances = map(self.colors, lambda c: (c[0], compare_colors(color, c[1])))
+        color_distances = map(lambda c: (c[0], compare_colors(color, c[1])), self.colors)
         color_distances = sorted(color_distances, key=lambda c: c[1])
         
-        return_val = color_distances[0] if color_distances[1] < error else self.UNKOWN;
+        return_val = color_distances[0] if color_distances[1] < self.error else self.UNKOWN;
         
-        self.file.write(str(color)+" => "+str(color_distances)+" => "+return_val+"\n")
+        self.file.write(str(color)+" => "+str(color_distances)+" => "+str(return_val)+"\n")
         
         return return_val
         
