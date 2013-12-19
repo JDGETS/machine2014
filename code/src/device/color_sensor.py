@@ -22,35 +22,25 @@ class ColorSensor:
         self.orange_val = orange_val
         self.error = error
 
-        # Must be in same order as the color constant
-        self.colors = [self.black_val, self.white_val, self.orange_val]
+        self.colors =  \
+            [(self.BLACK, self.black_val), \
+            (self.WHITE, self.white_val), \
+            (self.ORANGE, self.orange_val)]
 
     def read_color(self):
         while True:
-            print self.a_pin 
-            print self.b_pin 
-            print self.c_pin
-            c1 = ADC.read(self.a_pin)
-            time.sleep(0)
-            c2 = ADC.read(self.b_pin)
-            time.sleep(0)
-            c3 = ADC.read(self.c_pin)
-            time.sleep(0)
-            print c1
-            print c2
-            print c3
-            color = [c1, c2, c3]           
-            #color = [ADC.read(self.a_pin), ADC.read(self.b_pin), ADC.read(self.c_pin)]
+            color = [ADC.read(self.a_pin), ADC.read(self.b_pin), ADC.read(self.c_pin)]
             if all(map(lambda x: x>0.00001, color)):
                 return color
 
     def get_color(self):
         # Need to poll color twice to get last value (bug)
-	for i in range(10):
+        for i in range(10):
             self.read_color()
+
         color = self.read_color()
-        for i in range(3):
-            if compare_colors(color, self.colors[i]) < self.error:
-                return i
-        return self.UNKOWN
+        color_distances = map(self.colors, lambda c: (c[0], compare_colors(color, c[1])))
+        color_distances = sorted(color_distances, key=lambda c: c[1])
+
+        return color_distances[0] if color_distances[1] < error else self.UNKOWN
 
