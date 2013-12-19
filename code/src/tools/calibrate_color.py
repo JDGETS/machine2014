@@ -32,6 +32,7 @@ def sample_colors(color_sensor, piston = None):
             color_sensor.read_color()
 
         # Sample color
+        print "Sampling"
         for i in range(5):
             colors.append(color_sensor.read_color())
 
@@ -49,8 +50,9 @@ color_sensor = device.ColorSensor(**config.devices["color_sensor"])
 piston_1 = device.Piston(**config.devices["white_piston"])
 piston_2 = device.Piston(**config.devices["orange_piston"])
 
-piston_1.pull()
-piston_2.standby()
+piston_2.pull()
+time.sleep(1.0)
+piston_1.push()
 
 # Calibrate void space
 # print "Please remove any ball in the sorter"
