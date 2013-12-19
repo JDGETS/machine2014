@@ -15,9 +15,9 @@ devices = {
         "push_duty": 7.7
     },
     "color_sensor": {
-        "a_pin": "P9_33", #RGB1
-        "b_pin": "P9_35",
-        "c_pin": "P9_36",
+        "a_pin": "P9_39", #RGB1
+        "b_pin": "P9_40",
+        "c_pin": "P9_37",
         "black_val": [0.020,0.180,0.027],
         "white_val": [0.078,0.230,0.12],
         "orange_val": [0.077,0.22,0.085],
