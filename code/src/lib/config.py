@@ -4,7 +4,7 @@ devices = {
     },
     "white_piston": {
         "pin": "P9_22", #Servo1
-        "pull_duty": 4.75,
+        "pull_duty": 4.8,
         "standby_duty": 6.3,
         "push_duty": 7.5
     },
@@ -24,9 +24,9 @@ devices = {
     },
     "vacuum_servo": {
         "pin": "P9_42", #Servo3
-        "pull_duty": 4.5, #TODO CALIBRATE
-        "standby_duty": 4.5,
-        "push_duty": 4.5
+        "pull_duty": 9.5,
+        "standby_duty": 7.5,
+        "push_duty": 3
     },
     "gate_servo": {
         "pin": "P8_13", #Servo2
@@ -35,7 +35,7 @@ devices = {
         "push_duty": 11.5
     },
     "collector_on_switch": {
-        "pin": "P8_16", #Switch 
+        "pin": "P8_16", #Switch
     }
 }
 
