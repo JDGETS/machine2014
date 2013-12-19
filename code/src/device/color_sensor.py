@@ -1,5 +1,6 @@
 import Adafruit_BBIO.ADC as ADC
 from math import sqrt
+import time
 
 
 def compare_colors(color1, color2):
@@ -30,8 +31,11 @@ class ColorSensor:
             print self.b_pin 
             print self.c_pin
             c1 = ADC.read(self.a_pin)
+            time.sleep(0)
             c2 = ADC.read(self.b_pin)
+            time.sleep(0)
             c3 = ADC.read(self.c_pin)
+            time.sleep(0)
             print "%d %d %d" % {c1,c2,c3}
             color = [ADC.read(self.a_pin), ADC.read(self.b_pin), ADC.read(self.c_pin)]
             if all(map(lambda x: x>0.00001, color)):
