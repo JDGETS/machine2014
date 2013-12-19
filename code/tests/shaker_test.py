@@ -1,4 +1,4 @@
-from collector import Vacuum
+from collector import VacuumShaker
 from lib import ex_pdb
 import time
 
