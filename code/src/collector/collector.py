@@ -2,6 +2,7 @@ from vacuum import Vacuum
 from sorter import Sorter
 from vacuum_shaker import VacuumShaker
 from lib.io.switch import Switch
+from lib import config
 
 class Collector(object):
     ON_SWITCH_ID = "collector_on_switch"
