@@ -6,13 +6,13 @@ devices = {
         "pin": "P9_22", #Servo1
         "pull_duty": 4.6,#TODO CALIBRATE
         "standby_duty": 6.3,
-        "push_duty": 7
+        "push_duty": 7.5
     },
     "orange_piston": {
         "pin": "P9_14", #Servo0
         "pull_duty": 4.5,
         "standby_duty": 6.2,
-        "push_duty": 7
+        "push_duty": 7.7
     },
     "color_sensor": {
         "a_pin": "P9_33", #RGB1
