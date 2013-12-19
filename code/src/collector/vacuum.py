@@ -12,7 +12,7 @@ class Vacuum(Component):
         super(Vacuum, self).__init__(self.state_running)
 
         print "[Vacuum.__init__]"
-        self.vacuum_output = DigitalOutput(config.devices[self.VACUUM_ID])
+        self.vacuum_output = DigitalOutput(config.devices[self.VACUUM_ID]["pin"])
         self.vacuum_shaker = vacuum_shaker
 
     def stop(self):

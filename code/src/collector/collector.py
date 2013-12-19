@@ -19,13 +19,13 @@ class Collector(object):
 
         print "[Collector.run] Collector started"
 
-        try:
-            while True:
-                for c in self.components:
-                    c.update()
-        except:
-            print "[Collector.run] Exception catched, stop collector"
-            self.stop()
+        #try:
+        while True:
+            for c in self.components:
+                c.update()
+        #except:
+        #    print "[Collector.run] Exception catched, stop collector"
+        #    self.stop()
 
     def stop(self):
         for c in self.components:
