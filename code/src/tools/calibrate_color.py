@@ -25,7 +25,7 @@ def print_sample_info(black_sample, white_sample, orange_sample):
     print "Orange: {val: %s, max_error: %f}" % orange_stat
 
     print "Config value: "
-    print "\"black_val\": %s\n\"white_val\": %s\n\"orange_val\": %s\n" % (black_stat[0], white_stat[0], orange_stat[0])
+    print "\"black_val\": %s,\n\"white_val\": %s,\n\"orange_val\": %s,\n" % (black_stat[0], white_stat[0], orange_stat[0])
 
 def sample_colors(color_sensor, piston = None):
     colors = []
