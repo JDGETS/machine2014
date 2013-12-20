@@ -1,7 +1,8 @@
 from collector import Collector
 from threading import Thread
+from device import Switch
 import time
-from lib import ex_pdb
+from lib import ex_pdb, config
 
 collector = Collector()
 
