@@ -1,7 +1,7 @@
 from threading import Thread, Event
 import Adafruit_BBIO.GPIO as GPIO
 import bbio
-class Stepper(Object):
+class Stepper(object):
     def __init__(self, step,direction,reset,enable):
         self.pin = pin
         self.killThread = Event()
