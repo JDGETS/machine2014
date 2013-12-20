@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from collector import Collector
 import atexit
 
