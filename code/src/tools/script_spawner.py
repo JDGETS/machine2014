@@ -16,7 +16,7 @@ class StopScript(Thread):
         print "[script_spawner] Stop", self.script
         self.script.stop()
 
-__module = __import__(sys.argv[1])
+__module = __import__(sys.argv[1], globals(), locals(), [], -1)
 
 while True:
     spawn_switch.wait_pushed();

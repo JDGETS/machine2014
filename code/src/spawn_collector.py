@@ -1,4 +1,4 @@
-from device import Collector
+from collector import Collector
 
 def start():
     print "[spawn_collector] Start collector"
