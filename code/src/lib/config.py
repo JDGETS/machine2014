@@ -38,7 +38,7 @@ devices = {
         "pin": "P8_12", #Switch
     },
     "stepper_rail":{
-      "step":"GPIO2_6",
+      "pin":"GPIO2_6",
       "direction":"P8_43",
       "reset":"P8_44",
       "enable":"P8_46"
