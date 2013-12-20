@@ -4,7 +4,7 @@ from device import Switch
 import time
 from lib import ex_pdb, config
 
-collector = Collector()
+collector = None
 
 ON_SWITCH_ID = "collector_switch"
 
@@ -24,4 +24,5 @@ while True:
     print "[run_collector] Start collector"
     t = Thread(target = wait_for_stop)
     t.start()
+    collector = Collector()
     collector.run()
