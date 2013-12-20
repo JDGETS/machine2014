@@ -11,7 +11,9 @@ class Stepper(object):
         GPIO.setup(self.reset, GPIO.OUT)
         GPIO.setup(self.enable, GPIO.OUT)
         GPIO.setup(self.direction, GPIO.OUT)
+        self.reset()
 
+    def reset(self):
         GPIO.output(self.reset, GPIO.LOW)
         GPIO.output(self.reset, GPIO.HIGH)        
         GPIO.output(self.enable, GPIO.LOW)
@@ -21,7 +23,8 @@ class Stepper(object):
         GPIO.output(self.direction,direction)
         if self.thread:
             self.stop()
-
+        
+        self.reset()
         self.thread = Thread(target = move_thread, args = (self.killThread, self.pin,steps))
         self.thread.start()
 
@@ -36,6 +39,7 @@ class Stepper(object):
             self.thread.join()
         self.killThread.clear()
         GPIO.output(self.enable, GPIO.HIGH)
+
 
     def move_thread(kill, pin, steps=-1):
         bbio.pinMode(pin, OUTPUT)
