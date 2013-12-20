@@ -1,12 +1,7 @@
-from device import LimitSwitch
-import functools
+from device import Switch
+import sys
 
-def onChange(name, state):
-    print "[%s] State changed: %d" % (name, state)
-
-name = raw_input("LimitSwitch's GPIO: ")
-
-switch = LimitSwitch(name, functools.partial(onChange, name))
-print "LimitSwitch initialized"
-while True:
-    switch.update()
+pin = sys.argv[1]
+s = Switch(pin)
+s.wait_pressed()
+print "Switch pressed"
