@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from threading import Thread
 from device import Switch
 from lib import config
