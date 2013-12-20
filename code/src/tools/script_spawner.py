@@ -24,4 +24,5 @@ while True:
     reload(__module)
     t = StopScript(__module, spawn_switch)
     print "[run_collector] Start", __module
+    t.start()
     __module.start()
