@@ -11,8 +11,7 @@ ON_SWITCH_ID = "collector_switch"
 collector_switch = Switch(**config.devices[ON_SWITCH_ID])
 
 def wait_for_signal():
-    if not collector_switch.is_pressed():
-        collector_switch.wait_pressed();
+    collector_switch.wait_pushed();
 
 def wait_for_stop():
     wait_for_signal()

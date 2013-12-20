@@ -35,7 +35,7 @@ devices = {
         "push_duty": 11.5
     },
     "collector_switch": {
-        "pin": "P8_15", #Switch
+        "pin": "P8_12", #Switch
     }
 }
 
