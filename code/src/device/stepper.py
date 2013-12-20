@@ -11,9 +11,9 @@ class Stepper(object):
         GPIO.setup(self.reset, GPIO.OUT)
         GPIO.setup(self.enable, GPIO.OUT)
         GPIO.setup(self.direction, GPIO.OUT)
-        self.reset()
+        self.reset_stepper()
 
-    def reset(self):
+    def reset_stepper(self):
         GPIO.output(self.reset, GPIO.LOW)
         GPIO.output(self.reset, GPIO.HIGH)        
         GPIO.output(self.enable, GPIO.LOW)
@@ -24,7 +24,7 @@ class Stepper(object):
         if self.thread:
             self.stop()
         
-        self.reset()
+        self.reset_stepper()
         self.thread = Thread(target = move_thread, args = (self.killThread, self.pin,steps))
         self.thread.start()
 
