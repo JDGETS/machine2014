@@ -34,7 +34,7 @@ devices = {
         "standby_duty": 10.5,
         "push_duty": 11.5
     },
-    "collector_switch": {
+    "spawn_switch": {
         "pin": "P8_12", #Switch
     }
 }
