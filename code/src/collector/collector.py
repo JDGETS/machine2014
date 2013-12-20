@@ -1,12 +1,9 @@
 from vacuum import Vacuum
 from sorter import Sorter
 from vacuum_shaker import VacuumShaker
-from lib.io.switch import Switch
 from lib import config
 
 class Collector(object):
-    ON_SWITCH_ID = "collector_on_switch"
-
     def __init__(self):
         print "[Collector.__init__]"
         self.vacuum_shaker = VacuumShaker()
@@ -14,14 +11,7 @@ class Collector(object):
         self.sorter = Sorter()
 
         self.components = [self.sorter, self.vacuum, self.vacuum_shaker]
-
-        self.onSwitch = Switch(**config.devices[self.ON_SWITCH_ID])
-
-    def wait_for_signal(self):
-        if not self.onSwitch.is_pressed():
-            self.onSwitch.wait_pressed();
-
-        self.run()
+        self.is_running = False
 
     def run(self):
         print "[Collector.run] Start collector"
@@ -31,14 +21,15 @@ class Collector(object):
 
         print "[Collector.run] Collector started"
 
-        #try:
-        while True:
+        self.is_running = True
+        while self.is_running:
             for c in self.components:
                 c.update()
-        #except:
-        #    print "[Collector.run] Exception catched, stop collector"
-        #    self.stop()
 
-    def stop(self):
+        print "[Collector.run] Collector stopped"
+
         for c in self.components:
             c.stop()
+
+    def stop(self):
+        self.is_running = False
