@@ -9,7 +9,7 @@ class Collector(object):
         print "[Collector.__init__]"
         self.vacuum_shaker = VacuumShaker()
         self.sorter = Sorter()
-        self.rail = rail()
+        self.rail = Rail()
         self.controller = CollectorController(self.sorter, self.rail)
 
         self.components = [self.sorter, self.vacuum_shaker, self.rail, self.controller]
