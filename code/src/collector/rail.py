@@ -21,7 +21,10 @@ class Rail(Component):
 
     def go_to_position(self, destination):
         steps = destination - self.current_position
+        if steps == 0:
+            return 0
         direction =  max(0,min(steps, 1)) #0 when going to away, 1 when going to home
+        print "move of %d to %d" % (abs(steps), direction)
         self.stepper.move(abs(steps), direction)
         return abs(steps)
 
