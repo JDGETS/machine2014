@@ -8,9 +8,12 @@ while True:
     c = int(raw_input("your choice?"))
 
     if c ==1:
+        print "going home"
         r.slide_to_home()
-    elif c == 2:
+    if c == 2:
+        print "going wait"
         r.slide_to_wait_for_sorting_position()
-    elif c == 3:
+    if c == 3:
+        print "going dump"
         r.slide_to_away()
 
