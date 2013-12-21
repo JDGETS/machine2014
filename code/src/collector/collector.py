@@ -1,5 +1,5 @@
 from sorter import Sorter
-from rail import rail
+from rail import Rail
 from vacuum_shaker import VacuumShaker
 from lib import config
 from collector_controller import CollectorController
