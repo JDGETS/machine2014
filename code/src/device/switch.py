@@ -9,8 +9,9 @@ class Switch(object):
 	def __init__(self, pin):
 		""" Create a Switch object that reads input from the given pin. """
 		self.pin = pin
+		self.last_was_pressed = False
 		GPIO.setup(pin, GPIO.IN)
-		GPIO.add_event_detect(pin, GPIO.FALLING)
+		GPIO.add_event_detect(pin, GPIO.RISING)
 
 	def is_pressed(self):
 		""" Return True if the switch is pressed. """
@@ -21,7 +22,9 @@ class Switch(object):
 		return not GPIO.input(self.pin)
 
 	def was_pressed(self):
-		return GPIO.event_detected(self.pin)
+		last = self.last_was_pressed
+		self.last_was_pressed = GPIO.event_detected(self.pin)
+		return self.last_was_pressed and last != self.last_was_pressed
 
 	def wait_pushed(self):
 		""" Wait for the switch to be pressed and released (waits for a falling edge followed by a rising edge. """

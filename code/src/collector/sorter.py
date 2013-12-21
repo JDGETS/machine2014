@@ -37,10 +37,18 @@ class Sorter(Component):
 
         self.active_piston = self.white_piston
 
+        self.ball_count = 0
+
     def stop(self):
         print "[Sorter.stop] Stop pistons"
         self.white_piston.stop()
         self.orange_piston.stop()
+
+    def reset_ball_count(self):
+        self.ball_count = 0
+
+    def get_ball_count(self):
+        return self.ball_count
 
     def state_push(self):
         """State that move one piston to push a ball
@@ -74,6 +82,7 @@ class Sorter(Component):
             print "[Sorter.state_pushed] Orange ball detected"
             self.active_piston = self.orange_piston
 
+        self.ball_count += 1
         yield partial(self.state_pull, current_piston_pushed)
 
     def state_pull(self, piston_to_recall):
