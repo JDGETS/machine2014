@@ -30,6 +30,8 @@ class Rail(Component):
         return abs(steps)
 
     def slide_to_home(self):
+        import pdb
+        pdb.set_trace()
         distance = self.go_to_position(self.HOME_POSITION)
         self.current_position = self.HOME_POSITION
         yield self.wait(distance * self.AVERAGE_SPEED, self.check_homing)
