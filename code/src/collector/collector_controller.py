@@ -1,3 +1,5 @@
+from lib.component import Component
+from device import Piston, Servo, Switch
 from sorter import Sorter
 from vacuum_shaker import VacuumShaker
 from lib import config

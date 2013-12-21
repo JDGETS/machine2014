@@ -1,6 +1,7 @@
 from sorter import Sorter
 from vacuum_shaker import VacuumShaker
 from lib import config
+from collector_controller import CollectorController
 
 class Collector(object):
     def __init__(self):
