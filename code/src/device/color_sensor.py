@@ -37,6 +37,7 @@ class ColorSensorWrapped:
             time.sleep(0.001);
             if all(map(lambda x: x>0.00001, color)):
                 return color
+            print "[color_sensor.read_color] Invalid color:", color
 
     def get_color(self):
         # Need to poll color twice to get last value (bug)
