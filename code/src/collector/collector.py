@@ -1,4 +1,3 @@
-from vacuum import Vacuum
 from sorter import Sorter
 from vacuum_shaker import VacuumShaker
 from lib import config
@@ -7,10 +6,9 @@ class Collector(object):
     def __init__(self):
         print "[Collector.__init__]"
         self.vacuum_shaker = VacuumShaker()
-        self.vacuum = Vacuum()
         self.sorter = Sorter()
 
-        self.components = [self.sorter, self.vacuum, self.vacuum_shaker]
+        self.components = [self.sorter, self.vacuum_shaker]
         self.is_running = False
 
     def run(self):

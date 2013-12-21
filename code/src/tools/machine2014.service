@@ -1,0 +1,8 @@
+[Unit]
+Description=Start machine script
+
+[Service]
+ExecStart=/home/root/machine2014/code/src/tools/boot_script.sh
+
+[Install]
+WantedBy=multi-user.target 
