@@ -12,7 +12,7 @@ class VacuumShaker(Component):
     VACUUM_SERVO_ID = "vacuum_servo"
 
     def __init__(self):
-        super(VacuumShaker, self).__init__(self.state_push)
+        super(VacuumShaker, self).__init__(self.state_pull_up)
         print "[VacuumShaker.__init__]"
 
         self.vacuum_servo = Piston(**config.devices[self.VACUUM_SERVO_ID])
@@ -24,14 +24,14 @@ class VacuumShaker(Component):
 
     def state_pull_up(self):
         print "[VacuumShaker.state_pull_up]"
-        self.vacuum_servo.push()
+        self.vacuum_servo.pull()
         yield self.wait(self.PULL_UP_DELAY, partial(self.state_push, 0))
 
     def state_push(self, n):
         print "[VacuumShaker.state_push]"
         self.vacuum_servo.push()
 
-        if n < SHAKE_COUNT:
+        if n < self.SHAKE_COUNT:
             yield self.wait(self.SERVO_DELAY, partial(self.state_pull, n))
         else:
             yield self.wait(self.SERVO_DELAY, self.state_pull_up)

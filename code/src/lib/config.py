@@ -24,7 +24,7 @@ devices = {
     },
     "vacuum_servo": {
         "pin": "P9_42", #Servo3
-        "pull_duty": 5,
+        "pull_duty": 7,
         "standby_duty": 5,
         "push_duty": 2.8
     },
