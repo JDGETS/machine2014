@@ -9,6 +9,7 @@ class Camion:
     CAMION_CONFIG_ID = "camion"
     COLLECTOR_SWITCH_ID = "camion_collector_switch"
     DUMP_SWITCH_ID = "camion_dump_switch"
+    FOOT_UP_SWITCH_ID = "camion_foot_up_switch"
     FOOT_STEPPER_ID = "camion_stepper"
 
     def __init__(self):
@@ -16,6 +17,7 @@ class Camion:
         self.config = **config.devices[self.CAMION_CONFIG_ID]
         self.collector_switch = Switch(**config.devices[self.COLLECTOR_SWITCH_ID])
         self.dump_switch = Switch(**config.devices[self.DUMP_SWITCH_ID]) # Useless for now
+        self.foot_up_switch = Switch(**config.devices[self.FOOT_UP_SWITCH_ID]) # Useless for now
         self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
 
     def run(self):
@@ -51,14 +53,17 @@ class Camion:
 
     def put_in_start_position(self):
         #Drop camion. Foot on floor so bring it up.
-        stepper.move(self.config.stepper_start_position_ticks, 1)
-        return
+        self.foot_stepper.move(self.config.stepper_start_position_ticks, 1)
 
     def drop_foot(self):
-        stepper.move(self.config.stepper_foot_complete_ticks, 0)
+        self.foot_stepper.move(self.config.stepper_foot_complete_ticks, 0)
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
 
     def bring_foot_up(self):
-        stepper.move(self.config.stepper_foot_complete_ticks, 1)
+        self.foot_stepper.move(self.config.stepper_foot_complete_ticks, 1)
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
+        #--Test this code first..
+        #while not self.foot_up_switch.is_pressed():
+        #    self.foot_stepper.move(self.config.stepper_foot_complete_ticks/20, 1)
+        #    time.sleep(0.01)
         

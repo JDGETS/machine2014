@@ -54,6 +54,9 @@ devices = {
     "camion_dump_switch":{
       "pin":"P8_14",
      },
+    "camion_foot_up_switch":{
+      "pin":"P8_16",
+     },
     "camion_stepper":{
       "pin":"GPIO2_6",
       "direction":"P8_43",
