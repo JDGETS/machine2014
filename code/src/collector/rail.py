@@ -3,7 +3,7 @@ from device.stepper import Stepper
 from lib.config import devices
 from device.switch import Switch
 
-class Rail(Component):
+class Rail():
     LEFT = 1
     RIGHT = 0
     AWAY_POSITION = 0

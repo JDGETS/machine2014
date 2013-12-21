@@ -26,7 +26,7 @@ class CollectorController(Component):
         if not self.start_collect_switch.is_pressed():
             self.start_collect_switch.wait_pressed()
 
-        yield partial(self.state_push_truck_home, 0)
+        yield self.state_push_truck_home
         
     def state_push_truck_home(self):
         self.rail.slide_to_home()
@@ -34,7 +34,7 @@ class CollectorController(Component):
         while not self.rail.is_home():
             yield
 
-        yield partial(self.state_wait_sorter, 0)
+        yield self.state_wait_sorter
 
     def state_push_truck_away(self):
         self.rail.slide_to_away()
@@ -42,12 +42,12 @@ class CollectorController(Component):
         while not self.rail.is_away():
             yield
 
-        yield partial(self.state_push_truck_home, 0)
+        yield self.state_push_truck_home
 
     def state_push_truck_standby(self):
         self.rail.slide_to_wait_for_sorting_position()
 
-        yield partial(self.state_wait_truck_foot, 0)
+        yield self.state_wait_truck_foot
 
     def state_wait_sorter(self):
         print "[CollectorController.state_wait_sorter]"
@@ -57,21 +57,21 @@ class CollectorController(Component):
         #while balls < 20 and :
         #    yield
 
-        yield partial(self.state_open_gate, 0)
+        yield self.state_open_gate
         
     def state_open_gate(self):
         print "[CollectorController.state_open_gate]"
 
         #self.gate.XYZ()
 
-        yield self.wait( self.WAIT_TIME_GATE, partial(self.state_close_gate, 0))
+        yield self.wait( self.WAIT_TIME_GATE, self.state_close_gate)
         
     def state_close_gate(self):
         print "[CollectorController.state_close_gate]"
 
         #self.gate.XYZ()
 
-        yield partial(self.state_push_truck_standby, 0)
+        yield self.state_push_truck_standby
     
     def state_wait_truck_foot(self):
-        yield self.wait( self.WAIT_TIME_FOOT, partial(self.state_push_truck_away, 0))
+        yield self.wait( self.WAIT_TIME_FOOT, self.state_push_truck_away)
