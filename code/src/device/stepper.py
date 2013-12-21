@@ -4,7 +4,7 @@ import bbio
 
 
 def move_thread(kill, pin, steps=-1):
-        bbio.pinMode(pin, OUTPUT)
+        bbio.pinMode(pin, bbio.OUTPUT)
         step = 0
         default_ramp_step =2000
         ramp_step =  default_ramp_step if steps == -1 else min(default_ramp_step, steps)
@@ -13,14 +13,14 @@ def move_thread(kill, pin, steps=-1):
         min_sleep =100 - 32 
 
         while step <ramp_step and not kill.isSet():
-            bbio.digitalWrite(pin,LOW)
-            bbio.digitalWrite(pin,HIGH)
+            bbio.digitalWrite(pin,bbio.LOW)
+            bbio.digitalWrite(pin,bbio.HIGH)
             step +=1
             delayMicroseconds( min_sleep + ramp_sleep - ramp_sleep_decrement)
 
         while step < steps or steps == -1 and not kill.isSet():
-            bbio.digitalWrite(pin,LOW)
-            bbio.digitalWrite(pin,HIGH)
+            bbio.digitalWrite(pin,bbio.LOW)
+            bbio.digitalWrite(pin,bbio.HIGH)
             delayMicroseconds(min_sleep)
 
 
