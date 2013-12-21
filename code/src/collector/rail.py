@@ -26,15 +26,13 @@ class Rail():
             return 0
         direction =  max(0,min(steps, 1)) #0 when going to away, 1 when going to home
         print "move of %d to %d" % (abs(steps), direction)
-        self.stepper.move(abs(steps), direction)
+        self.stepper.move(direction,abs(steps))
         return abs(steps)
 
     def slide_to_home(self):
-        import pdb
-        pdb.set_trace()
         distance = self.go_to_position(self.HOME_POSITION)
         self.current_position = self.HOME_POSITION
-        yield self.wait(distance * self.AVERAGE_SPEED, self.check_homing)
+        #yield self.wait(distance * self.AVERAGE_SPEED, self.check_homing)
     
     def slide_to_wait_for_sorting_position(self):
         self.go_to_position(self.WAIT_FOR_SORTING_POSITION)
@@ -43,16 +41,16 @@ class Rail():
     def slide_to_away(self):
         distance = self.go_to_position(self.AWAY_POSITION)
         self.current_position = self.AWAY_POSITION
-        yield self.wait(distance * self.AVERAGE_SPEED, self.check_away)
+        #yield self.wait(distance * self.AVERAGE_SPEED, self.check_away)
 
     def check_away(self):
         while not self.is_away():
-            self.stepper.move(500, self.RIGHT)
+            self.stepper.move(self.RIGHT,500)
             yield
 
     def check_homing(self):
         while not self.is_home():
-            self.stepper.move(500, self.LEFT)
+            self.stepper.move(self.LEFT,500)
             yield
 
     def is_home(self):
