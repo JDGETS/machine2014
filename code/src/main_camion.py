@@ -4,13 +4,14 @@ import sys
 
 
 def mainSafe():
-    try:
-        camion = Camion()
+    #try:
+    camion = Camion()
+    camion.run()
 
-    except:
-        print "Exception raised  in maincamion::mainSafe", sys.exc_info()[0]
-        camion.stop()
-        raise
+    #except:
+    #    print "Exception raised  in maincamion::mainSafe", sys.exc_info()[0]
+    #    camion.stop()
+    #    raise
 
 if __name__ == "__main__":
     mainSafe();
