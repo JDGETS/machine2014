@@ -1,5 +1,5 @@
 from lib.component import Component
-from device import Piston
+from device import Piston, Switch
 from lib import config
 from functools import partial
 

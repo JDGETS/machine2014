@@ -35,7 +35,7 @@ devices = {
         "pin": "P8_12" # In2
     },
     "load_tank_switch": {
-        "pin": "P8_6" # In1
+        "pin": "P8_14" # In3
     },
     "stepper_rail":{
         "pin":"GPIO2_6",
