@@ -21,6 +21,7 @@ def move_thread(kill, pin, steps=-1):
         while step < steps or steps == -1 and not kill.isSet():
             bbio.digitalWrite(pin,bbio.LOW)
             bbio.digitalWrite(pin,bbio.HIGH)
+            step +=1
             delayMicroseconds(min_sleep)
 
 
@@ -44,6 +45,7 @@ class Stepper(object):
 
     #0 or 1 for direction
     def move(self, direction, steps = -1):
+        print "move %d"%steps
         GPIO.output(self.direction,direction)
         if self.thread:
             self.stop()
