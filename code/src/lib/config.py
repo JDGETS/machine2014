@@ -19,9 +19,9 @@ devices = {
     },
     "gate_servo": {
         "pin": "P8_13", #Servo2
-        "pull_duty": 9.4, #TODO CALIBRATE
-        "standby_duty": 10.5,
-        "push_duty": 11.5
+        "pull_duty": 5.5,
+        "standby_duty": 5.5,
+        "push_duty": 4.2
     },
     "color_sensor": {
         "a_pin": "P9_39", #RGB1
