@@ -27,17 +27,17 @@ class Rail(Component):
 
     def slide_to_home(self):
         distance = self.go_to_position(self.HOME_POSITION)
-        self.current_position = HOME_POSITION
-        yield self.wait(distance * AVERAGE_SPEED, self.check_homing)
+        self.current_position = self.HOME_POSITION
+        yield self.wait(distance * self.AVERAGE_SPEED, self.check_homing)
     
     def slide_to_wait_for_sorting_position(self):
         self.go_to_position(self.WAIT_FOR_SORTING_POSITION)
-        self.current_position = WAIT_FOR_SORTING_POSITION # no validation possible...
+        self.current_position = self.WAIT_FOR_SORTING_POSITION # no validation possible...
 
     def slide_to_away(self):
         distance = self.go_to_position(self.AWAY_POSITION)
-        self.current_position = AWAY_POSITION
-        yield self.wait(distance * AVERAGE_SPEED, self.check_away)
+        self.current_position = self.AWAY_POSITION
+        yield self.wait(distance * self.AVERAGE_SPEED, self.check_away)
 
     def check_away(self):
         while not self.is_away():
