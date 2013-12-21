@@ -49,6 +49,7 @@ devices = {
      "rail":{
          "switch_away": "",
          "switch_home": ""#Switch
+         "switch_stand":""
      },
     "camion":{
         "foot_standby_time":"3",
