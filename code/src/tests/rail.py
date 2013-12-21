@@ -9,8 +9,6 @@ while True:
 
     if c ==1:
         print "going home"
-        import pdb
-        pdb.set_trace()
         r.slide_to_home()
     if c == 2:
         print "going wait"
