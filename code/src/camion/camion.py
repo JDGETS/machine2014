@@ -37,8 +37,11 @@ class Camion:
 
             self.drop_foot();
 
-            time.sleep( self.config.foot_standby_time )
+            #time.sleep( self.config.foot_standby_time ) #Dead code (?)
             
+            if not self.collector_switch.is_released():
+                self.collector_switch.wait_released()
+
             self.bring_foot_up();
             
             self.first_run = False
