@@ -34,6 +34,9 @@ devices = {
     "spawn_switch": {
         "pin": "P8_12" # In2
     },
+    "start_collect_switch": {
+        "pin": "P8_16" # In4
+    },
     "load_tank_switch": {
         "pin": "P8_14" # In3
     },
@@ -67,6 +70,4 @@ devices = {
         "reset":"P8_44",
         "enable":"P8_46"
     },
-
 }
-
