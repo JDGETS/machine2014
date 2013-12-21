@@ -1,3 +1,4 @@
+from lib.component import Component
 from device.stepper import Stepper
 from lib.config import devices
 from device.switch import Switch
