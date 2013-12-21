@@ -21,6 +21,7 @@ class Rail(Component):
 
     def go_to_position(self, destination):
         steps = destination - self.current_position
+        print "steps %d" % steps
         if steps == 0:
             return 0
         direction =  max(0,min(steps, 1)) #0 when going to away, 1 when going to home
