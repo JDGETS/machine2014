@@ -5,9 +5,10 @@ class Stepper(object):
     def __init__(self, pin,direction,reset,enable):
         self.pin = pin
         self.killThread = Event()
-        self.direction = direction;
-        self.reset = reset;
-        self.enable = enable;
+        self.direction = direction
+        self.reset = reset
+        self.enable = enable
+        self.thread = None
         GPIO.setup(self.reset, GPIO.OUT)
         GPIO.setup(self.enable, GPIO.OUT)
         GPIO.setup(self.direction, GPIO.OUT)
