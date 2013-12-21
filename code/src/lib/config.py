@@ -43,6 +43,10 @@ devices = {
         "reset":"P8_44",
         "enable":"P8_46"
      },
+     "rail":{
+         "switch_away": "",
+         "switch_home": ""#Switch
+     },
     "camion":{
         "foot_standby_time":"3",
         "stepper_start_position_ticks": (5.0/5000) * 1.0,
@@ -63,5 +67,6 @@ devices = {
         "reset":"P8_44",
         "enable":"P8_46"
     },
+
 }
 

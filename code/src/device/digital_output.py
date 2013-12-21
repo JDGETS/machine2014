@@ -4,7 +4,6 @@ class DigitalOutput:
 
     def __init__(self, pin):
         self.pin = pin
-        print "alsalsdl"
         GPIO.setup(self.pin, GPIO.OUT)
         self.off()
 
