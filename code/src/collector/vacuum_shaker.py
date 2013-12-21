@@ -4,8 +4,8 @@ from lib import config
 
 class VacuumShaker(Component):
 
-    PULL_DELAY = 0.5
-    PUSH_DELAY = 0.5
+    PULL_DELAY = 0.3
+    PUSH_DELAY = 0.3
 
     VACUUM_SERVO_ID = "vacuum_servo"
 
