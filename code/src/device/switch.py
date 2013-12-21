@@ -5,13 +5,13 @@
 import Adafruit_BBIO.GPIO as GPIO
 
 class Switch(object):
-	
+
 	def __init__(self, pin):
 		""" Create a Switch object that reads input from the given pin. """
 		self.pin = pin
 		GPIO.setup(pin, GPIO.IN)
-		return
-	
+		GPIO.add_event_detect(pin, GPIO.FALLING)
+
 	def is_pressed(self):
 		""" Return True if the switch is pressed. """
 		return GPIO.input(self.pin)
@@ -19,6 +19,9 @@ class Switch(object):
 	def is_released(self):
 		""" Return True if the switch is not pressed. """
 		return not GPIO.input(self.pin)
+
+	def was_pressed(self):
+		return GPIO.event_detected(self.pin)
 
 	def wait_pushed(self):
 		""" Wait for the switch to be pressed and released (waits for a falling edge followed by a rising edge. """
@@ -30,4 +33,4 @@ class Switch(object):
 		""" Wait for the switch to be pressed (waits for a falling edge). """
 		GPIO.wait_for_edge(self.pin, GPIO.FALLING)
 		return
-	
+
