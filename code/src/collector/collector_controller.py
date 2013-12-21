@@ -17,7 +17,7 @@ class CollectorController(Component):
         self.sorter = sorter
         self.rail = rail
         self.start_collect_switch = Switch(**config.devices[self.START_COLLECT])
-        self.gate = Servo(**config.devices[self.GATE])
+        #self.gate = Piston(**config.devices[self.GATE])
 
     def state_wait_init(self):
         print "[CollectorController.state_wait_init]"
