@@ -8,6 +8,7 @@ class CollectorController(Component):
     
     WAIT_TIME_GATE = 1.0
     WAIT_TIME_FOOT = 2.0
+    WAIT_TIME_DUMP_BALLS = 1.5
     START_COLLECT = 'start_collect_switch'
     GATE = 'gate_servo'
 
@@ -44,7 +45,7 @@ class CollectorController(Component):
         while not self.rail.is_away():
             yield
 
-        yield self.state_push_truck_home
+        yield self.wait( self.WAIT_TIME_DUMP_BALLS, self.state_push_truck_home)
 
     def state_push_truck_standby(self):
         print "[CollectorController.state_push_truck_standby]"
