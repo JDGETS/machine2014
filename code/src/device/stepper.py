@@ -1,6 +1,29 @@
 from threading import Thread, Event
 import Adafruit_BBIO.GPIO as GPIO
 import bbio
+
+
+def move_thread(kill, pin, steps=-1):
+        bbio.pinMode(pin, OUTPUT)
+        step = 0
+        default_ramp_step =2000
+        ramp_step =  default_ramp_step if steps == -1 else min(default_ramp_step, steps)
+        ramp_sleep = 100.0
+        ramp_sleep_decrement = ramp_sleep / ramp_step
+        min_sleep =100 - 32 
+
+        while step <ramp_step and not kill.isSet():
+            bbio.digitalWrite(pin,LOW)
+            bbio.digitalWrite(pin,HIGH)
+            step +=1
+            delayMicroseconds( min_sleep + ramp_sleep - ramp_sleep_decrement)
+
+        while step < steps or steps == -1 and not kill.isSet():
+            bbio.digitalWrite(pin,LOW)
+            bbio.digitalWrite(pin,HIGH)
+            delayMicroseconds(min_sleep)
+
+
 class Stepper(object):
     def __init__(self, pin,direction,reset,enable):
         self.pin = pin
@@ -38,22 +61,3 @@ class Stepper(object):
         GPIO.output(self.enable, GPIO.HIGH)
 
 
-    def move_thread(kill, pin, steps=-1):
-        bbio.pinMode(pin, OUTPUT)
-        step = 0
-        default_ramp_step =2000
-        ramp_step =  default_ramp_step if steps == -1 else min(default_ramp_step, steps)
-        ramp_sleep = 100.0
-        ramp_sleep_decrement = ramp_sleep / ramp_step
-        min_sleep =100 - 32 
-
-        while step <ramp_step and not kill.isSet():
-            bbio.digitalWrite(pin,LOW)
-            bbio.digitalWrite(pin,HIGH)
-            step +=1
-            delayMicroseconds( min_sleep + ramp_sleep - ramp_sleep_decrement)
-
-        while step < steps or steps == -1 and not kill.isSet():
-            bbio.digitalWrite(pin,LOW)
-            bbio.digitalWrite(pin,HIGH)
-            delayMicroseconds(min_sleep)
