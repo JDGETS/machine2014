@@ -34,6 +34,9 @@ devices = {
     "spawn_switch": {
         "pin": "P8_12" # In2
     },
+    "start_collect_switch": {
+        "pin": "P8_16" # In4
+    },
     "load_tank_switch": {
         "pin": "P8_14" # In3
     },
@@ -42,6 +45,11 @@ devices = {
         "direction":"P8_43",
         "reset":"P8_44",
         "enable":"P8_46"
+     },
+     "rail":{
+         "switch_away": "P8_22",
+         "switch_home": "P8_18",
+         "switch_stand":"P8_15"
      },
     "camion":{
         "foot_standby_time":"3",
@@ -64,4 +72,3 @@ devices = {
         "enable":"P8_46"
     },
 }
-
