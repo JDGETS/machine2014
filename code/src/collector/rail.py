@@ -3,7 +3,7 @@ from device.stepper import Stepper
 from lib.config import devices
 from device.switch import Switch
 
-class rail(Component):
+class Rail(Component):
     LEFT = 1
     RIGHT = 0
     AWAY_POSITION = 0
@@ -13,7 +13,7 @@ class rail(Component):
     AVERAGE_SPEED = 3/HOME_POSITION
     
     def __init__(self):
-        self.stepper = Stepper(devices["stepper_rail"])
+        self.stepper = Stepper(**devices["stepper_rail"])
         self.switch_home = Switch(devices["rail"]["switch_home"])
         self.switch_away = Switch(devices["rail"]["switch_away"])
         self.current_position = self.WAIT_FOR_SORTING_POSITION;

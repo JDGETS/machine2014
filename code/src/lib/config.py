@@ -47,8 +47,9 @@ devices = {
         "enable":"P8_46"
      },
      "rail":{
-         "switch_away": "",
-         "switch_home": ""#Switch
+         "switch_away": "P8_22",
+         "switch_home": "P8_18",
+         "switch_stand":"P8_15"
      },
     "camion":{
         "foot_standby_time":"3",
