@@ -18,9 +18,9 @@ class VacuumShaker(Component):
         super(VacuumShaker, self).__init__(self.state_pull_up)
         print "[VacuumShaker.__init__]"
 
-        self.vacuum_servo = Piston(**config.devices[self.VACUUM_SERVO_ID])
+        self.vacuum_servo = VacuumShakerPiston(**config.devices[self.VACUUM_SERVO_ID])
         self.load_tank_switch = Switch(**config.devices[self.LOAD_TANK_SWITCH])
-        self.vacuum_servo.pull()
+        self.vacuum_servo.complete_standby()
 
     def stop(self):
         print "[VacuumShaker.stop] Stoping"
