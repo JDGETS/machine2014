@@ -13,15 +13,16 @@ devices = {
     },
     "vacuum_servo": {
         "pin": "P9_42", #Servo3
-        "pull_duty": 9.0,
+        "complete_standby_duty": 9.0,
         "standby_duty": 5,
-        "push_duty": 2.8 #NE PAS DESCENDRE PLUS BAS. Monter PULL_DUTY a la place.
+        "pull_duty": 3.6,
+        "push_duty": 2.8 #NE PAS DESCENDRE PLUS BAS. Monter PULL_DUTY/COMPLETE_STANDBY_DUTY a la place.
     },
     "gate_servo": {
         "pin": "P8_13", #Servo2
-        "pull_duty": 5.5,
-        "standby_duty": 5.5,
-        "push_duty": 4.2
+        "pull_duty": 6.4,
+        "standby_duty": 6.4,
+        "push_duty": 4.8
     },
     "color_sensor": {
         "a_pin": "P9_39", #RGB1
