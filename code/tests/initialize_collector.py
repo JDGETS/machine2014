@@ -11,21 +11,29 @@ while True:
     print "3 : Goto Away (Dump)"
     print "4 : Close gate"
     print "5 : Open gate"
+    print "6 : Goto X right (total distance = 17000)"
+    print "7 : Goto X left (total distance = 17000)"
     c = int(raw_input("your choice?"))
 
     if c ==1:
         print "going home"
         r.slide_to_home()
-    if c == 2:
+    elif c == 2:
         print "going wait"
         r.slide_to_wait_for_sorting_position()
-    if c == 3:
+    elif c == 3:
         print "going dump"
         r.slide_to_away()
-    if c == 4:
+    elif c == 4:
         print "closing gate"
         gate.push()
-    if c == 5:
+    elif c == 5:
         print "opening gate"
         gate.pull()
+    elif c == 6:
+        c = int(raw_input("how much?"))
+        r.stepper.move(0,abs(c))
+    elif c == 7:
+        c = int(raw_input("how much?"))
+        r.stepper.move(1,abs(c))
 
