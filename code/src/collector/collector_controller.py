@@ -1,14 +1,17 @@
 from lib.component import Component
-from device import Piston, Servo, Switch
+from device import Piston, Switch
 from sorter import Sorter
 from vacuum_shaker import VacuumShaker
 from lib import config
+import time
 
 class CollectorController(Component):
     
     WAIT_TIME_GATE = 1.0
     WAIT_TIME_FOOT = 2.0
     WAIT_TIME_DUMP_BALLS = 1.5
+    MAX_BALLS_PER_ROUND = 20
+    MAX_DELAY_BETWEEN_BALLS = 2.0
     START_COLLECT = 'start_collect_switch'
     GATE = 'gate_servo'
 
@@ -18,7 +21,7 @@ class CollectorController(Component):
         self.sorter = sorter
         self.rail = rail
         self.start_collect_switch = Switch(**config.devices[self.START_COLLECT])
-        #self.gate = Piston(**config.devices[self.GATE])
+        self.gate = Piston(**config.devices[self.GATE])
 
     def state_wait_init(self):
         print "[CollectorController.state_wait_init]"
@@ -57,23 +60,25 @@ class CollectorController(Component):
         print "[CollectorController.state_wait_sorter]"
 
         #Strategy 1: Don't wait.
-        #balls = self.sorter.get_ball_count()
-        #while balls < 20 and :
-        #    yield
+        balls = self.sorter.get_ball_count()
+        last_ball_time = self.sorter.get_last_ball_time()
+        while balls < self.MAX_BALLS_PER_ROUND and int(time.time() - last_ball_time) < self.MAX_DELAY_BETWEEN_BALLS:
+            yield
+        self.reset_ball_count()
 
         yield self.state_open_gate
         
     def state_open_gate(self):
         print "[CollectorController.state_open_gate]"
 
-        #self.gate.XYZ()
+        self.gate.pull()
 
         yield self.wait( self.WAIT_TIME_GATE, self.state_close_gate)
         
     def state_close_gate(self):
         print "[CollectorController.state_close_gate]"
 
-        #self.gate.XYZ()
+        self.gate.push()
 
         yield self.state_push_truck_standby
     

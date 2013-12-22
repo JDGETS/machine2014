@@ -3,6 +3,7 @@ from lib.component import Component
 from functools import partial
 from device import Piston, ColorSensor
 from lib import config
+import time
 
 class Sorter(Component):
     """Control the sorting function of the collector.
@@ -38,6 +39,8 @@ class Sorter(Component):
         self.active_piston = self.white_piston
 
         self.ball_count = 0
+        
+        self.last_ball_time = time.time();
 
     def stop(self):
         print "[Sorter.stop] Stop pistons"
@@ -46,6 +49,12 @@ class Sorter(Component):
 
     def reset_ball_count(self):
         self.ball_count = 0
+
+    def get_ball_count(self):
+        return self.ball_count
+        
+    def get_last_ball_time(self):
+        return self.last_ball_time
 
     def get_ball_count(self):
         return self.ball_count
@@ -83,6 +92,7 @@ class Sorter(Component):
             self.active_piston = self.orange_piston
 
         self.ball_count += 1
+        self.last_ball_time = time.time();
         yield partial(self.state_pull, current_piston_pushed)
 
     def state_pull(self, piston_to_recall):
