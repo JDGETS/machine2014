@@ -38,7 +38,7 @@ class CollectorController(Component):
         print "[CollectorController.state_push_truck_home]"
         self.rail.slide_to_home()
         
-        while not self.rail.is_home():
+        while self.rail.is_moving():
             yield
 
         yield self.state_wait_sorter
@@ -47,7 +47,7 @@ class CollectorController(Component):
         print "[CollectorController.state_push_truck_away]"
         self.rail.slide_to_away()
         
-        while not self.rail.is_away():
+        while self.rail.is_moving():
             yield
 
         yield self.wait( self.WAIT_TIME_DUMP_BALLS, self.state_push_truck_home)
