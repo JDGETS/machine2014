@@ -30,7 +30,7 @@ class VacuumShaker(Component):
     def state_wait_ball(self):
         print "[VacuumShaker.state_wait_ball]"
 
-        self.vacuum_servo.pull()
+        self.vacuum_servo.complete_standby()
         start_time = time.time()
 
         while not self.load_tank_switch.was_pressed() \
