@@ -30,6 +30,8 @@ class CollectorController(Component):
         if not self.start_collect_switch.is_pressed():
             self.start_collect_switch.wait_pressed()
 
+        self.gate.push();
+        
         yield self.state_push_truck_home
         
     def state_push_truck_home(self):
