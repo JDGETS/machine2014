@@ -56,6 +56,9 @@ class CollectorController(Component):
         print "[CollectorController.state_push_truck_standby]"
         self.rail.slide_to_wait_for_sorting_position()
 
+        while self.rail.is_moving():
+            yield
+
         yield self.state_wait_truck_foot
 
     def state_wait_sorter(self):

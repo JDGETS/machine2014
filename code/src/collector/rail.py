@@ -58,3 +58,6 @@ class Rail():
 
     def is_away(self):
         return self.switch_away.is_pressed()
+        
+    def is_moving(self):
+        return self.stepper.is_moving()

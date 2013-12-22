@@ -53,7 +53,9 @@ class Stepper(object):
         self.reset_stepper()
         self.thread = Thread(target = move_thread, args = (self.killThread, self.pin,steps))
         self.thread.start()
-       
+        
+    def is_moving(self):
+        return self.thread and self.thread.is_alive()
 
     def stop(self):
         if self.thread:
