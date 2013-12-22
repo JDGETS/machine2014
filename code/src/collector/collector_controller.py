@@ -65,6 +65,7 @@ class CollectorController(Component):
         balls = self.sorter.get_ball_count()
         last_ball_time = self.sorter.get_last_ball_time()
         while balls < self.MAX_BALLS_PER_ROUND or int(time.time() - last_ball_time) < self.MAX_DELAY_BETWEEN_BALLS:
+            print "[CollectorController.state_wait_sorter] "+str(balls)+" balls... Waiting..."
             yield
         self.sorter.reset_ball_count()
 
