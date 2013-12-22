@@ -67,10 +67,14 @@ class CollectorController(Component):
         #Strategy 1: Don't wait.
         balls = self.sorter.get_ball_count()
         last_ball_time = self.sorter.get_last_ball_time()
-        while balls < self.MAX_BALLS_PER_ROUND or int(time.time() - last_ball_time) < self.MAX_DELAY_BETWEEN_BALLS:
+        while balls < self.MAX_BALLS_PER_ROUND and int(time.time() - last_ball_time) < self.MAX_DELAY_BETWEEN_BALLS:
             yield
             balls = self.sorter.get_ball_count()
             last_ball_time = self.sorter.get_last_ball_time()
+        
+        if balls < self.MAX_BALLS_PER_ROUND:
+            print "[CollectorController.state_wait_sorter] Timed out. Dumping "+str(balls)+" balls!"
+            
         self.sorter.reset_ball_count()
 
         yield self.state_open_gate
