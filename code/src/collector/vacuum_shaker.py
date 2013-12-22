@@ -44,7 +44,7 @@ class VacuumShaker(Component):
         if self.load_tank_switch.was_pressed():
             yield self.state_wait_ball
 
-        self.vacuum_servo.pull()
+        self.vacuum_servo.standby()
         yield self.wait(self.PULL_UP_DELAY, partial(self.state_push, 0))
 
     def state_push(self, n):
@@ -64,5 +64,5 @@ class VacuumShaker(Component):
         if self.load_tank_switch.was_pressed():
             yield self.state_wait_ball
 
-        self.vacuum_servo.standby()
+        self.vacuum_servo.pull()
         yield self.wait(self.SERVO_DELAY, partial(self.state_push, n+1))

@@ -14,7 +14,7 @@ devices = {
     "vacuum_servo": {
         "pin": "P9_42", #Servo3
         "complete_standby_duty": 9.0,
-        "standby_duty": 5,
+        "standby_duty": 6.5,
         "pull_duty": 3.6,
         "push_duty": 2.8 #NE PAS DESCENDRE PLUS BAS. Monter PULL_DUTY/COMPLETE_STANDBY_DUTY a la place.
     },
