@@ -7,7 +7,7 @@ r = Rail()
 gate = Piston(**config.devices["gate_servo"])
 while True:
     print "TOTAL DISTANCE: "+str(r.HOME_POSITION)
-    print "SORTING POSITION: "+str(r.WAIT_FOR_SORTING_POSITION)
+    print "SORTING POSITION: "+str(r.WAIT_FOR_SORTING_POSITION)+" or "+str(r.HOME_POSITION - r.WAIT_FOR_SORTING_POSITION)
     print "1 : Goto X right"
     print "2 : Goto X left"
     print "3 : Close gate"
