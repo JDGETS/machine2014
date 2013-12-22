@@ -1,6 +1,6 @@
 from servo import Servo
 
-class Piston:
+class Piston(object):
     """Piston controller"""
 
     def __init__(self, pin, pull_duty, standby_duty, push_duty):
