@@ -20,9 +20,9 @@ devices = {
     },
     "gate_servo": {
         "pin": "P8_13", #Servo2
-        "pull_duty": 6.4,
-        "standby_duty": 6.4,
-        "push_duty": 5.0
+        "pull_duty": 6.2,
+        "standby_duty": 6.2,
+        "push_duty": 5.0 #Ne pas descendre plus
     },
     "color_sensor": {
         "a_pin": "P9_39", #RGB1
