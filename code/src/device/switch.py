@@ -69,5 +69,5 @@ class MagneticSwitch(Switch):
     def wait_pressed(self):
         print "wait_pressed"
         """ Wait for the switch to be released (waits for a raising edge). YES. This is important with magnetic switches. And wait_released is already blocking so leave me alone with the time.sleep! """
-        while not self.is_released():
+        while not self.is_pressed():
             time.sleep(0.01)
