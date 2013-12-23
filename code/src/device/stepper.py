@@ -45,17 +45,14 @@ class Stepper(object):
         GPIO.output(self.enable, GPIO.LOW)
 
     #0 or 1 for direction
-    def move(self, direction, steps = -1, switch = None):
+    def move(self, direction, steps = -1, stop_condition = None):
         print "move %d"%steps
         GPIO.output(self.direction, direction)
         if self.thread:
             self.stop()
         
-        if switch:
-            switch.do_once = self.stop
-        
         self.reset_stepper()
-        self.thread = Thread(target = move_thread, args = (self.killThread, self.pin, steps, None))
+        self.thread = Thread(target = move_thread, args = (self.killThread, self.pin, steps, stop_condition))
         self.thread.start()
         
     def is_moving(self):
@@ -67,6 +64,6 @@ class Stepper(object):
             self.killThread.set()
             self.thread.join()
         self.killThread.clear()
-        #GPIO.output(self.enable, GPIO.HIGH) #Why?
+        GPIO.output(self.enable, GPIO.HIGH)
 
 
