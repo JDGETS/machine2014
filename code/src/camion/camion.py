@@ -35,11 +35,14 @@ class Camion:
         self.is_running = True
         self.first_run = True
         while self.is_running:
-            if not (self.first_run and self.collector_switch.is_pressed()):
+            print "[Camion.run] Waiting for collector switch to be pushed"
+            if not self.collector_switch.is_pressed():
                 self.collector_switch.wait_pushed()
-            else:
-                self.bring_foot_up();
+
+            if not self.first_run 
+                self.drop_foot();
             
+            print "[Camion.run] Waiting for collector switch to be released"
             if not self.collector_switch.is_released():
                 self.collector_switch.wait_released()
 
