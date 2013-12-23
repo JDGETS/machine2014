@@ -70,8 +70,11 @@ class Camion:
         
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
         while not self.foot_switch.is_pressed():
-            self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"]/20, self.foot_switch.is_pressed)
-            time.sleep(0.01) #It's ok, only component on the truck
+            while self.foot_stepper.is_moving():
+                time.sleep(0.01) #It's ok, only component on the truck
+            self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch.is_pressed)
+            while self.foot_stepper.is_moving():
+                time.sleep(0.01) #It's ok, only component on the truck
 
     def bring_foot_up(self):
         print "[Camion.bring_foot_up]"
@@ -80,6 +83,9 @@ class Camion:
 
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
         while not self.foot_switch.is_pressed():
+            while self.foot_stepper.is_moving():
+                time.sleep(0.01) #It's ok, only component on the truck
             self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"]/20, self.foot_switch.is_pressed)
-            time.sleep(0.01) #It's ok, only component on the truck
+            while self.foot_stepper.is_moving():
+                time.sleep(0.01) #It's ok, only component on the truck
         
