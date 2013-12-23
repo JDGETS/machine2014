@@ -37,8 +37,8 @@ class Camion:
         while self.is_running:
             if not (self.first_run and self.collector_switch.is_pressed()):
                 self.collector_switch.wait_pushed()
-
-            self.drop_foot();
+            else:
+                self.bring_foot_up();
             
             if not self.collector_switch.is_released():
                 self.collector_switch.wait_released()
@@ -56,10 +56,12 @@ class Camion:
         return
 
     def put_in_start_position(self):
+        print "[Camion.put_in_start_position]"
         #Drop camion. Foot on floor so bring it up.
         self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
 
     def drop_foot(self):
+        print "[Camion.drop_foot]"
         self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch)
 
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
@@ -68,6 +70,7 @@ class Camion:
             time.sleep(0.01) #It's ok, only component on the truck
 
     def bring_foot_up(self):
+        print "[Camion.bring_foot_up]"
         self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch)
 
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
