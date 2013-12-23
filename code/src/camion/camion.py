@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import time
 from device.switch import Switch
+from device.stepper import Stepper
 from lib import config
 
 class Camion:
