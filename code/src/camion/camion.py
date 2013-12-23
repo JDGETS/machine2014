@@ -65,21 +65,21 @@ class Camion:
 
     def drop_foot(self):
         print "[Camion.drop_foot]"
-        self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch)
+        self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch, self.foot_switch.is_pressed)
         time.sleep(0.5) #You must not interpret last magnetic switch's signal as if it was this one.
         
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
         while not self.foot_switch.is_pressed():
-            self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"]/20)
+            self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"]/20, self.foot_switch.is_pressed)
             time.sleep(0.01) #It's ok, only component on the truck
 
     def bring_foot_up(self):
         print "[Camion.bring_foot_up]"
-        self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch)
+        self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch.is_pressed)
         time.sleep(0.5) #You must not interpret last magnetic switch's signal as if it was this one.
 
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
         while not self.foot_switch.is_pressed():
-            self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"]/20)
+            self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"]/20, self.foot_switch.is_pressed)
             time.sleep(0.01) #It's ok, only component on the truck
         
