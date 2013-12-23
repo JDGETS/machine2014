@@ -14,13 +14,13 @@ def move_thread(kill, pin, steps=-1, stop_condition = None):
     ramp_sleep_decrement = ramp_sleep / ramp_step
     min_sleep = 100 - 32 
 
-    while (step < ramp_step) and not kill.isSet() and (step%STOP_CONDITION_INTERVAL == 0 and not stop_condition()):
+    while (step < ramp_step) and not kill.isSet() and (step%STOP_CONDITION_INTERVAL != 0 or not stop_condition()):
         bbio.digitalWrite(pin,bbio.LOW)
         bbio.digitalWrite(pin,bbio.HIGH)
         step +=1
         bbio.delayMicroseconds( min_sleep + ramp_sleep - ramp_sleep_decrement)
 
-    while (step < steps or steps == -1) and not kill.isSet() and (step%STOP_CONDITION_INTERVAL == 0 and not stop_condition()):
+    while (step < steps or steps == -1) and not kill.isSet() and (step%STOP_CONDITION_INTERVAL != 0 or not stop_condition()):
         bbio.digitalWrite(pin,bbio.LOW)
         bbio.digitalWrite(pin,bbio.HIGH)
         step +=1
