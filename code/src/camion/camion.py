@@ -33,6 +33,10 @@ class Camion:
         self.foot_stepper.disable_stepper(); # make it dead so it could be in starting position totaly down.
 
     def run(self):
+        print "[Camion.run] Put camion down and wait for go_to_start_position signal"
+
+        self.put_in_waiting_for_signal_position()
+
         print "[Camion.run] Start camion - waiting for signal"
 
         self.wait_for_signal();
