@@ -51,7 +51,8 @@ devices = {
         "pin":"GPIO2_6",
         "direction":"P8_43",
         "reset":"P8_44",
-        "enable":"P8_46"
+        "enable":"P8_46",
+        "ramp_step":1000
      },
      "rail":{
          "switch_away": "P8_22",
@@ -79,6 +80,7 @@ devices = {
         "pin":"GPIO2_6",
         "direction":"P8_43",
         "reset":"P8_44",
-        "enable":"P8_46"
+        "enable":"P8_46",
+        "ramp_step":1000
     },
 }
