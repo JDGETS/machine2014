@@ -49,3 +49,12 @@ class Switch(object):
         GPIO.wait_for_edge(self.pin, GPIO.RISING)
         return
 
+class MagneticSwitch(Switch):
+
+    def __init__(self, pin):
+        """ Create a Switch object that reads input from the given pin. """
+        self.pin = pin
+        self.last_was_pressed = False
+        GPIO.setup(pin, GPIO.IN, GPIO.PUD_UP)
+        self.do_once = None
+        GPIO.add_event_detect(pin, GPIO.RISING, self.do_something)
