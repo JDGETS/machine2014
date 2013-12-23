@@ -14,6 +14,10 @@ class Camion:
     FOOT_STEPPER_ID = "camion_stepper"
     DROP_FOOT_DIRECTION = 0
     LIFT_FOOT_DIRECTION = 1
+    
+    STATE_INITIAL_MAGNET = 1
+    STATE_NO_MAGNET = 2
+    STATE_FINAL_MAGNET = 3
 
     def __init__(self):
         print "[Camion.__init__]"
@@ -22,6 +26,7 @@ class Camion:
         self.dump_switch = MagneticSwitch(**config.devices[self.DUMP_SWITCH_ID]) # Useless for now
         self.foot_switch = MagneticSwitch(**config.devices[self.FOOT_SWITCH_ID]) # Useless for now
         self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
+        self.state = 0
 
     def run(self):
         print "[Camion.run] Start camion - waiting for signal"
@@ -65,27 +70,28 @@ class Camion:
 
     def drop_foot(self):
         print "[Camion.drop_foot]"
-        self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch.is_pressed)
-        time.sleep(0.5) #You must not interpret last magnetic switch's signal as if it was this one.
-        
-        #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
-        while not self.foot_switch.is_pressed():
+        self.state = self.STATE_INITIAL_MAGNET
+        #Bring it up till it's done!
+        while not self.is_done():
+            self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.is_done)
             while self.foot_stepper.is_moving():
                 time.sleep(0.01) #It's ok, only component on the truck
-            self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch.is_pressed)
-            while self.foot_stepper.is_moving():
-                time.sleep(0.01) #It's ok, only component on the truck
-
+                
     def bring_foot_up(self):
         print "[Camion.bring_foot_up]"
-        self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch.is_pressed)
-        time.sleep(0.5) #You must not interpret last magnetic switch's signal as if it was this one.
-
-        #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
-        while not self.foot_switch.is_pressed():
+        self.state = self.STATE_INITIAL_MAGNET
+        #Bring it up till it's done!
+        while not self.is_done():
+            self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.is_done)
             while self.foot_stepper.is_moving():
                 time.sleep(0.01) #It's ok, only component on the truck
-            self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"]/20, self.foot_switch.is_pressed)
-            while self.foot_stepper.is_moving():
-                time.sleep(0.01) #It's ok, only component on the truck
+                
+    def is_done(self):
+        if self.foot_switch.is_pressed():
+            if self.state == self.STATE_NO_MAGNET:
+                self.state = self.STATE_FINAL_MAGNET
+        else:
+            if self.state == self.STATE_INITIAL_MAGNET:
+                self.state = self.STATE_NO_MAGNET
         
+        return self.state == self.STATE_FINAL_MAGNET;
