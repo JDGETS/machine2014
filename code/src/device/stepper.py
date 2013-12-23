@@ -4,7 +4,7 @@ import bbio
 
 
 def move_thread(kill, pin, steps=-1, stop_condition = None):
-        stop_condition = stop_condition or lambda: return false; #Default: No stop conditions
+        stop_condition = stop_condition or lambda: False; #Default: No stop conditions
         bbio.pinMode(pin, bbio.OUTPUT)
         step = 0
         default_ramp_step =2000
