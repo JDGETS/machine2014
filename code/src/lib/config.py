@@ -3,13 +3,13 @@ devices = {
         "pin": "P9_22", #Servo1
         "pull_duty": 5.6,
         "standby_duty": 6.3,
-        "push_duty": 7.5
+        "push_duty": 7.7
     },
     "orange_piston": {
         "pin": "P9_14", #Servo0
         "pull_duty": 5.6,
         "standby_duty": 6.3,
-        "push_duty": 7.5
+        "push_duty": 7.7
     },
     "vacuum_servo": {
         "pin": "P9_42", #Servo3
