@@ -54,8 +54,8 @@ devices = {
      },
     "camion":{
         "foot_standby_time":"3",
-        "stepper_start_position_ticks": (5.0/5000) * 1.0,
-        "stepper_foot_complete_ticks": (5.0/5000) * 20.5, #20.5' <- Distance foot to floor
+        "stepper_start_position_ticks": 3000,
+        "stepper_foot_complete_ticks": 41000, #20.5' <- Distance foot to floor
      },
     "camion_collector_switch":{
         "pin":"P8_12",
@@ -63,8 +63,8 @@ devices = {
     "camion_dump_switch":{
         "pin":"P8_14",
      },
-    "camion_foot_up_switch":{
-        "pin":"P8_16",
+    "camion_foot_switch":{
+        "pin":"P8_11",
      },
     "camion_stepper":{
         "pin":"GPIO2_6",
