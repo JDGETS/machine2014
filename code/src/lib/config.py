@@ -41,6 +41,12 @@ devices = {
     "load_tank_switch": {
         "pin": "P8_14" # In3
     },
+    "collector_foot_up":{
+         "pin": "P8_15"
+     },
+    "collector_foot_down":{
+         "pin": "P8_xx"
+     },
     "stepper_rail":{
         "pin":"GPIO2_6",
         "direction":"P8_43",

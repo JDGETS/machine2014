@@ -58,28 +58,41 @@ class Rail(Component):
     def state_slide_to_home(self):
         distance = self.go_to_position(self.HOME_POSITION, self.is_home)
         self.current_position = self.HOME_POSITION
-        yield self.wait(distance * self.AVERAGE_SPEED, self.state_check_homing)
+        
+        while self.stepper.is_moving():
+            yield
+            
+        yield self.state_check_homing
     
     def state_slide_to_wait_for_sorting_position(self):
         distance = self.go_to_position(self.WAIT_FOR_SORTING_POSITION)
         self.current_position = self.WAIT_FOR_SORTING_POSITION # no validation possible...
-        yield self.wait(distance * self.AVERAGE_SPEED, self.state_sorting_position)
+        
+        while self.stepper.is_moving():
+            yield
+        yield self.state_sorting_position
 
     def state_slide_to_away(self):
         distance = self.go_to_position(self.AWAY_POSITION, self.is_away)
         self.current_position = self.AWAY_POSITION
-        yield self.wait(distance * self.AVERAGE_SPEED, self.state_check_away)
+        while self.stepper.is_moving():
+            yield
+        yield self.state_check_away
 
     def state_check_away(self):
         while not self.is_away():
-            self.stepper.move(self.RIGHT, 200, self.is_away)
-            yield
+            self.stepper.move(self.RIGHT, self.HOME_POSITION, self.is_away)
+            while self.stepper.is_moving():
+                yield
+
         yield self.state_away
 
     def state_check_homing(self):
         while not self.is_home():
-            self.stepper.move(self.LEFT, 200, self.is_home)
-            yield
+            self.stepper.move(self.LEFT, self.HOME_POSITION, self.is_home)
+            while self.stepper.is_moving():
+                yield
+ 
         yield self.state_home
 
     def is_home(self):

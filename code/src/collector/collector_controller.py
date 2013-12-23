@@ -14,6 +14,8 @@ class CollectorController(Component):
     MAX_DELAY_BETWEEN_BALLS = 2.0
     START_COLLECT = 'start_collect_switch'
     GATE = 'gate_servo'
+    FOOT_UP = 'collector_foot_up'
+    FOOT_DOWN = 'collector_foot_down'
 
     def __init__(self, sorter, rail):
         super(CollectorController, self).__init__(self.state_wait_init)
@@ -21,6 +23,8 @@ class CollectorController(Component):
         self.sorter = sorter
         self.rail = rail
         self.start_collect_switch = Switch(**config.devices[self.START_COLLECT])
+        self.foot_up_switch = MagneticSwitch(**config.devices[self.FOOT_UP])
+        self.foot_down_switch = MagneticSwitch(**config.devices[self.FOOT_DOWN])
         self.gate = Piston(**config.devices[self.GATE])
 
     def state_wait_init(self):
@@ -100,4 +104,8 @@ class CollectorController(Component):
     
     def state_wait_truck_foot(self):
         print "[CollectorController.state_wait_truck_foot]"
-        yield self.wait( self.WAIT_TIME_FOOT, self.state_push_truck_away)
+        
+        while not self.foot_up_switch.is_pressed():
+            yield
+            
+        yield self.state_push_truck_away
