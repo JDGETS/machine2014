@@ -64,6 +64,6 @@ class Stepper(object):
             self.killThread.set()
             self.thread.join()
         self.killThread.clear()
-        GPIO.output(self.enable, GPIO.HIGH)
+        #GPIO.output(self.enable, GPIO.HIGH)
 
 
