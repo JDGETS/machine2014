@@ -1,5 +1,6 @@
 from lib.component import Component
 from device import Piston, Switch
+from device.switch import MagneticSwitch
 from sorter import Sorter
 from vacuum_shaker import VacuumShaker
 from lib import config
