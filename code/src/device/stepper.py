@@ -23,7 +23,7 @@ class Stepper(Thread):
 
         self.reset_stepper()
 
-    def disable_stepper():
+    def disable_stepper(self):
          GPIO.output(self.enable, GPIO.HIGH)
 
     def reset_stepper(self):
