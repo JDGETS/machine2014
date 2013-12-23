@@ -11,6 +11,8 @@ class Camion:
     DUMP_SWITCH_ID = "camion_dump_switch"
     FOOT_SWITCH_ID = "camion_foot_switch"
     FOOT_STEPPER_ID = "camion_stepper"
+    DROP_FOOT_DIRECTION = 0
+    LIFT_FOOT_DIRECTION = 1
 
     def __init__(self):
         print "[Camion.__init__]"
@@ -54,10 +56,10 @@ class Camion:
 
     def put_in_start_position(self):
         #Drop camion. Foot on floor so bring it up.
-        self.foot_stepper.move(self.config.stepper_start_position_ticks, 1)
+        self.foot_stepper.move(self.config.stepper_start_position_ticks, self.LIFT_FOOT_DIRECTION)
 
     def drop_foot(self):
-        self.foot_stepper.move(self.config.stepper_foot_complete_ticks, 0, self.foot_switch.is_pressed)
+        self.foot_stepper.move(self.config.stepper_foot_complete_ticks, self.DROP_FOOT_DIRECTION, self.foot_switch.is_pressed)
 
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
         while not self.foot_switch.is_pressed():
@@ -65,7 +67,7 @@ class Camion:
             time.sleep(0.01) #It's ok, only component on the truck
 
     def bring_foot_up(self):
-        self.foot_stepper.move(self.config.stepper_foot_complete_ticks, 1, self.foot_switch.is_pressed)
+        self.foot_stepper.move(self.config.stepper_foot_complete_ticks, self.LIFT_FOOT_DIRECTION, self.foot_switch.is_pressed)
 
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
         while not self.foot_switch.is_pressed():

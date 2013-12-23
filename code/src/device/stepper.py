@@ -51,13 +51,11 @@ class Stepper(object):
         if self.thread:
             self.stop()
         
-        GPIO.add_event_detect(switch.pin, GPIO.BOTH, self.stop) #FOR TESTING USE ONLY
+        switch.do_once = self.stop
         
         self.reset_stepper()
         self.thread = Thread(target = move_thread, args = (self.killThread, self.pin, steps, None))
         self.thread.start()
-        
-        GPIO.remove_event_detect(GPIO.BOTH) #FOR TESTING USE ONLY
         
     def is_moving(self):
         return self.thread and self.thread.is_alive()
