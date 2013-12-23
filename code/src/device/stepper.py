@@ -74,7 +74,7 @@ class Stepper(Thread):
         ramp_step =  self.default_ramp_step if self.steps == -1 else min(self.default_ramp_step, self.steps)
         ramp_sleep = 100.0
         ramp_sleep_decrement = ramp_sleep / ramp_step
-        min_sleep = 100 - 32 -30
+        min_sleep = 100 - 32 - 15
 
         while (step < ramp_step) and not self.kill_evt.isSet() and (step%STOP_CONDITION_INTERVAL != 0 \
                                                         or not self.stop_condition()):

@@ -2,16 +2,19 @@
 from camion.camion import Camion
 import sys
 
-
 def mainSafe():
-    #try:
-    camion = Camion()
-    camion.run()
+    try:
+        print "[main_camion] Start camion"
+        camion = Camion()
+        camion.run()
 
-    #except:
-    #    print "Exception raised  in maincamion::mainSafe", sys.exc_info()[0]
-    #    camion.stop()
-    #    raise
+    except:
+        print "[main_camion] Exception raised  in main_camion::mainSafe", sys.exc_info()[0
+        raise
+        
+    finally:
+        camion.stop()
+        print "[main_camion] Stop camion"
 
 if __name__ == "__main__":
     mainSafe();
