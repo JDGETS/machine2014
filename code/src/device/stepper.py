@@ -67,7 +67,7 @@ class Stepper(Thread):
 
         STOP_CONDITION_INTERVAL = 25
 
-        bbio.pinMode(pin, bbio.OUTPUT)
+        bbio.pinMode(self.pin, bbio.OUTPUT)
 
         step = 0
         
