@@ -11,6 +11,7 @@ class Switch(object):
         self.pin = pin
         self.last_was_pressed = False
         GPIO.setup(pin, GPIO.IN)
+        self.do_once = None
         GPIO.add_event_detect(pin, GPIO.RISING, self.do_something)
 
     def do_something(self, event = None):
