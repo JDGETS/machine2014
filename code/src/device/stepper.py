@@ -54,7 +54,7 @@ class Stepper(Thread):
         print "STOP!!!"
         if self.thread:
             self.kill_evt.set()
-            self.thread.join()
+        
         self.kill_evt.clear()
         GPIO.output(self.enable, GPIO.HIGH)
 
