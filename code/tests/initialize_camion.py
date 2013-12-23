@@ -13,8 +13,8 @@ while True:
   
     if c == 1:
         c = int(raw_input("how much? "))
-        camion.foot_stepper.move(c.LIFT_FOOT_DIRECTION,abs(c))
+        camion.foot_stepper.move(camion.LIFT_FOOT_DIRECTION,abs(c))
     elif c == 2:
         c = int(raw_input("how much? "))
-        camion.foot_stepper.move(c.DROP_FOOT_DIRECTION,abs(c))
+        camion.foot_stepper.move(camion.DROP_FOOT_DIRECTION,abs(c))
 
