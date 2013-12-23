@@ -14,14 +14,14 @@ class Rail(Component):
     
     def __init__(self):
         super(Rail, self).__init__(self.state_sorting_position)
-        self.is_moving = False
+        self.is_moving_val = False
         self.current_position = self.WAIT_FOR_SORTING_POSITION;
         self.stepper = Stepper(**devices["stepper_rail"])
         self.switch_home = Switch(devices["rail"]["switch_home"])
         self.switch_away = Switch(devices["rail"]["switch_away"])
 
     def go_to_position(self, destination, stop_condition = None):
-        self.is_moving = True
+        self.is_moving_val = True
         steps = destination - self.current_position
         print "steps %d" % steps
         if steps == 0:
@@ -32,27 +32,27 @@ class Rail(Component):
         return abs(steps)
         
     def slide_to_home(self):
-        self.is_moving = True
+        self.is_moving_val = True
         self.set_state( self.state_slide_to_home );
     
     def slide_to_wait_for_sorting_position(self):
-        self.is_moving = True
+        self.is_moving_val = True
         self.set_state( self.state_slide_to_wait_for_sorting_position );
 
     def slide_to_away(self):
-        self.is_moving = True
+        self.is_moving_val = True
         self.set_state( self.state_slide_to_away );
         
     def state_sorting_position(self):
-        self.is_moving = False
+        self.is_moving_val = False
         yield self.state_sorting_position
         
     def state_home(self):
-        self.is_moving = False
+        self.is_moving_val = False
         yield self.state_home
         
     def state_away(self):
-        self.is_moving = False
+        self.is_moving_val = False
         yield self.state_away
 
     def state_slide_to_home(self):
@@ -89,4 +89,4 @@ class Rail(Component):
         return self.switch_away.is_pressed()
         
     def is_moving(self):
-        return self.is_moving
+        return self.is_moving_val
