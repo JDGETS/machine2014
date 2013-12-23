@@ -19,14 +19,14 @@ class Rail(Component):
         self.switch_home = Switch(devices["rail"]["switch_home"])
         self.switch_away = Switch(devices["rail"]["switch_away"])
 
-    def go_to_position(self, destination):
+    def go_to_position(self, destination, stop_condition = None):
         steps = destination - self.current_position
         print "steps %d" % steps
         if steps == 0:
             return 0
         direction =  max(0,min(steps, 1)) #0 when going to away, 1 when going to home
         print "move of %d to %d" % (abs(steps), direction)
-        self.stepper.move(direction,abs(steps))
+        self.stepper.move(direction,abs(steps), stop_condition)
         return abs(steps)
         
     def slide_to_home(self):
@@ -48,7 +48,7 @@ class Rail(Component):
         yield self.state_away
 
     def state_slide_to_home(self):
-        distance = self.go_to_position(self.HOME_POSITION)
+        distance = self.go_to_position(self.HOME_POSITION, self.is_home)
         self.current_position = self.HOME_POSITION
         yield self.wait(distance * self.AVERAGE_SPEED, self.state_check_homing)
     
@@ -58,19 +58,19 @@ class Rail(Component):
         yield self.wait(distance * self.AVERAGE_SPEED, self.state_sorting_position)
 
     def state_slide_to_away(self):
-        distance = self.go_to_position(self.AWAY_POSITION)
+        distance = self.go_to_position(self.AWAY_POSITION, self.is_away)
         self.current_position = self.AWAY_POSITION
         yield self.wait(distance * self.AVERAGE_SPEED, self.state_check_away)
 
     def state_check_away(self):
         while not self.is_away():
-            self.stepper.move(self.RIGHT,200)
+            self.stepper.move(self.RIGHT, 200, self.is_away)
             yield
         yield self.state_away
 
     def state_check_homing(self):
         while not self.is_home():
-            self.stepper.move(self.LEFT,200)
+            self.stepper.move(self.LEFT, 200, self.is_home)
             yield
         yield self.state_home
 
