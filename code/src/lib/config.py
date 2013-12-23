@@ -69,6 +69,9 @@ devices = {
     "camion_dump_switch":{
         "pin":"P8_xx",
      },
+    "camion_in_position_switch":{
+        "pin":"P8_12",
+     },
     "camion_foot_switch":{
         "pin":"P8_11",
      },

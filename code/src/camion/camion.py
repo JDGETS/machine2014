@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-from device.switch import MagneticSwitch
+from device.switch import MagneticSwitch, Switch
 from device.stepper import Stepper
 from lib import config
 import time
@@ -12,6 +12,7 @@ class Camion:
     DUMP_SWITCH_ID = "camion_dump_switch"
     FOOT_SWITCH_ID = "camion_foot_switch"
     FOOT_STEPPER_ID = "camion_stepper"
+    PLACE_IN_POSITION_SWITCH_ID = "camion_in_position_switch"
     DROP_FOOT_DIRECTION = 0
     LIFT_FOOT_DIRECTION = 1
     
@@ -22,11 +23,13 @@ class Camion:
     def __init__(self):
         print "[Camion.__init__]"
         self.config = config.devices[self.CAMION_CONFIG_ID]
-        self.collector_switch = MagneticSwitch(**config.devices[self.COLLECTOR_SWITCH_ID])
+        self.collector_switch = MagneticSwitch(**config.devices[self.COLLECTOR_SWITCH_ID])#used by the truck to know when he have to drop the foot
         self.dump_switch = MagneticSwitch(**config.devices[self.DUMP_SWITCH_ID]) # Useless for now
-        self.foot_switch = MagneticSwitch(**config.devices[self.FOOT_SWITCH_ID]) # Useless for now
+        self.foot_switch = MagneticSwitch(**config.devices[self.FOOT_SWITCH_ID]) 
+        self.in_position_switch = Switch(**config.devices[self.PLACE_IN_POSITION_SWITCH_ID]);
         self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
         self.state = 0
+        self.foot_stepper.disable_stepper(); # make it dead so it could be in starting position totaly down.
 
     def run(self):
         print "[Camion.run] Start camion - waiting for signal"
@@ -52,11 +55,16 @@ class Camion:
             self.collector_switch.wait_released()
 
             self.bring_foot_up();
-            
             self.first_run = False
 
         print "[Camion.run] Camion stopped"
-        
+    
+    def put_in_waiting_for_signal_position(self):
+        """Wait to put in position signal here"""
+        self.in_position_switch.wait_pressed()
+        drop_foot()
+        self.foot_stepper.move(self.LIFT_FOOT_DIRECTION,500)
+
     def wait_for_signal(self):
         """Wait for signal here"""
         #while ...:

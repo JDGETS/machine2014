@@ -4,9 +4,10 @@ import bbio
 
 class Stepper(Thread):
 
-    def __init__(self, pin, direction, reset, enable):
+    def __init__(self, pin, direction, reset, enable, ramp_step):
         Thread.__init__(self)
 
+        self.default_ramp_step = ramp_step
         self.pin = pin
         self.kill_evt = Event()
         self.direction = direction
@@ -21,6 +22,9 @@ class Stepper(Thread):
         GPIO.setup(self.direction, GPIO.OUT)
 
         self.reset_stepper()
+
+    def disable_stepper():
+         GPIO.output(self.enable, GPIO.HIGH)
 
     def reset_stepper(self):
         """ toggle the reset pin and enable the pololu. """
@@ -66,11 +70,11 @@ class Stepper(Thread):
         bbio.pinMode(pin, bbio.OUTPUT)
 
         step = 0
-        default_ramp_step =2000
-        ramp_step =  default_ramp_step if steps == -1 else min(default_ramp_step, self.steps)
+        
+        ramp_step =  self.default_ramp_step if steps == -1 else min(self.default_ramp_step, self.steps)
         ramp_sleep = 100.0
         ramp_sleep_decrement = ramp_sleep / ramp_step
-        min_sleep = 100 - 32 
+        min_sleep = 100 - 32 -30
 
         while (step < ramp_step) and not kill_evt.isSet() and (step%STOP_CONDITION_INTERVAL != 0 \
                                                         or not self.stop_condition()):
