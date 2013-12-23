@@ -22,7 +22,7 @@ devices = {
         "pin": "P8_13", #Servo2
         "pull_duty": 6.6,
         "standby_duty": 6.6,
-        "push_duty": 7.8 
+        "push_duty": 7.9 
     },
     "color_sensor": {
         "a_pin": "P9_39", #RGB1
