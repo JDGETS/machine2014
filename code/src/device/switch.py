@@ -58,7 +58,6 @@ class MagneticSwitch(Switch):
         self.last_was_pressed = False
         GPIO.setup(pin, GPIO.IN, GPIO.PUD_DOWN)
         self.do_once = None
-        GPIO.add_event_detect(pin, GPIO.RISING, self.do_something)
     
     def wait_released(self):
         """ Wait for the switch to be released (waits for a raising edge). YES. This is important with magnetic switches. And wait_released is already blocking so leave me alone with the time.sleep! """
