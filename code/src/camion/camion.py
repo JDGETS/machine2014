@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 import time
-from device.switch import Switch
+from device.switch import MagneticSwitch
 from device.stepper import Stepper
 from lib import config
 
