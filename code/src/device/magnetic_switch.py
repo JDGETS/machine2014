@@ -1,6 +1,6 @@
 from switch import Switch
+import Adafruit_BBIO.GPIO as GPIO
 import time
-
 
 class MagneticSwitch(Switch):
 
