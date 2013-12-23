@@ -55,6 +55,6 @@ class MagneticSwitch(Switch):
         """ Create a Switch object that reads input from the given pin. """
         self.pin = pin
         self.last_was_pressed = False
-        GPIO.setup(pin, GPIO.IN, GPIO.PUD_UP) #Sinon, il va avoir 0-0-0-0-1-1-1-1-0-0-0-1-1-1 quand la switch est a ON et ca fuck TOUUUUUUUUT!
+        GPIO.setup(pin, GPIO.IN, GPIO.PUD_UP)
         self.do_once = None
         GPIO.add_event_detect(pin, GPIO.RISING, self.do_something)
