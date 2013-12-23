@@ -2,69 +2,87 @@ from threading import Thread, Event
 import Adafruit_BBIO.GPIO as GPIO
 import bbio
 
+class Stepper(Thread):
 
-def move_thread(kill, pin, steps=-1, stop_condition = None):
-    STOP_CONDITION_INTERVAL = 25
-    stop_condition = stop_condition or (lambda: False); #Default: No stop conditions
-    bbio.pinMode(pin, bbio.OUTPUT)
-    step = 0
-    default_ramp_step =2000
-    ramp_step =  default_ramp_step if steps == -1 else min(default_ramp_step, steps)
-    ramp_sleep = 100.0
-    ramp_sleep_decrement = ramp_sleep / ramp_step
-    min_sleep = 100 - 32 
+    def __init__(self, pin, direction, reset, enable):
+        Thread.__init__(self)
 
-    while (step < ramp_step) and not kill.isSet() and (step%STOP_CONDITION_INTERVAL != 0 or not stop_condition()):
-        bbio.digitalWrite(pin,bbio.LOW)
-        bbio.digitalWrite(pin,bbio.HIGH)
-        step +=1
-        bbio.delayMicroseconds( min_sleep + ramp_sleep - ramp_sleep_decrement)
-
-    while (step < steps or steps == -1) and not kill.isSet() and (step%STOP_CONDITION_INTERVAL != 0 or not stop_condition()):
-        bbio.digitalWrite(pin,bbio.LOW)
-        bbio.digitalWrite(pin,bbio.HIGH)
-        step +=1
-        bbio.delayMicroseconds(min_sleep)
-
-
-class Stepper(object):
-    def __init__(self, pin,direction,reset,enable):
         self.pin = pin
-        self.killThread = Event()
+        self.kill_evt = Event()
         self.direction = direction
         self.reset = reset
         self.enable = enable
-        self.thread = None
+
+        self.steps = None
+        self.stop_condition = None
+
         GPIO.setup(self.reset, GPIO.OUT)
         GPIO.setup(self.enable, GPIO.OUT)
         GPIO.setup(self.direction, GPIO.OUT)
+
         self.reset_stepper()
 
     def reset_stepper(self):
+        """ toggle the reset pin and enable the pololu. """
         GPIO.output(self.reset, GPIO.LOW)
         GPIO.output(self.reset, GPIO.HIGH)        
         GPIO.output(self.enable, GPIO.LOW)
 
     #0 or 1 for direction
     def move(self, direction, steps = -1, stop_condition = None):
+        """ give a new move order. reset the thread if needed. """
+
         print "move %d"%steps
+
         GPIO.output(self.direction, direction)
-        if self.thread and self.thread.is_alive():
+        if self.is_alive():
             self.stop()
         
         self.reset_stepper()
-        self.thread = Thread(target = move_thread, args = (self.killThread, self.pin, steps, stop_condition))
-        self.thread.start()
+
+        self.steps = steps
+        self.stop_condition = stop_condition or (lambda: False)
+
+        self.start()
     
     def is_moving(self):
         return self.thread and self.thread.is_alive()
 
     def stop(self, event = None):
+        """ stop the thread """
+
         print "STOP!!!"
         if self.thread:
-            self.killThread.set()
+            self.kill_evt.set()
             self.thread.join()
-        self.killThread.clear()
+        self.kill_evt.clear()
         GPIO.output(self.enable, GPIO.HIGH)
 
+    def run(self):
+        """ run this biatch """
+
+        STOP_CONDITION_INTERVAL = 25
+
+        bbio.pinMode(pin, bbio.OUTPUT)
+
+        step = 0
+        default_ramp_step =2000
+        ramp_step =  default_ramp_step if steps == -1 else min(default_ramp_step, self.steps)
+        ramp_sleep = 100.0
+        ramp_sleep_decrement = ramp_sleep / ramp_step
+        min_sleep = 100 - 32 
+
+        while (step < ramp_step) and not kill_evt.isSet() and (step%STOP_CONDITION_INTERVAL != 0 \
+                                                        or not self.stop_condition()):
+            bbio.digitalWrite(pin,bbio.LOW)
+            bbio.digitalWrite(pin,bbio.HIGH)
+            step +=1
+            bbio.delayMicroseconds( min_sleep + ramp_sleep - ramp_sleep_decrement)
+
+        while (step < self.steps or self.steps == -1) and not kill_evt.isSet() and \
+                (step%STOP_CONDITION_INTERVAL != 0 or not self.stop_condition()):
+            bbio.digitalWrite(pin,bbio.LOW)
+            bbio.digitalWrite(pin,bbio.HIGH)
+            step +=1
+            bbio.delayMicroseconds(min_sleep)
 
