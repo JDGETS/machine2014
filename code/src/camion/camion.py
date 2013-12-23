@@ -60,7 +60,7 @@ class Camion:
         self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
 
     def drop_foot(self):
-        self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], foot_switch)
+        self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch)
 
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
         while not self.foot_switch.is_pressed():
@@ -68,7 +68,7 @@ class Camion:
             time.sleep(0.01) #It's ok, only component on the truck
 
     def bring_foot_up(self):
-        self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], foot_switch)
+        self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch)
 
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
         while not self.foot_switch.is_pressed():
