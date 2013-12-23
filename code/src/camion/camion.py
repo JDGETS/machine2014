@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-import time
 from device.switch import MagneticSwitch
 from device.stepper import Stepper
 from lib import config
+import time
 
 class Camion:
 
@@ -66,7 +66,7 @@ class Camion:
     def drop_foot(self):
         print "[Camion.drop_foot]"
         self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch)
-        time.wait(0.5) #You must not interpret last magnetic switch's signal as if it was this one.
+        time.sleep(0.5) #You must not interpret last magnetic switch's signal as if it was this one.
         
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
         while not self.foot_switch.is_pressed():
@@ -76,7 +76,7 @@ class Camion:
     def bring_foot_up(self):
         print "[Camion.bring_foot_up]"
         self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_switch)
-        time.wait(0.5) #You must not interpret last magnetic switch's signal as if it was this one.
+        time.sleep(0.5) #You must not interpret last magnetic switch's signal as if it was this one.
 
         #If the switch isnt on, continue bringing it up a few ticks (5%) at the time
         while not self.foot_switch.is_pressed():
