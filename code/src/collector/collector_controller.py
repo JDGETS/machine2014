@@ -61,16 +61,21 @@ class CollectorController(Component):
 
         yield self.state_wait_truck_foot
 
+    def ready_to_drop_balls(self):
+        balls = self.sorter.get_ball_count()
+        last_ball_time = self.sorter.get_last_ball_time()
+        
+        done = balls >= self.MAX_BALLS_PER_ROUND
+        halfway_done = balls >= self.MAX_BALLS_PER_ROUND/2
+        timed_out = int(time.time() - last_ball_time) > self.MAX_DELAY_BETWEEN_BALLS
+        
+        return done or (halfway_done and timed_out)
+        
     def state_wait_sorter(self):
         print "[CollectorController.state_wait_sorter]"
 
-        #Strategy 1: Don't wait.
-        balls = self.sorter.get_ball_count()
-        last_ball_time = self.sorter.get_last_ball_time()
-        while balls < self.MAX_BALLS_PER_ROUND or (balls < self.MAX_BALLS_PER_ROUND/2 and int(time.time() - last_ball_time) < self.MAX_DELAY_BETWEEN_BALLS):
+        while not self.ready_to_drop_balls():
             yield
-            balls = self.sorter.get_ball_count()
-            last_ball_time = self.sorter.get_last_ball_time()
         
         if balls < self.MAX_BALLS_PER_ROUND:
             print "[CollectorController.state_wait_sorter] Timed out. Dumping "+str(balls)+" balls!"
