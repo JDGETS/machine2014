@@ -48,15 +48,12 @@ class Stepper(object):
     def move(self, direction, steps = -1, stop_condition = None):
         print "move %d"%steps
         GPIO.output(self.direction, direction)
-        if self.thread:
+        if self.thread and self.thread.is_alive():
             self.stop()
         
         self.reset_stepper()
         self.thread = Thread(target = move_thread, args = (self.killThread, self.pin, steps, stop_condition))
         self.thread.start()
-        
-    def is_moving(self):
-        return self.thread and self.thread.is_alive()
 
     def stop(self, event = None):
         print "STOP!!!"
@@ -64,6 +61,6 @@ class Stepper(object):
             self.killThread.set()
             self.thread.join()
         self.killThread.clear()
-        #GPIO.output(self.enable, GPIO.HIGH)
+        GPIO.output(self.enable, GPIO.HIGH)
 
 
