@@ -71,22 +71,22 @@ class Stepper(Thread):
 
         step = 0
         
-        ramp_step =  self.default_ramp_step if steps == -1 else min(self.default_ramp_step, self.steps)
+        ramp_step =  self.default_ramp_step if self.steps == -1 else min(self.default_ramp_step, self.steps)
         ramp_sleep = 100.0
         ramp_sleep_decrement = ramp_sleep / ramp_step
         min_sleep = 100 - 32 -30
 
         while (step < ramp_step) and not kill_evt.isSet() and (step%STOP_CONDITION_INTERVAL != 0 \
                                                         or not self.stop_condition()):
-            bbio.digitalWrite(pin,bbio.LOW)
-            bbio.digitalWrite(pin,bbio.HIGH)
+            bbio.digitalWrite(self.pin,bbio.LOW)
+            bbio.digitalWrite(self.pin,bbio.HIGH)
             step +=1
             bbio.delayMicroseconds( min_sleep + ramp_sleep - ramp_sleep_decrement)
 
         while (step < self.steps or self.steps == -1) and not kill_evt.isSet() and \
                 (step%STOP_CONDITION_INTERVAL != 0 or not self.stop_condition()):
-            bbio.digitalWrite(pin,bbio.LOW)
-            bbio.digitalWrite(pin,bbio.HIGH)
+            bbio.digitalWrite(self.pin,bbio.LOW)
+            bbio.digitalWrite(self.pin,bbio.HIGH)
             step +=1
             bbio.delayMicroseconds(min_sleep)
 
