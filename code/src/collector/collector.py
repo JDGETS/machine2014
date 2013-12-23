@@ -12,7 +12,7 @@ class Collector(object):
         self.rail = Rail()
         self.controller = CollectorController(self.sorter, self.rail)
 
-        self.components = [self.sorter, self.vacuum_shaker, self.controller]
+        self.components = [self.sorter, self.vacuum_shaker, self.rail, self.controller]
         self.is_running = False
 
     def run(self):
