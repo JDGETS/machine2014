@@ -3,8 +3,7 @@ from device import Piston, Switch
 from lib import config
 
 print "The correct starting state for the truck is: Truck on sort_position. Gate closed."
-c = Camion()
-
+camion = Camion()
 while True:
     print "1 : Goto X up (lift foot)"
     print "2 : Goto X down (drop foot)"
@@ -14,8 +13,8 @@ while True:
   
     if c == 1:
         c = int(raw_input("how much? "))
-        c.foot_stepper.move(c.LIFT_FOOT_DIRECTION,abs(c))
+        camion.foot_stepper.move(c.LIFT_FOOT_DIRECTION,abs(c))
     elif c == 2:
         c = int(raw_input("how much? "))
-        c.stepper.move(c.DROP_FOOT_DIRECTION,abs(c))
+        camion.stepper.move(c.DROP_FOOT_DIRECTION,abs(c))
 
