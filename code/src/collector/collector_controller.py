@@ -78,7 +78,7 @@ class CollectorController(Component):
             yield
         
         if self.sorter.get_ball_count() < self.MAX_BALLS_PER_ROUND:
-            print "[CollectorController.state_wait_sorter] Timed out. Dumping "+str(balls)+" balls!"
+            print "[CollectorController.state_wait_sorter] Timed out. Dumping "+str(self.sorter.get_ball_count())+" balls!"
             
         self.sorter.reset_ball_count()
 
