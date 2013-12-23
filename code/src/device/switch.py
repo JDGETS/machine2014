@@ -70,7 +70,7 @@ class MagneticSwitch(Switch):
             if self.is_released():
                 nb_hits += 1.0
             i += 1
-         return nb_hits/NB_READS > 0.5
+        return nb_hits/NB_READS > 0.5
             
     def wait_pressed(self):
         """ Wait for the switch to be released (waits for a raising edge). YES. This is important with magnetic switches. And wait_released is already blocking so leave me alone with the time.sleep! """
@@ -81,4 +81,4 @@ class MagneticSwitch(Switch):
             if self.is_pressed():
                 nb_hits += 1.0
             i += 1
-         return nb_hits/NB_READS > 0.5
+        return nb_hits/NB_READS > 0.5
