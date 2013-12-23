@@ -51,7 +51,8 @@ class Stepper(object):
         if self.thread:
             self.stop()
         
-        switch.do_once = self.stop
+        if switch:
+            switch.do_once = self.stop
         
         self.reset_stepper()
         self.thread = Thread(target = move_thread, args = (self.killThread, self.pin, steps, None))
@@ -65,6 +66,6 @@ class Stepper(object):
             self.killThread.set()
             self.thread.join()
         self.killThread.clear()
-        GPIO.output(self.enable, GPIO.HIGH)
+        #GPIO.output(self.enable, GPIO.HIGH) #Why?
 
 
