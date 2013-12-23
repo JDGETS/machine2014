@@ -67,7 +67,7 @@ class MagneticSwitch(Switch):
         nb_hits = 0
         while i < self.NB_READS:
             time.sleep(0.01)
-            if self.is_released()
+            if self.is_released():
                 nb_hits += 1.0
             i += 1
          return nb_hits/NB_READS > 0.5
@@ -78,7 +78,7 @@ class MagneticSwitch(Switch):
         nb_hits = 0
         while i < self.NB_READS:
             time.sleep(0.01)
-            if self.is_pressed()
+            if self.is_pressed():
                 nb_hits += 1.0
             i += 1
          return nb_hits/NB_READS > 0.5
