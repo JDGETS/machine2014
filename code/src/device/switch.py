@@ -51,6 +51,7 @@ class Switch(object):
 
 import time
 class MagneticSwitch(Switch):
+    NB_READS = 50.0
 
     def __init__(self, pin):
         """ Create a Switch object that reads input from the given pin. """
@@ -62,10 +63,22 @@ class MagneticSwitch(Switch):
     
     def wait_released(self):
         """ Wait for the switch to be released (waits for a raising edge). YES. This is important with magnetic switches. And wait_released is already blocking so leave me alone with the time.sleep! """
-        while not self.is_released():
+        i = 0
+        nb_hits = 0
+        while i < self.NB_READS:
             time.sleep(0.01)
+            if self.is_released()
+                nb_hits += 1.0
+            i += 1
+         return nb_hits/NB_READS > 0.5
             
     def wait_pressed(self):
         """ Wait for the switch to be released (waits for a raising edge). YES. This is important with magnetic switches. And wait_released is already blocking so leave me alone with the time.sleep! """
-        while not self.is_pressed():
+        i = 0
+        nb_hits = 0
+        while i < self.NB_READS:
             time.sleep(0.01)
+            if self.is_pressed()
+                nb_hits += 1.0
+            i += 1
+         return nb_hits/NB_READS > 0.5
