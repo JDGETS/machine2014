@@ -18,9 +18,9 @@ class Camion:
     def __init__(self):
         print "[Camion.__init__]"
         self.config = config.devices[self.CAMION_CONFIG_ID]
-        self.collector_switch = Switch(**config.devices[self.COLLECTOR_SWITCH_ID])
-        self.dump_switch = Switch(**config.devices[self.DUMP_SWITCH_ID]) # Useless for now
-        self.foot_switch = Switch(**config.devices[self.FOOT_SWITCH_ID]) # Useless for now
+        self.collector_switch = MagneticSwitch(**config.devices[self.COLLECTOR_SWITCH_ID])
+        self.dump_switch = MagneticSwitch(**config.devices[self.DUMP_SWITCH_ID]) # Useless for now
+        self.foot_switch = MagneticSwitch(**config.devices[self.FOOT_SWITCH_ID]) # Useless for now
         self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
 
     def run(self):
