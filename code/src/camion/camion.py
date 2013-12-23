@@ -39,7 +39,7 @@ class Camion:
             if not self.collector_switch.is_pressed():
                 self.collector_switch.wait_pushed()
 
-            if not self.first_run 
+            if not self.first_run:
                 self.drop_foot();
             
             print "[Camion.run] Waiting for collector switch to be released"
