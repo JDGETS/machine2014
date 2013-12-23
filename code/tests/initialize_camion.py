@@ -16,5 +16,5 @@ while True:
         camion.foot_stepper.move(c.LIFT_FOOT_DIRECTION,abs(c))
     elif c == 2:
         c = int(raw_input("how much? "))
-        camion.stepper.move(c.DROP_FOOT_DIRECTION,abs(c))
+        camion.foot_stepper.move(c.DROP_FOOT_DIRECTION,abs(c))
 
