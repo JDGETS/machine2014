@@ -28,10 +28,9 @@ class Collector(object):
             for c in self.components:
                 c.update()
 
+    def stop(self):
         print "[Collector.run] Collector stopped"
+        self.is_running = False
 
         for c in self.components:
             c.stop()
-
-    def stop(self):
-        self.is_running = False

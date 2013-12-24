@@ -29,6 +29,10 @@ class CollectorController(Component):
         self.foot_down_switch = MagneticSwitch(**config.devices[self.FOOT_DOWN])
         self.gate = Piston(**config.devices[self.GATE])
 
+    def stop(self):
+        print "[CollectorController.stop] Stop controller"
+        self.gate.stop();
+
     def state_wait_init(self):
         print "[CollectorController.state_wait_init]"
 

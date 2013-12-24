@@ -19,6 +19,10 @@ class Rail(Component):
         self.stepper = Stepper(**devices["stepper_rail"])
         self.switch_home = Switch(devices["rail"]["switch_home"])
         self.switch_away = Switch(devices["rail"]["switch_away"])
+    
+    def stop(self):
+        print "[Rail.stop] Stop stepper rail"
+        self.stepper.stop();
 
     def go_to_position(self, destination, stop_condition = None):
         self.is_moving_val = True
