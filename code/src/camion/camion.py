@@ -6,7 +6,7 @@ from device.stepper import Stepper
 from lib import config
 import time
 import Adafruit_BBIO.PWM as PWM
-import os
+import sys
 
 class Camion:
 
@@ -41,7 +41,7 @@ class Camion:
     
     def force_stop(self):
         self.stop()
-        os.exit();
+        sys.exit(0);
 
     def run(self):
         print "[Camion.run] Put camion down and wait for go_to_start_position signal"
@@ -51,7 +51,8 @@ class Camion:
         print "[Camion.run] Start camion - waiting for signal"
 
         self.wait_for_signal();
-
+        self.in_position_switch.bind_event_detect(self.force_stop) # After the first push, it is now binded to stop()
+        
         print "[Camion.run] Camion started"
         
         self.put_in_start_position();
@@ -80,7 +81,6 @@ class Camion:
         #POSITION DE DEPART = 
         self.in_position_switch.wait_pressed()
         self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
-        self.in_position_switch.bind_event_detect(self.force_stop) # After the first push, it is now binded to stop()
         while self.foot_stepper.is_moving():
             time.sleep(0.01)
 
