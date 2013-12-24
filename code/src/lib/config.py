@@ -81,6 +81,6 @@ devices = {
         "direction":"P8_43",
         "reset":"P8_44",
         "enable":"P8_46",
-        "ramp_step":1000
+        "ramp_step":2000
     },
 }
