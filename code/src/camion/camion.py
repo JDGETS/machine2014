@@ -31,7 +31,7 @@ class Camion:
         self.in_position_switch = Switch(**config.devices[self.PLACE_IN_POSITION_SWITCH_ID]);
         self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
         self.state = 0
-        self.foot_stepper.disable_stepper(); # make it dead so it could be in starting position totaly down.
+        #self.foot_stepper.disable_stepper(); # make it dead so it could be in starting position totaly down.
         
     def stop(self):
         print "[Camion.stop] Stop camion"
@@ -73,7 +73,7 @@ class Camion:
     def put_in_waiting_for_signal_position(self):
         """Wait to put in position signal here"""
         self.in_position_switch.wait_pressed()
-        drop_foot()
+        self.drop_foot()
         self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
 
     def wait_for_signal(self):
