@@ -31,6 +31,10 @@ class Camion:
         self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
         self.state = 0
         self.foot_stepper.disable_stepper(); # make it dead so it could be in starting position totaly down.
+        
+    def stop(self):
+        print "[Camion.stop] Stop camion"
+        self.foot_stepper.stop()
 
     def run(self):
         print "[Camion.run] Put camion down and wait for go_to_start_position signal"
