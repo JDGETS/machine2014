@@ -9,7 +9,7 @@ def mainSafe():
         collector.run()
 
     except:
-        print "[main_collector] Exception raised in main_collector::mainSafe", sys.exc_info()[0
+        print "[main_collector] Exception raised in main_collector::mainSafe", sys.exc_info()[0]
         raise
         
     finally:

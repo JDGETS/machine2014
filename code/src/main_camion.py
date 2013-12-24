@@ -9,7 +9,7 @@ def mainSafe():
         camion.run()
 
     except:
-        print "[main_camion] Exception raised  in main_camion::mainSafe", sys.exc_info()[0
+        print "[main_camion] Exception raised  in main_camion::mainSafe", sys.exc_info()[0]
         raise
         
     finally:
