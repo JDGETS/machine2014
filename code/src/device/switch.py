@@ -11,7 +11,16 @@ class Switch(object):
         self.pin = pin
         self.last_was_pressed = False
         GPIO.setup(pin, GPIO.IN)
-        GPIO.add_event_detect(pin, GPIO.RISING)
+        self.callback_trigger = None
+        GPIO.add_event_detect(pin, GPIO.FALLING, self.event_triggered)
+    
+    def bind_event_detect(self, funct):
+        self.callback_trigger = funct
+        
+    def event_triggered(self, event = None):
+        if self.callback_trigger:
+            self.callback_trigger()
+        self.callback_trigger = None
 
     def is_pressed(self):
         """ Return True if the switch is pressed. """

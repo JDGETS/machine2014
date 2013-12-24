@@ -75,6 +75,7 @@ class Camion:
         #POSITION DE DEPART = 
         self.in_position_switch.wait_pressed()
         self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
+        self.in_position_switch.bind_event_detect(self.stop) # After the first push, it is now binded to stop()
         while self.foot_stepper.is_moving():
             time.sleep(0.01)
 
