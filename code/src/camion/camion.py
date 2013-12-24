@@ -75,6 +75,8 @@ class Camion:
         #POSITION DE DEPART = 
         self.in_position_switch.wait_pressed()
         self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
+        while self.foot_stepper.is_moving():
+            time.sleep(0.01)
 
     def wait_for_signal(self):
         """Wait for signal here"""
