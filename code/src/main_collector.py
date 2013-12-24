@@ -3,6 +3,7 @@ from collector.collector import Collector
 import sys
 
 def mainSafe():
+    c = None
     try:
         print "[main_collector] Start collector"
         c = Collector()

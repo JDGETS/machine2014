@@ -3,6 +3,7 @@ from camion.camion import Camion
 import sys
 
 def mainSafe():
+    c = None
     try:
         print "[main_camion] Start camion"
         c = Camion()
