@@ -73,7 +73,7 @@ class Camion:
     def put_in_waiting_for_signal_position(self):
         """Wait to put in position signal here"""
         self.in_position_switch.wait_pressed()
-        drop_foot()
+        self.drop_foot()
         self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
 
     def wait_for_signal(self):
