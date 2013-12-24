@@ -9,4 +9,4 @@ class VacuumShakerPiston(Piston):
 
     def complete_standby(self):
         """set servo to complete standby position"""
-        self.servo.set_duty(self.complete_standby_duty)
+        self.set_duty(self.complete_standby_duty)
