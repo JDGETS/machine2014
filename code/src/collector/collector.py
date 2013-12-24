@@ -10,7 +10,7 @@ class Collector(object):
         self.vacuum_shaker = VacuumShaker()
         self.sorter = Sorter()
         self.rail = Rail()
-        self.controller = CollectorController(self.sorter, self.rail)
+        self.controller = CollectorController(self)
 
         self.components = [self.sorter, self.vacuum_shaker, self.rail, self.controller]
         self.is_running = False

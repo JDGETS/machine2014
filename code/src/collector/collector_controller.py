@@ -18,11 +18,12 @@ class CollectorController(Component):
     FOOT_UP = 'collector_foot_up'
     FOOT_DOWN = 'collector_foot_down'
 
-    def __init__(self, sorter, rail):
+    def __init__(self, collector):
         super(CollectorController, self).__init__(self.state_wait_init)
         print "[CollectorController.__init__]"
-        self.sorter = sorter
-        self.rail = rail
+        self.sorter = collector.sorter
+        self.rail = collector.rail
+        self.vacuum_shaker = collector.vacuum_shaker
         self.start_collect_switch = Switch(**config.devices[self.START_COLLECT])
         self.foot_up_switch = MagneticSwitch(**config.devices[self.FOOT_UP])
         self.foot_down_switch = MagneticSwitch(**config.devices[self.FOOT_DOWN])
@@ -54,6 +55,8 @@ class CollectorController(Component):
         
         while self.rail.is_moving():
             yield
+        
+        self.vacuum_shaker.wait_balls()
 
         yield self.wait( self.WAIT_TIME_DUMP_BALLS, self.state_push_truck_home)
 

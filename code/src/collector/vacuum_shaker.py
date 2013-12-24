@@ -8,7 +8,7 @@ import time
 class VacuumShaker(Component):
 
     SERVO_DELAY = 0.25
-    PULL_UP_DELAY = 0.5
+    PULL_UP_DELAY = 0.15
     WAIT_TIMEOUT = 30.0
     SHAKE_COUNT = 4
 
@@ -26,6 +26,9 @@ class VacuumShaker(Component):
     def stop(self):
         print "[VacuumShaker.stop] Stoping"
         self.vacuum_servo.stop()
+        
+    def wait_balls(self):
+        self.set_state(self.state_wait_ball);
 
     def state_wait_ball(self):
         print "[VacuumShaker.state_wait_ball]"
