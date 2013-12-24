@@ -80,6 +80,7 @@ class Camion:
 
     def wait_for_signal(self):
         """Wait for signal here"""
+        time.sleep(2.0)
         #while ...:
         #    pass
         return
