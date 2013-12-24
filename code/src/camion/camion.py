@@ -15,8 +15,8 @@ class Camion:
     FOOT_SWITCH_ID = "camion_foot_switch"
     FOOT_STEPPER_ID = "camion_stepper"
     PLACE_IN_POSITION_SWITCH_ID = "camion_in_position_switch"
-    DROP_FOOT_DIRECTION = 0
-    LIFT_FOOT_DIRECTION = 1
+    DROP_FOOT_DIRECTION = 1
+    LIFT_FOOT_DIRECTION = 0
     
     STATE_INITIAL_MAGNET = 1
     STATE_NO_MAGNET = 2
