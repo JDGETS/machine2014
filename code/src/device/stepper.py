@@ -5,8 +5,8 @@ import bbio
 #Must be out of the Stepper object. A Thread can only be started once.
 # OR:
 # """ If you derive a class from threading.Thread you can add a Thread.__init__(self) 
-#     at the end of your run method and you’ll be able to call start again and it’ll 
-#     automatically reinitialize itself when it’s done. """
+#     at the end of your run method and you'll be able to call start again and it'll 
+#     automatically reinitialize itself when it's done. """
 def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, stop_condition = None):
     """ run this biatch """
     STOP_CONDITION_INTERVAL = 25
