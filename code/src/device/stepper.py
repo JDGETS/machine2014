@@ -9,7 +9,7 @@ import bbio
 #     automatically reinitialize itself when it's done. """
 def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, stop_condition = None):
     """ run this biatch """
-    STOP_CONDITION_INTERVAL = 50
+    STOP_CONDITION_INTERVAL = 2
     stop_condition = stop_condition or (lambda: False); #Default: No stop conditions
     bbio.pinMode(pin, bbio.OUTPUT)
     step = 0
