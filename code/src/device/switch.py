@@ -12,7 +12,7 @@ class Switch(object):
         self.last_was_pressed = False
         GPIO.setup(pin, GPIO.IN)
         self.callback_trigger = None
-        GPIO.add_event_detect(pin, GPIO.FALLING, self.event_triggered)
+        GPIO.add_event_detect(pin, GPIO.RISING, self.event_triggered)
     
     def bind_event_detect(self, funct):
         self.callback_trigger = funct
