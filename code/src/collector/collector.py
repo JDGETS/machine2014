@@ -3,6 +3,7 @@ from rail import Rail
 from vacuum_shaker import VacuumShaker
 from lib import config
 from collector_controller import CollectorController
+import Adafruit_BBIO.PWM as PWM
 
 class Collector(object):
     def __init__(self):
@@ -34,3 +35,5 @@ class Collector(object):
 
         for c in self.components:
             c.stop()
+            
+        PWM.cleanup()
