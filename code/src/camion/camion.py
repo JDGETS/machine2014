@@ -31,7 +31,7 @@ class Camion:
         self.in_position_switch = Switch(**config.devices[self.PLACE_IN_POSITION_SWITCH_ID]);
         self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
         self.state = 0
-        self.foot_stepper.disable_stepper(); # make it dead so it could be in starting position totaly down.
+        #self.foot_stepper.disable_stepper(); # make it dead so it could be in starting position totaly down.
         
     def stop(self):
         print "[Camion.stop] Stop camion"
