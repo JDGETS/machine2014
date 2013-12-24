@@ -5,6 +5,7 @@ from device.magnetic_switch import MagneticSwitch
 from device.stepper import Stepper
 from lib import config
 import time
+import Adafruit_BBIO.PWM as PWM
 
 class Camion:
 
@@ -35,6 +36,7 @@ class Camion:
     def stop(self):
         print "[Camion.stop] Stop camion"
         self.foot_stepper.stop()
+        PWM.cleanup()
 
     def run(self):
         print "[Camion.run] Put camion down and wait for go_to_start_position signal"
