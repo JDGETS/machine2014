@@ -16,7 +16,7 @@ def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, stop_condition = 
     ramp_step =  default_ramp_step if steps == -1 else min(default_ramp_step, steps)
     ramp_sleep = 100.0
     ramp_sleep_decrement = ramp_sleep / ramp_step
-    min_sleep = 115 #Avant: 100-32
+    min_sleep = 150 #Avant: 100-32
 
     while (step < ramp_step) and not kill.isSet() and \
         (step%STOP_CONDITION_INTERVAL != 0 or not stop_condition()):
