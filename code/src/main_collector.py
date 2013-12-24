@@ -5,15 +5,15 @@ import sys
 def mainSafe():
     try:
         print "[main_collector] Start collector"
-        collector = Collector()
-        collector.run()
+        c = Collector()
+        c.run()
 
     except:
         print "[main_collector] Exception raised in main_collector::mainSafe", sys.exc_info()[0]
         raise
         
     finally:
-        collector.stop()
+        c.stop()
         print "[main_collector] Stop collector"
 
 if __name__ == "__main__":
