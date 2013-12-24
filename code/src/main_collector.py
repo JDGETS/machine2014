@@ -2,7 +2,7 @@
 from collector.collector import Collector
 import sys, os
 
-def mainSafe():
+if __name__ == "__main__":
     c = None
     try:
         print "[main_collector] Start collector"
@@ -20,6 +20,3 @@ def mainSafe():
         if c:
             c.stop()
         print "[main_collector] Stop collector"
-
-if __name__ == "__main__":
-    mainSafe();

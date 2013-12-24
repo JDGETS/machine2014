@@ -2,7 +2,7 @@
 from camion.camion import Camion
 import sys
 
-def mainSafe():
+if __name__ == "__main__":
     c = None
     try:
         print "[main_camion] Start camion"
@@ -20,6 +20,3 @@ def mainSafe():
         if c:
             c.stop()
         print "[main_camion] Stop camion"
-
-if __name__ == "__main__":
-    mainSafe();
