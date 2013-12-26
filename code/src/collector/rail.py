@@ -68,6 +68,8 @@ class Rail(Component):
             
             while self.stepper.is_moving():
                 yield
+        else:
+            self.current_position = self.HOME_POSITION
             
         yield self.state_check_homing
     
@@ -87,6 +89,8 @@ class Rail(Component):
 
             while self.stepper.is_moving():
                 yield
+        else:
+            self.current_position = self.AWAY_POSITION
 
         yield self.state_check_away
 
