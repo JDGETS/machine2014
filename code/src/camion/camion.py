@@ -51,7 +51,7 @@ class Camion:
         print "[Camion.run] Start camion - waiting for signal"
 
         self.wait_for_signal();
-        self.in_position_switch.bind_event_detect(self.force_stop) # After the first push, it is now binded to stop()
+        self.in_position_switch.bind_raising_edge(self.force_stop) # After the first push, it is now binded to stop()
         
         print "[Camion.run] Camion started"
         

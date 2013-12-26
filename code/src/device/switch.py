@@ -11,15 +11,15 @@ class Switch(object):
         self.pin = pin
         self.last_was_pressed = False
         GPIO.setup(pin, GPIO.IN)
-        self.callback_trigger = None
-        GPIO.add_event_detect(pin, GPIO.RISING, self.event_triggered)
+        self.rising_edge_callbacks = []
+        GPIO.add_event_detect(pin, GPIO.RISING, self._rising_edge_event)
     
-    def bind_event_detect(self, funct):
-        self.callback_trigger = funct
+    def bind_raising_edge(self, funct):
+        self.rising_edge_callbacks.append(funct)
         
-    def event_triggered(self, event = None):
-        if self.callback_trigger:
-            self.callback_trigger()
+    def _rising_edge_event(self, event = None):
+        for callback in self.rising_edge_callbacks:
+            callback()
         self.callback_trigger = None
 
     def is_pressed(self):

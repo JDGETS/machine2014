@@ -37,3 +37,7 @@ class Collector(object):
             c.stop()
             
         PWM.cleanup()
+
+    def force_stop(self):
+        self.stop()
+        sys.exit(0);
