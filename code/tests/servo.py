@@ -11,7 +11,7 @@ init_duty = float(sys.argv[2])
 servo = Servo(pin, init_duty)
 
 while True:
-    c = int(raw_input("Duty? "))
+    c = float(raw_input("Duty? "))
     servo.set_duty(c)
 
 servo.stop()
