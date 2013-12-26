@@ -18,10 +18,6 @@ class Camion:
     PLACE_IN_POSITION_SWITCH_ID = "camion_in_position_switch"
     DROP_FOOT_DIRECTION = 1
     LIFT_FOOT_DIRECTION = 0
-    
-    STATE_INITIAL_MAGNET = 1
-    STATE_NO_MAGNET = 2
-    STATE_FINAL_MAGNET = 3
 
     def __init__(self):
         print "[Camion.__init__]"
@@ -31,6 +27,7 @@ class Camion:
         self.foot_switch = MagneticSwitch(**config.devices[self.FOOT_SWITCH_ID]) 
         self.in_position_switch = Switch(**config.devices[self.PLACE_IN_POSITION_SWITCH_ID]);
         self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
+        self.foot_switch.bind_raising_edge(self.foot_stepper.stop) #Stop the stepper when one of the switch is activated (works with the sequence)
         self.state = 0
         #self.foot_stepper.disable_stepper(); # make it dead so it could be in starting position totaly down.
         
@@ -98,7 +95,6 @@ class Camion:
 
     def drop_foot(self):
         print "[Camion.drop_foot]"
-        self.state = self.STATE_INITIAL_MAGNET
         #Bring it up till it's done!
         while not self.is_done():
             self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.is_done)
@@ -107,7 +103,6 @@ class Camion:
                 
     def bring_foot_up(self):
         print "[Camion.bring_foot_up]"
-        self.state = self.STATE_INITIAL_MAGNET
         #Bring it up till it's done!
         while not self.is_done():
             self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.is_done)
@@ -115,11 +110,4 @@ class Camion:
                 time.sleep(0.01) #It's ok, only component on the truck
                 
     def is_done(self):
-        if self.foot_switch.is_pressed():
-            if self.state == self.STATE_NO_MAGNET:
-                self.state = self.STATE_FINAL_MAGNET
-        else:
-            if self.state == self.STATE_INITIAL_MAGNET:
-                self.state = self.STATE_NO_MAGNET
-        
-        return self.state == self.STATE_FINAL_MAGNET;
+        return self.foot_switch.was_pressed()

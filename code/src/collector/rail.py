@@ -62,11 +62,12 @@ class Rail(Component):
         yield self.state_away
 
     def state_slide_to_home(self):
-        distance = self.go_to_position(self.HOME_POSITION)
-        self.current_position = self.HOME_POSITION
-        
-        while self.stepper.is_moving():
-            yield
+        if not self.is_home():
+            distance = self.go_to_position(self.HOME_POSITION)
+            self.current_position = self.HOME_POSITION
+            
+            while self.stepper.is_moving():
+                yield
             
         yield self.state_check_homing
     
@@ -76,13 +77,17 @@ class Rail(Component):
         
         while self.stepper.is_moving():
             yield
+
         yield self.state_sorting_position
 
     def state_slide_to_away(self):
-        distance = self.go_to_position(self.AWAY_POSITION)
-        self.current_position = self.AWAY_POSITION
-        while self.stepper.is_moving():
-            yield
+        if not self.is_away():
+            distance = self.go_to_position(self.AWAY_POSITION)
+            self.current_position = self.AWAY_POSITION
+
+            while self.stepper.is_moving():
+                yield
+
         yield self.state_check_away
 
     def state_check_away(self):
