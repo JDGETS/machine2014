@@ -18,9 +18,9 @@ class Rail(Component):
         self.current_position = self.WAIT_FOR_SORTING_POSITION;
         self.stepper = Stepper(**devices["stepper_rail"])
         self.switch_home = Switch(devices["rail"]["switch_home"])
-        self.switch_home.bind_raising_edge(self.stepper.stop) 
+        self.switch_home.bind_raising_edge(self.stepper.stop) #Stop the stepper when one of the switch is pressed.
         self.switch_away = Switch(devices["rail"]["switch_away"])
-        self.switch_away.bind_raising_edge(self.stepper.stop) #Stop the stopper when one of the switch is pressed.
+        self.switch_away.bind_raising_edge(self.stepper.stop) #Stop the stepper when one of the switch is pressed.
     
     def stop(self):
         print "[Rail.stop] Stop stepper rail"

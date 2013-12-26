@@ -66,7 +66,7 @@ class Stepper(object):
         return self.thread and self.thread.is_alive()
 
     def stop(self, event = None):
-        print "STOP!!!"
+        print "[Stepper.stop] Stop the thread!"
         if self.thread:
             self.killThread.set()
             self.thread.join()
