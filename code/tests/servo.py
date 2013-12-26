@@ -1,20 +1,17 @@
 import sys
 import time
-sys.path.append('../src')
-
 from device import Servo
 from lib import ex_pdb
 
 ex_pdb.init()
 
-pull = 13
-push = 10.3
+pin = sys.argv[1]
+init_duty = sys.argv[2]
 
-servo = Servo("P9_16", pull, push)
+servo = Servo(pin, init_duty)
 
-servo.push()
-time.sleep(2)
-servo.pull()
+while True:
+    c = int(raw_input("Duty? "))
+    servo.set_duty(c)
 
-raw_input("Press key...")
 servo.stop()
