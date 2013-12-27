@@ -9,8 +9,8 @@ class Switch(object):
     def __init__(self, pin):
         """ Create a Switch object that reads input from the given pin. """
         self.pin = pin
-        self.last_was_pressed = False
-        self.last_detected_pressed = False
+        self.last_detected_pressed_id = 0
+        self.current_detected_pressed_id = 0
         GPIO.setup(pin, GPIO.IN, GPIO.PUD_UP)
         self.rising_edge_callbacks = []
         self.falling_edge_callbacks = []
@@ -30,7 +30,7 @@ class Switch(object):
         if inputs[1] > 2: #Observations de Mathieu et Mathieu
             for callback in self.rising_edge_callbacks:
                 callback()
-            self.last_detected_pressed = GPIO.event_detected(self.pin)
+            self.current_detected_pressed_id += 1
         else:
             for callback in self.falling_edge_callbacks:
                 callback()
@@ -44,9 +44,9 @@ class Switch(object):
         return not GPIO.input(self.pin)
 
     def was_pressed(self):
-        last = self.last_was_pressed
-        self.last_was_pressed = self.last_detected_pressed
-        return self.last_was_pressed and last != self.last_was_pressed
+        last = self.last_detected_pressed_id
+        self.last_detected_pressed_id = self.current_detected_pressed_id
+        return last != self.current_detected_pressed_id
 
     def wait_pushed(self):
         """ Wait for the switch to be pressed and released (waits for a falling edge followed by a rising edge. """
