@@ -29,7 +29,7 @@ def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, stop_condition = 
         dec = (step/ramp_sleep*step/ramp_sleep)
         if step > half_ramp_step:
             dec = -dec + 2*(step/ramp_sleep)
-        bbio.delayMicroseconds( min_sleep + ramp_sleep - dec*ramp_sleep_decrement)
+        bbio.delayMicroseconds( min_sleep + ramp_sleep - dec*ramp_sleep)
 
     while (step < steps or steps == -1) and not kill.isSet() and \
         (step%STOP_CONDITION_INTERVAL != 0 or not stop_condition()):
