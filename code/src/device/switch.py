@@ -12,15 +12,29 @@ class Switch(object):
         self.last_was_pressed = False
         GPIO.setup(pin, GPIO.IN, GPIO.PUD_UP)
         self.rising_edge_callbacks = []
-        GPIO.add_event_detect(pin, GPIO.RISING, self._rising_edge_event)
+        self.falling_edge_callbacks = []
+        GPIO.add_event_detect(pin, GPIO.BOTH, self._edge_event, 10)
     
     def bind_raising_edge(self, funct):
         self.rising_edge_callbacks.append(funct)
         
+    def bind_falling_edge(self, funct):
+        self.rising_edge_callbacks.append(funct)
+        
+    def clear_bindings_falling_edge(self, funct):
+        self.rising_edge_callbacks.append(funct)
+        
     def _rising_edge_event(self, event = None):
-        for callback in self.rising_edge_callbacks:
-            callback()
-        self.callback_trigger = None
+        g = {0:0, 1:0}
+        for i in xrange(0,50):
+            g[GPIO.input(self.pin)] += 1
+    
+        if a[1] > 2: #Observations de Mathieu et Mathieu
+            for callback in self.rising_edge_callbacks:
+                callback()
+        else:
+            for callback in self.falling_edge_callbacks:
+                callback()
 
     def is_pressed(self):
         """ Return True if the switch is pressed. """
@@ -30,10 +44,10 @@ class Switch(object):
         """ Return True if the switch is not pressed. """
         return not GPIO.input(self.pin)
 
-    def was_pressed(self):
-        last = self.last_was_pressed
-        self.last_was_pressed = GPIO.event_detected(self.pin)
-        return self.last_was_pressed and last != self.last_was_pressed
+    #def was_pressed(self):
+    #    last = self.last_was_pressed
+    #    self.last_was_pressed = GPIO.event_detected(self.pin)
+    #    return self.last_was_pressed and last != self.last_was_pressed
 
     def wait_pushed(self):
         """ Wait for the switch to be pressed and released (waits for a falling edge followed by a rising edge. """

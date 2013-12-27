@@ -25,6 +25,8 @@ class Camion:
         self.config = config.devices[self.CAMION_CONFIG_ID]
         self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
         self.collector_switch = Switch(**config.devices[self.COLLECTOR_SWITCH_ID])#used by the truck to know when he have to drop the foot
+        self.collector_switch.bind_raising_edge(self.drop_foot) 
+        self.collector_switch.bind_falling_edge(self.bring_foot_up) 
         self.dump_switch = MagneticSwitch(**config.devices[self.DUMP_SWITCH_ID]) # Useless for now
         self.foot_down_switch = Switch(**config.devices[self.FOOT_DOWN_SWITCH_ID]) 
         self.foot_down_switch.bind_raising_edge(self.foot_stepper.stop) #Stop the stepper when one of the switch is activated (works with the sequence)
@@ -58,19 +60,7 @@ class Camion:
         self.is_running = True
         self.first_run = True
         while self.is_running:
-            print "[Camion.run] Waiting for collector switch to be pushed"
-            while not self.collector_switch.is_pressed():
-                time.sleep(0.01)
-
-            if not self.first_run:
-                self.drop_foot();
-            
-            print "[Camion.run] Waiting for collector switch to be released"
-            if not self.collector_switch.is_released():
-                time.sleep(0.01)
-
-            self.bring_foot_up();
-            self.first_run = False
+            time.sleep(0.01)
 
         print "[Camion.run] Camion stopped"
     
@@ -95,12 +85,13 @@ class Camion:
         self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
 
     def drop_foot(self):
-        print "[Camion.drop_foot]"
-        #Bring it up till it's done!
-        while not self.foot_down_switch.is_pressed():
-            self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"])
-            while self.foot_stepper.is_moving():
-                time.sleep(0.01) #It's ok, only component on the truck
+        if not self.first_run:
+            print "[Camion.drop_foot]"
+            #Bring it up till it's done!
+            while not self.foot_down_switch.is_pressed():
+                self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"])
+                while self.foot_stepper.is_moving():
+                    time.sleep(0.01) #It's ok, only component on the truck
                 
     def bring_foot_up(self):
         print "[Camion.bring_foot_up]"
@@ -109,3 +100,4 @@ class Camion:
             self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"])
             while self.foot_stepper.is_moving():
                 time.sleep(0.01) #It's ok, only component on the truck
+        self.first_run = False
