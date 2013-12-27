@@ -69,7 +69,7 @@ class Camion:
         """Wait to put in position signal here"""
         #POSITION DE DEPART = 
         self.in_position_switch.wait_pressed()
-        self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
+        self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_start_position_ticks"], self.foot_down_switch.is_pressed)
         while self.foot_stepper.is_moving():
             time.sleep(0.01)
 
@@ -83,14 +83,14 @@ class Camion:
     def put_in_start_position(self):
         print "[Camion.put_in_start_position]"
         #Drop camion. Foot on floor so bring it up.
-        self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
+        self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_start_position_ticks"], self.foot_up_switch.is_pressed)
 
     def drop_foot(self):
         if not self.first_run:
             print "[Camion.drop_foot]"
             #Bring it up till it's done!
             while not self.foot_down_switch.is_pressed():
-                self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"])
+                self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_down_switch.is_pressed)
                 while self.foot_stepper.is_moving():
                     time.sleep(0.01) #It's ok, only component on the truck
                 
@@ -98,7 +98,7 @@ class Camion:
         print "[Camion.bring_foot_up]"
         #Bring it up till it's done!
         while not self.foot_up_switch.is_pressed():
-            self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"])
+            self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_up_switch.is_pressed)
             while self.foot_stepper.is_moving():
                 time.sleep(0.01) #It's ok, only component on the truck
         self.first_run = False
