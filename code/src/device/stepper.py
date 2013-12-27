@@ -16,7 +16,7 @@ def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, stop_condition = 
     ramp_step =  float(default_ramp_step if steps == -1 else min(default_ramp_step, steps))
     ramp_sleep = 100.0
     #ramp_sleep_decrement = ramp_sleep / (ramp_step*ramp_step)
-    min_sleep = 150 #Avant: 100-32
+    min_sleep = 100-15 #Avant: 100-32
     half_ramp_step = ramp_step/2
     dec = 0
     
