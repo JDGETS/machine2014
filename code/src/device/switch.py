@@ -25,11 +25,11 @@ class Switch(object):
         self.rising_edge_callbacks.append(funct)
         
     def _edge_event(self, event = None):
-        g = {0:0, 1:0}
+        inputs = {0:0, 1:0}
         for i in xrange(0,50):
-            g[GPIO.input(self.pin)] += 1
+            inputs[GPIO.input(self.pin)] += 1
     
-        if a[1] > 2: #Observations de Mathieu et Mathieu
+        if inputs[1] > 2: #Observations de Mathieu et Mathieu
             for callback in self.rising_edge_callbacks:
                 callback()
         else:
