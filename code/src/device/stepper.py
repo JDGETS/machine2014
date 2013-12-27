@@ -26,7 +26,7 @@ def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, stop_condition = 
         bbio.digitalWrite(pin,bbio.HIGH)
         step +=1
         
-        dec = (step/ramp_sleep*step/ramp_sleep)
+        dec = (step/ramp_sleep)*(step/ramp_sleep)
         if step > half_ramp_step:
             dec = -dec + 2*(step/ramp_sleep)
         bbio.delayMicroseconds( min_sleep + ramp_sleep - dec*ramp_sleep)
