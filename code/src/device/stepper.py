@@ -1,7 +1,7 @@
 from threading import Thread, Event
 import Adafruit_BBIO.GPIO as GPIO
 import bbio
-import time
+
 #Must be out of the Stepper object. A Thread can only be started once.
 # OR:
 # """ If you derive a class from threading.Thread you can add a Thread.__init__(self) 
@@ -29,14 +29,14 @@ def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, min_sleep = 100-1
         dec = x*x
         if step > half_ramp_step:
             dec = -(x-1)*(x-1) + 0.5
-        time.sleep((min_sleep + ramp_sleep - 2*dec*ramp_sleep)*0.000001)
+        bbio.delayMicroseconds( min_sleep + ramp_sleep - 2*dec*ramp_sleep)
 
     while (step < steps or steps == -1) and not kill.isSet() and \
         (step%STOP_CONDITION_INTERVAL != 0 or not stop_condition()):
         bbio.digitalWrite(pin,bbio.LOW)
         bbio.digitalWrite(pin,bbio.HIGH)
         step +=1
-        time.sleep(min_sleep*0.000001)
+        bbio.delayMicroseconds(min_sleep)
 
 class Stepper(object):
     def __init__(self, pin,direction,reset,enable,ramp_step,min_sleep):
