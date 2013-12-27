@@ -13,7 +13,8 @@ class Camion:
     CAMION_CONFIG_ID = "camion"
     COLLECTOR_SWITCH_ID = "camion_collector_switch"
     DUMP_SWITCH_ID = "camion_dump_switch"
-    FOOT_SWITCH_ID = "camion_foot_switch"
+    FOOT_UP_SWITCH_ID = "camion_foot_up_switch"
+    FOOT_DOWN_SWITCH_ID = "camion_foot_down_switch"
     FOOT_STEPPER_ID = "camion_stepper"
     PLACE_IN_POSITION_SWITCH_ID = "camion_in_position_switch"
     DROP_FOOT_DIRECTION = 1
@@ -22,14 +23,14 @@ class Camion:
     def __init__(self):
         print "[Camion.__init__]"
         self.config = config.devices[self.CAMION_CONFIG_ID]
+        self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
         self.collector_switch = MagneticSwitch(**config.devices[self.COLLECTOR_SWITCH_ID])#used by the truck to know when he have to drop the foot
         self.dump_switch = MagneticSwitch(**config.devices[self.DUMP_SWITCH_ID]) # Useless for now
-        self.foot_switch = MagneticSwitch(**config.devices[self.FOOT_SWITCH_ID]) 
+        self.foot_up_switch = Switch(**config.devices[self.FOOT_DOWN_SWITCH_ID]) 
+        self.foot_up_switch.bind_raising_edge(self.foot_stepper.stop) #Stop the stepper when one of the switch is activated (works with the sequence)
+        self.foot_down_switch = Switch(**config.devices[self.FOOT_UP_SWITCH_ID])
+        self.foot_down_switch.bind_raising_edge(self.foot_stepper.stop) #Stop the stepper when one of the switch is activated (works with the sequence)
         self.in_position_switch = Switch(**config.devices[self.PLACE_IN_POSITION_SWITCH_ID]);
-        self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
-        self.foot_switch.bind_raising_edge(self.foot_stepper.stop) #Stop the stepper when one of the switch is activated (works with the sequence)
-        self.state = 0
-        #self.foot_stepper.disable_stepper(); # make it dead so it could be in starting position totaly down.
         
     def stop(self):
         print "[Camion.stop] Stop camion"

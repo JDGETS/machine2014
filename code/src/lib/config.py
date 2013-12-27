@@ -73,8 +73,11 @@ devices = {
     "camion_in_position_switch":{
         "pin":"P8_12",
      },
-    "camion_foot_switch":{
-        "pin":"P8_11",
+    "camion_foot_up_switch":{
+        "pin":"P8_14", #in3
+     },
+    "camion_foot_down_switch":{
+        "pin":"P8_16", #in4
      },
     "camion_stepper":{
         "pin":"GPIO2_6",
