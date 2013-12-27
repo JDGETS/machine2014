@@ -13,9 +13,9 @@ def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, stop_condition = 
     stop_condition = stop_condition or (lambda: False); #Default: No stop conditions
     bbio.pinMode(pin, bbio.OUTPUT)
     step = 0
-    ramp_step =  default_ramp_step if steps == -1 else min(default_ramp_step, steps)
+    ramp_step =  float(default_ramp_step if steps == -1 else min(default_ramp_step, steps))
     ramp_sleep = 100.0
-    ramp_sleep_decrement = ramp_sleep / (ramp_step*ramp_step)
+    #ramp_sleep_decrement = ramp_sleep / (ramp_step*ramp_step)
     min_sleep = 150 #Avant: 100-32
     half_ramp_step = ramp_step/2
     dec = 0
@@ -26,9 +26,9 @@ def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, stop_condition = 
         bbio.digitalWrite(pin,bbio.HIGH)
         step +=1
         
-        dec = (step/ramp_sleep)*(step/ramp_sleep)
+        dec = (step/ramp_step)*(step/ramp_step)
         if step > half_ramp_step:
-            dec = -dec + 2*(step/ramp_sleep)
+            dec = -dec + 2*(step/ramp_step)
         bbio.delayMicroseconds( min_sleep + ramp_sleep - dec*ramp_sleep)
 
     while (step < steps or steps == -1) and not kill.isSet() and \
