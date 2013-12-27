@@ -10,7 +10,7 @@ class Switch(object):
         """ Create a Switch object that reads input from the given pin. """
         self.pin = pin
         self.last_was_pressed = False
-        GPIO.setup(pin, GPIO.IN)
+        GPIO.setup(pin, GPIO.IN, GPIO.PUD_UP)
         self.rising_edge_callbacks = []
         GPIO.add_event_detect(pin, GPIO.RISING, self._rising_edge_event)
     
