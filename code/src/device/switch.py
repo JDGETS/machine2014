@@ -24,7 +24,7 @@ class Switch(object):
         
     def _edge_event(self, event = None):
         inputs = {0:0, 1:0}
-        for i in xrange(0,50):
+        for i in xrange(0,100):
             inputs[GPIO.input(self.pin)] += 1
     
         if inputs[1] > 2: #Observations de Mathieu et Mathieu
