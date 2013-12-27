@@ -24,7 +24,7 @@ class Switch(object):
     def clear_bindings_falling_edge(self, funct):
         self.rising_edge_callbacks.append(funct)
         
-    def _rising_edge_event(self, event = None):
+    def _edge_event(self, event = None):
         g = {0:0, 1:0}
         for i in xrange(0,50):
             g[GPIO.input(self.pin)] += 1
