@@ -19,10 +19,7 @@ class Switch(object):
         self.rising_edge_callbacks.append(funct)
         
     def bind_falling_edge(self, funct):
-        self.rising_edge_callbacks.append(funct)
-        
-    def clear_bindings_falling_edge(self, funct):
-        self.rising_edge_callbacks.append(funct)
+        self.falling_edge_callbacks.append(funct)
         
     def _edge_event(self, event = None):
         inputs = {0:0, 1:0}
