@@ -66,7 +66,7 @@ devices = {
         "stepper_foot_complete_ticks": 41000/4, #20.5' <- Distance foot to floor
      },
     "camion_collector_switch":{
-        "pin":"P8_15",
+        "pin":"P8_20",
      },
     "camion_dump_switch":{
         "pin":"P8_xx",

@@ -24,7 +24,7 @@ class Camion:
         print "[Camion.__init__]"
         self.config = config.devices[self.CAMION_CONFIG_ID]
         self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
-        self.collector_switch = MagneticSwitch(**config.devices[self.COLLECTOR_SWITCH_ID])#used by the truck to know when he have to drop the foot
+        self.collector_switch = Switch(**config.devices[self.COLLECTOR_SWITCH_ID])#used by the truck to know when he have to drop the foot
         self.dump_switch = MagneticSwitch(**config.devices[self.DUMP_SWITCH_ID]) # Useless for now
         self.foot_up_switch = Switch(**config.devices[self.FOOT_DOWN_SWITCH_ID]) 
         self.foot_up_switch.bind_raising_edge(self.foot_stepper.stop) #Stop the stepper when one of the switch is activated (works with the sequence)
