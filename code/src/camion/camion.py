@@ -22,6 +22,7 @@ class Camion:
 
     def __init__(self):
         print "[Camion.__init__]"
+        self.first_run = True
         self.config = config.devices[self.CAMION_CONFIG_ID]
         self.foot_stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
         self.collector_switch = Switch(**config.devices[self.COLLECTOR_SWITCH_ID])#used by the truck to know when he have to drop the foot
@@ -36,6 +37,7 @@ class Camion:
         
     def stop(self):
         print "[Camion.stop] Stop camion"
+        self.is_running = False
         self.foot_stepper.stop()
         PWM.cleanup()
     
@@ -58,7 +60,6 @@ class Camion:
         self.put_in_start_position();
 
         self.is_running = True
-        self.first_run = True
         while self.is_running:
             time.sleep(0.01)
 
