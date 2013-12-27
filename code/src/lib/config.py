@@ -52,7 +52,8 @@ devices = {
         "direction":"P8_43",
         "reset":"P8_44",
         "enable":"P8_46",
-        "ramp_step":1000
+        "ramp_step":1000,
+        'min_sleep':85
      },
      "rail":{
          "switch_away": "P8_22",
@@ -84,6 +85,7 @@ devices = {
         "direction":"P8_43",
         "reset":"P8_44",
         "enable":"P8_46",
-        "ramp_step":2000
+        "ramp_step":2000,
+        'min_sleep':120
     },
 }

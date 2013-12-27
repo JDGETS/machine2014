@@ -7,7 +7,7 @@ import bbio
 # """ If you derive a class from threading.Thread you can add a Thread.__init__(self) 
 #     at the end of your run method and you'll be able to call start again and it'll 
 #     automatically reinitialize itself when it's done. """
-def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, stop_condition = None):
+def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, min_sleep = 100-15, stop_condition = None):
     """ run this biatch """
     STOP_CONDITION_INTERVAL = 2
     stop_condition = stop_condition or (lambda: False); #Default: No stop conditions
@@ -16,7 +16,6 @@ def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, stop_condition = 
     ramp_step =  float(default_ramp_step if steps == -1 else min(default_ramp_step, steps))
     ramp_sleep = 100.0
     #ramp_sleep_decrement = ramp_sleep / (ramp_step*ramp_step)
-    min_sleep = 100-15 #Avant: 100-32
     half_ramp_step = ramp_step/2
     dec = 0
     
@@ -40,8 +39,9 @@ def move_thread(kill, pin, steps=-1, default_ramp_step = 2000, stop_condition = 
         bbio.delayMicroseconds(min_sleep)
 
 class Stepper(object):
-    def __init__(self, pin,direction,reset,enable,ramp_step):
+    def __init__(self, pin,direction,reset,enable,ramp_step,min_sleep):
         self.default_ramp_step = ramp_step
+        self.min_sleep = min_sleep
         self.pin = pin
         self.killThread = Event()
         self.direction = direction
@@ -66,7 +66,7 @@ class Stepper(object):
             self.stop()
         
         self.reset_stepper()
-        self.thread = Thread(target = move_thread, args = (self.killThread, self.pin, steps, self.default_ramp_step, stop_condition))
+        self.thread = Thread(target = move_thread, args = (self.killThread, self.pin, steps, self.default_ramp_step, self.min_sleep, stop_condition))
         self.thread.start()
     
     def is_moving(self):
