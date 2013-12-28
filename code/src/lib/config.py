@@ -12,14 +12,14 @@ devices = {
         "push_duty": 7.7
     },
     "vacuum_servo": {
-        "pin": "P9_42", #Servo3
+        "pin": "P8_13", #Servo2
         "complete_standby_duty": 8.5,
         "standby_duty": 5.8,
         "pull_duty": 4.0,
         "push_duty": 2.8 #NE PAS DESCENDRE PLUS BAS. Monter PULL_DUTY/COMPLETE_STANDBY_DUTY a la place.
     },
     "gate_servo": {
-        "pin": "P8_13", #Servo2
+        "pin": "P9_42", #Servo3        
         "pull_duty": 6.6,
         "standby_duty": 6.6,
         "push_duty": 7.9 
@@ -52,7 +52,7 @@ devices = {
         "direction":"P8_43",
         "reset":"P8_44",
         "enable":"P8_46",
-        "ramp_step":1000,
+        "ramp_step":1500,
         'min_sleep':85
      },
      "rail":{
