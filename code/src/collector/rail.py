@@ -9,7 +9,6 @@ class Rail(Component):
     AWAY_POSITION = 0
     HOME_POSITION = 16700 /2
     WAIT_FOR_SORTING_POSITION = HOME_POSITION - (600/2)
-    CM_PER_STEP = 0.0024765
     
     def __init__(self):
         super(Rail, self).__init__(self.state_sorting_position)
