@@ -100,6 +100,7 @@ class Camion:
                 self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_down_switch.is_pressed)
                 while self.foot_stepper.is_moving():
                     time.sleep(0.01) #It's ok, only component on the truck
+                time.sleep(0.01)
                 
     def bring_foot_up(self):
         print "[Camion.bring_foot_up]"
@@ -108,4 +109,5 @@ class Camion:
             self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_foot_complete_ticks"], self.foot_up_switch.is_pressed)
             while self.foot_stepper.is_moving():
                 time.sleep(0.01) #It's ok, only component on the truck
+            time.sleep(0.01)
         self.first_run = False
