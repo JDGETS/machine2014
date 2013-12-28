@@ -17,6 +17,7 @@ class Camion:
     FOOT_DOWN_SWITCH_ID = "camion_foot_down_switch"
     FOOT_STEPPER_ID = "camion_stepper"
     PLACE_IN_POSITION_SWITCH_ID = "camion_in_position_switch"
+    RF_SWITCH = "camion_rf_switch"
     DROP_FOOT_DIRECTION = 1
     LIFT_FOOT_DIRECTION = 0
 
@@ -33,7 +34,8 @@ class Camion:
         self.foot_down_switch.bind_raising_edge(self.foot_stepper.stop) #Stop the stepper when one of the switch is activated (works with the sequence)
         self.foot_up_switch = Switch(**config.devices[self.FOOT_UP_SWITCH_ID])
         self.foot_up_switch.bind_raising_edge(self.foot_stepper.stop) #Stop the stepper when one of the switch is activated (works with the sequence)
-        self.in_position_switch = Switch(**config.devices[self.PLACE_IN_POSITION_SWITCH_ID]);
+        self.in_position_switch = Switch(**config.devices[self.PLACE_IN_POSITION_SWITCH_ID])
+        self.rf_switch = Switch(**config.devices[self.RF_SWITCH])
         
     def stop(self):
         print "[Camion.stop] Stop camion"
@@ -74,9 +76,8 @@ class Camion:
 
     def wait_for_signal(self):
         """Wait for signal here"""
-        time.sleep(2.0)
-        #while ...:
-        #    pass
+        self.rf_switch.wait_pressed()
+        print "[Camion.run] RF received"
         return
 
     def put_in_start_position(self):

@@ -52,8 +52,8 @@ devices = {
         "direction":"P8_43",
         "reset":"P8_44",
         "enable":"P8_46",
-        "ramp_step":1500,
-        'min_sleep':85
+        "ramp_step":500,
+        'min_sleep':175
      },
      "rail":{
          "switch_away": "P8_22",
@@ -67,6 +67,9 @@ devices = {
      },
     "camion_collector_switch":{
         "pin":"P8_18",
+     },
+     "camion_rf_switch":{
+        "pin":"P8_22",
      },
     "camion_dump_switch":{
         "pin":"P8_xx",
