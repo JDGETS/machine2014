@@ -10,7 +10,9 @@ class ColorSensorWrapped:
     BLACK = 0
     WHITE = 1
     ORANGE = 2
-    UNKOWN = 3
+    UNKNOWN = 3
+
+    COLOR_TO_STRING = ['BLACK','WHITE','ORANGE','UNKNOWN']
 
     def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val):
         ADC.setup()
@@ -67,7 +69,7 @@ class ColorSensor(ColorSensorWrapped):
 
         return_val = best_match[0]
 
-        self.file.write(str(color)+" => "+str(color_distances)+" => "+str(return_val)+"\n")
+        self.file.write(str(color)+" => "+str(color_distances)+" => "+str(self.COLOR_TO_STRING[return_val])+"\n")
 
         return return_val
 
