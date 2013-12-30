@@ -75,26 +75,30 @@ devices = {
         "stepper_foot_complete_ticks": 41000/4, #20.5' <- Distance foot to floor
     },
     # Used by camion/camion
+    # Left at the left to detect when the camion is on the far left of the rail
     "camion_collector_switch": {
         "pin":"P8_18", # In5
     },
     # Used by camion/camion
+    # RF switch
      "camion_rf_switch": {
         "pin":"P8_22", # In7
     },
-    # Used by camion/camion
+    # Used by camion/camion, not used
     "camion_dump_switch": {
         "pin":"P8_11", # Magnetic In1
     },
-    # Used by camion/camion
+    # Used by camion/camion, not used
     "camion_in_position_switch": {
         "pin":"P8_12", # In2
     },
     # Used by camion/camion
+    # Switch below the camion, detect when the foot is up
     "camion_foot_up_switch": {
         "pin":"P8_14", # In3
     },
     # Used by camion/camion
+    # Switch above the camion, detect when the foot is down
     "camion_foot_down_switch": {
         "pin":"P8_16", # In4
     },
