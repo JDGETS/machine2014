@@ -47,7 +47,13 @@ class Sorter(Component):
 
     def stop(self):
         print "[Sorter.stop] Stop pistons"
+        
+        self.white_piston.pull()
+        time.sleep(self.PULL_DELAY)
         self.white_piston.stop()
+
+        self.orange_piston.pull()
+        time.sleep(self.PULL_DELAY)
         self.orange_piston.stop()
 
     def reset_ball_count(self):
