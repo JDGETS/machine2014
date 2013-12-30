@@ -22,7 +22,7 @@ class MonoSorter(Component):
     PULL_DELAY = 0.25
     PUSH_DELAY = 0.25
 
-    PISTON_ID = "white_piston"
+    PISTON_ID = "orange_piston"
     COLOR_SENSOR_ID = "color_sensor"
     MAX_BALL = 12
 
