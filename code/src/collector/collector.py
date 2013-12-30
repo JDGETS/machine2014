@@ -1,4 +1,5 @@
 from sorter import Sorter
+from mono_sorter import MonoSorter
 from rail import Rail
 from vacuum_shaker import VacuumShaker
 from lib import config
@@ -9,7 +10,7 @@ class Collector(object):
     def __init__(self):
         print "[Collector.__init__]"
         self.vacuum_shaker = VacuumShaker()
-        self.sorter = Sorter()
+        self.sorter = MonoSorter()
         self.rail = Rail()
         self.controller = CollectorController(self)
 
@@ -35,7 +36,7 @@ class Collector(object):
 
         for c in self.components:
             c.stop()
-            
+
         PWM.cleanup()
 
     def force_stop(self):
