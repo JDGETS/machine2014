@@ -84,14 +84,6 @@ devices = {
      "camion_rf_switch": {
         "pin":"P8_22", # In7
     },
-    # Used by camion/camion, not used
-    "camion_dump_switch": {
-        "pin":"P8_11", # Magnetic In1
-    },
-    # Used by camion/camion, not used
-    "camion_in_position_switch": {
-        "pin":"P8_12", # In2
-    },
     # Used by camion/camion
     # Switch below the camion, detect when the foot is up
     "camion_foot_up_switch": {
