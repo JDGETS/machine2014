@@ -9,11 +9,11 @@ class Logger(object):
             cls._instance = super(Logger, cls).__new__(cls, *args, **kwargs)
         return cls._instance
 
-	def __init__(self):
+    def __init__(self):
         self.is_initialized = False
         self.cycle_start_time = None
 
-		date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
         directory = 'log/'+date_str
         if not os.path.exists(directory):
             os.makedirs(directory)
