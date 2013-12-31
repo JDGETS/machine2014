@@ -26,6 +26,7 @@ class Sorter(Component):
     ORANGE_PISTON_ID = "orange_piston"
     COLOR_SENSOR_ID = "color_sensor"
     MAX_BALL = 12
+    COLOR_TIMEOUT = 2.0
 
     def __init__(self):
         super(Sorter, self).__init__(self.state_push)
@@ -70,7 +71,7 @@ class Sorter(Component):
         return self.last_ball_time
 
     def get_cycle_time(self):
-        return self.last_ball_time
+        return self.cycle_time
 
     def get_ball_count(self):
         return self.ball_count
@@ -94,11 +95,18 @@ class Sorter(Component):
         print "[Sorter.state_pushed] Piston in standby, w:%d,o:%d,t:%d" % (self.white_count, self.orange_count, self.ball_count)
 
         ball_color = self.color_sensor.get_color()
-        while ball_color == ColorSensor.UNKNOWN or ball_color == ColorSensor.BLACK:
+        detect_timeout = time.time()
+        while ball_color in [ColorSensor.UNKNOWN, ColorSensor.BLACK] and \
+        time.time() < detect_timeout + self.COLOR_TIMEOUT:
+            if ball_color == ColorSensor.BLACK:
+                detect_timeout = time.time()
             yield
             ball_color = self.color_sensor.get_color()
 
         current_piston_pushed = self.active_piston
+
+        if ball_color == ColorSensor.UNKNOWN:
+            print '[Sorter.state_pushed] Unknown ball detected'
 
         if self.orange_count > self.MAX_BALL or \
         (ball_color == ColorSensor.WHITE and self.white_count <= self.MAX_BALL):
