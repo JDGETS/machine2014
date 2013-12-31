@@ -77,7 +77,7 @@ class CollectorController(Component):
     def ready_to_drop_balls(self):
         balls = self.sorter.get_ball_count()
         last_ball_time = self.sorter.get_last_ball_time()
-        cycle_time = self.sorter.get_cycle_time()
+        cycle_time = self.vacuum_shaker.last_button_push
 
         done = balls >= self.MAX_BALLS_PER_ROUND
         halfway_done = balls >= self.MAX_BALLS_PER_ROUND/2
@@ -101,6 +101,7 @@ class CollectorController(Component):
             print "[CollectorController.state_wait_sorter] Timed out. Dumping "+str(self.sorter.get_ball_count())+" balls!"
 
         self.sorter.reset_ball_count()
+        self.vacuum_shaker.last_button_push = time.time()
 
         yield self.state_open_gate
 

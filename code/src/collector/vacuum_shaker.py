@@ -23,6 +23,8 @@ class VacuumShaker(Component):
         self.load_tank_switch = Switch(**config.devices[self.LOAD_TANK_SWITCH])
         self.vacuum_servo.complete_standby()
 
+        self.last_button_push = time.time()
+
     def stop(self):
         print "[VacuumShaker.stop] Stoping"
         self.vacuum_servo.stop()
@@ -39,6 +41,8 @@ class VacuumShaker(Component):
         while not self.load_tank_switch.was_pressed() \
             and time.time() < start_time + self.WAIT_TIMEOUT:
             yield
+
+        self.last_button_push = time.time()
 
         print "[VacuumShaker.state_push]"
         yield partial(self.state_push, 0)
