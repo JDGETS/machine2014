@@ -35,6 +35,7 @@ class Camion:
         sys.exit(0);
 
     def run(self):
+        self.is_running = True
         print "[Camion.run] Put camion down and wait for go_to_start_position signal"
 
         self.put_in_initial_position()
