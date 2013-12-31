@@ -2,6 +2,7 @@ from sorter import Sorter
 from rail import Rail
 from vacuum_shaker import VacuumShaker
 from lib import config
+from lib.logger import Logger
 from collector_controller import CollectorController
 import Adafruit_BBIO.PWM as PWM
 
@@ -15,6 +16,8 @@ class Collector(object):
 
         self.components = [self.sorter, self.vacuum_shaker, self.rail, self.controller]
         self.is_running = False
+
+        Logger().initialize(self) # It'll do the job
 
     def run(self):
         print "[Collector.run] Start collector"

@@ -46,6 +46,8 @@ class VacuumShaker(Component):
 
         self.last_button_push = time.time()
 
+        Logger().start_new_cycle()
+
         print "[VacuumShaker.state_push]"
         yield partial(self.state_push, 0)
 

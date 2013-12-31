@@ -4,6 +4,7 @@ from device.magnetic_switch import MagneticSwitch
 from sorter import Sorter
 from vacuum_shaker import VacuumShaker
 from lib import config
+from lib.logger import Logger
 import time
 
 class CollectorController(Component):
@@ -61,6 +62,7 @@ class CollectorController(Component):
         while self.rail.is_moving():
             yield
 
+        Logger().end_current_cycle()
         self.vacuum_shaker.wait_balls()
 
         yield self.wait( self.WAIT_TIME_DUMP_BALLS, self.state_push_truck_home)

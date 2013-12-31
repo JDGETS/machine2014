@@ -1,6 +1,7 @@
 import Adafruit_BBIO.ADC as ADC
 from math import sqrt
 import time
+from lib.logger import Logger
 
 
 def compare_colors(color1, color2):
@@ -57,7 +58,6 @@ class ColorSensor(ColorSensorWrapped):
     """ To dump color hits and look for errors. FOR TEST USE ONLY. """
     def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val, error_tolerance):
         ColorSensorWrapped.__init__(self,a_pin, b_pin, c_pin, black_val, white_val, orange_val, error_tolerance)
-        self.file = open('color_sensor.dump', 'w')
 
     def get_color(self):
         # Need to poll color twice to get last value (bug)
@@ -71,10 +71,6 @@ class ColorSensor(ColorSensorWrapped):
         return_val = best_match[0] if best_match[1] < self.error_tolerance else self.UNKNOWN
 
         if not return_val in [self.BLACK, self.UNKNOWN]:
-            self.file.write(str(color)+" => "+str(color_distances)+" => "+str(self.COLOR_TO_STRING[return_val])+"\n")
-            self.file.flush()
+            Logger().register_color(color, color_distances, self.COLOR_TO_STRING[return_val])
 
         return return_val
-
-    def __exit__(self):
-        self.file.close()

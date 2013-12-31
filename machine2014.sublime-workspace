@@ -31,7 +31,7 @@
 			"file": "code/src/camion/camion.py",
 			"settings":
 			{
-				"buffer_size": 2660,
+				"buffer_size": 2762,
 				"line_ending": "Unix"
 			}
 		},
@@ -39,7 +39,7 @@
 			"file": "code/src/camion/camion_foot.py",
 			"settings":
 			{
-				"buffer_size": 3382,
+				"buffer_size": 2612,
 				"line_ending": "Unix"
 			}
 		},
@@ -55,7 +55,7 @@
 			"file": "code/src/collector/rail.py",
 			"settings":
 			{
-				"buffer_size": 3987,
+				"buffer_size": 3757,
 				"line_ending": "Unix"
 			}
 		},
@@ -68,14 +68,6 @@
 			}
 		},
 		{
-			"file": "code/src/device/switch.py",
-			"settings":
-			{
-				"buffer_size": 2844,
-				"line_ending": "Unix"
-			}
-		},
-		{
 			"file": "code/src/collector/collector_controller.py",
 			"settings":
 			{
@@ -84,13 +76,37 @@
 			}
 		},
 		{
-			"contents": "from lib.component import Component\n\nfrom functools import partial\nfrom device import Piston, ColorSensor\nfrom lib import config\nimport time\n\nclass Sorter(Component):\n    \"\"\"Control the sorting function of the collector.\n    Implementation use a simple state machine generator. Each state yield None\n    or the next state function. The state machine end when a state return instead\n    of yielding\n\n    The states go in this order:\n    1. state_push: Push the white piston\n    2. state_pushed: Check if there a ball\n    3. state_pull: Pull the currently pushed piston\n    4. state_push: Push the good piston\n    5. Go back to 2.\n    \"\"\"\n\n    PULL_DELAY = 0.25\n    PUSH_DELAY = 0.25\n\n    WHITE_PISTON_ID = \"white_piston\"\n    ORANGE_PISTON_ID = \"orange_piston\"\n    COLOR_SENSOR_ID = \"color_sensor\"\n    MAX_BALL = 12\n\n    def __init__(self):\n        super(Sorter, self).__init__(self.state_push)\n\n        print \"[Sorter.__init__]\"\n\n        self.white_piston = Piston(**config.devices[self.WHITE_PISTON_ID])\n        self.orange_piston = Piston(**config.devices[self.ORANGE_PISTON_ID])\n\n        self.color_sensor = ColorSensor(**config.devices[self.COLOR_SENSOR_ID])\n\n        self.active_piston = self.white_piston\n\n        self.ball_count = 0\n        self.white_count = 0\n        self.orange_count = 0\n\n        self.last_ball_time = time.time();\n        self.cycle_time = time.time();\n\n    def stop(self):\n        print \"[Sorter.stop] Stop pistons\"\n\n        self.white_piston.pull()\n        time.sleep(self.PULL_DELAY)\n        self.white_piston.stop()\n\n        self.orange_piston.pull()\n        time.sleep(self.PULL_DELAY)\n        self.orange_piston.stop()\n\n    def reset_ball_count(self):\n        self.ball_count = 0\n        self.white_count = 0\n        self.orange_count = 0\n        self.cycle_time = time.time()\n\n    def get_ball_count(self):\n        return self.ball_count\n\n    def get_last_ball_time(self):\n        return self.last_ball_time\n\n    def get_cycle_time(self):\n        return self.cycle_time\n\n    def get_ball_count(self):\n        return self.ball_count\n\n    def state_push(self):\n        \"\"\"State that move one piston to push a ball\n        change to 'state_pushed' after a small delay\"\"\"\n\n        print \"[Sorter.state_push]\"\n\n        self.active_piston.push()\n        yield self.wait(self.PUSH_DELAY, self.state_pushed)\n\n    def state_pushed(self):\n        \"\"\"State that wait for a balls. Read ball's color and\n        change to 'state_recall' after setting the good piston\"\"\"\n\n        print \"[Sorter.state_pushed]\"\n\n        self.active_piston.standby()\n        print \"[Sorter.state_pushed] Piston in standby, w:%d,o:%d,t:%d\" % (self.white_count, self.orange_count, self.ball_count)\n\n        ball_color = self.color_sensor.get_color()\n        while ball_color == ColorSensor.UNKNOWN or ball_color == ColorSensor.BLACK:\n            yield\n            ball_color = self.color_sensor.get_color()\n\n        current_piston_pushed = self.active_piston\n\n        if self.orange_count > self.MAX_BALL or \\\n        (ball_color == ColorSensor.WHITE and self.white_count <= self.MAX_BALL):\n            print \"[Sorter.state_pushed] White ball detected\"\n            self.active_piston = self.white_piston\n            self.white_count += 1\n        else:\n            print \"[Sorter.state_pushed] Orange ball detected\"\n            self.active_piston = self.orange_piston\n            self.orange_count += 1\n\n        self.ball_count += 1\n        self.last_ball_time = time.time();\n        yield partial(self.state_pull, current_piston_pushed)\n\n    def state_pull(self, piston_to_recall):\n        \"\"\"move back piston_to_recall. Change to 'state_push' after the PULL_DELAY\"\"\"\n\n        print \"[Sorter.state_pull]\"\n\n        piston_to_recall.pull()\n        yield self.wait(self.PULL_DELAY, self.state_push)\n\n",
-			"file": "code/src/collector/sorter.py",
-			"file_size": 3801,
-			"file_write_time": 1388474231000000,
+			"file": "code/src/device/switch.py",
 			"settings":
 			{
-				"buffer_size": 3797,
+				"buffer_size": 2873,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "from lib.component import Component\nfrom device import Piston, Switch\nfrom lib import config\nfrom functools import partial\nfrom vacuum_shaker_piston import VacuumShakerPiston\nimport time\n\nclass VacuumShaker(Component):\n\n    SERVO_DELAY = 0.25\n    PULL_UP_DELAY = 0.15\n    WAIT_TIMEOUT = 2.0 #IN production: 30s (specs)\n    SHAKE_COUNT = 4\n\n    VACUUM_SERVO_ID = \"vacuum_servo\"\n    LOAD_TANK_SWITCH = \"load_tank_switch\"\n\n    SWITCH_TIMEOUT = 1\n\n    def __init__(self):\n        super(VacuumShaker, self).__init__(self.state_pull_up)\n        print \"[VacuumShaker.__init__]\"\n\n        self.vacuum_servo = VacuumShakerPiston(**config.devices[self.VACUUM_SERVO_ID])\n        self.load_tank_switch = Switch(**config.devices[self.LOAD_TANK_SWITCH])\n        self.vacuum_servo.complete_standby()\n\n        self.last_button_push = time.time()\n\n    def stop(self):\n        print \"[VacuumShaker.stop] Stoping\"\n        self.vacuum_servo.stop()\n\n    def wait_balls(self):\n        self.set_state(self.state_wait_ball);\n\n    def state_wait_ball(self):\n        print \"[VacuumShaker.state_wait_ball]\"\n\n        self.vacuum_servo.complete_standby()\n        start_time = time.time()\n\n        while not self.load_tank_switch.was_pressed() \\\n            and time.time() < start_time + self.WAIT_TIMEOUT:\n            yield\n\n        self.last_button_push = time.time()\n\n        Logger.new_cycle()\n\n        print \"[VacuumShaker.state_push]\"\n        yield partial(self.state_push, 0)\n\n    def state_pull_up(self):\n        if self.load_tank_switch.was_pressed() and time.time() > self.last_button_push + self.SWITCH_TIMEOUT:\n            yield self.state_wait_ball\n\n        self.vacuum_servo.standby()\n        yield self.wait(self.PULL_UP_DELAY, partial(self.state_push, 0))\n\n    def state_push(self, n):\n        if self.load_tank_switch.was_pressed() and time.time() > self.last_button_push + self.SWITCH_TIMEOUT:\n            yield self.state_wait_ball\n\n        self.vacuum_servo.push()\n\n        if n < self.SHAKE_COUNT:\n            yield self.wait(self.SERVO_DELAY, partial(self.state_pull, n))\n        else:\n            yield self.wait(self.SERVO_DELAY, self.state_pull_up)\n\n    def state_pull(self, n):\n        if self.load_tank_switch.was_pressed() and time.time() > self.last_button_push + self.SWITCH_TIMEOUT:\n            yield self.state_wait_ball\n\n        self.vacuum_servo.pull()\n        yield self.wait(self.SERVO_DELAY, partial(self.state_push, n+1))\n",
+			"file": "code/src/collector/vacuum_shaker.py",
+			"file_size": 2402,
+			"file_write_time": 1388528957000000,
+			"settings":
+			{
+				"buffer_size": 2430,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "code/src/device/color_sensor.py",
+			"settings":
+			{
+				"buffer_size": 2688,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "code/src/lib/logger",
+			"settings":
+			{
+				"buffer_size": 787,
 				"line_ending": "Unix"
 			}
 		}
@@ -123,13 +139,17 @@
 	},
 	"file_history":
 	[
+		"/data/Websites/_Perso/machine2014/code/src/lib/__init__.py",
+		"/data/Websites/_Perso/machine2014/code/tests/initialize_collector.py",
+		"/data/Websites/_Perso/machine2014/code/src/device/switch.py",
+		"/data/Websites/_Perso/machine2014/code/src/collector/sorter.py",
+		"/data/Websites/_Perso/machine2014/code/src/collector/vacuum_shaker.py",
 		"/data/Websites/_Perso/machine2014/code/src/collector/collector_controller.py",
 		"/data/Websites/_Perso/machine2014/code/src/camion/camion.py",
 		"/data/Websites/_Perso/machine2014/code/src/device/__init__.py",
 		"/etc/gnome/defaults.list",
 		"/home/matt/Desktop/Terminal",
 		"/home/matt/Downloads/LOG121-05_LAB4_BELS21109108_DUPV24099202_CUSN04029202/LOG121-05_LAB3_BELS21109108_DUPV24099202_CUSN04029202/src/lab04/model/Image.java",
-		"/data/Websites/_Perso/machine2014/code/tests/initialize_collector.py",
 		"/data/Websites/_Perso/machine2014/code/tests/servo.py",
 		"/data/Websites/_Perso/machine2014/code/.project",
 		"/data/Websites/_Perso/machine2014/machine2014.sublime-project",
@@ -160,6 +180,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"vacuum_",
 			"foot_",
 			"ryth",
 			"gedit",
@@ -184,7 +205,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 9,
 			"sheets":
 			[
 				{
@@ -192,15 +213,15 @@
 					"file": "code/src/camion/camion.py",
 					"settings":
 					{
-						"buffer_size": 2660,
+						"buffer_size": 2762,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								547,
-								547
+								526,
+								526
 							]
 						],
 						"settings":
@@ -314,7 +335,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 306.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -324,15 +345,15 @@
 					"file": "code/src/camion/camion_foot.py",
 					"settings":
 					{
-						"buffer_size": 3382,
+						"buffer_size": 2612,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1957,
-								1957
+								877,
+								877
 							]
 						],
 						"settings":
@@ -446,7 +467,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 505.0,
+						"translation.y": 153.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -463,8 +484,8 @@
 						"selection":
 						[
 							[
-								3159,
-								3159
+								2909,
+								2909
 							]
 						],
 						"settings":
@@ -588,25 +609,129 @@
 					"file": "code/src/collector/rail.py",
 					"settings":
 					{
-						"buffer_size": 3987,
+						"buffer_size": 3757,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								185,
-								185
+								2094,
+								2094
 							]
 						],
 						"settings":
 						{
+							"codeintel": true,
+							"codeintel_config":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_files_in_project": false,
+									"javascriptExtraPaths":
+									[
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 5,
+									"codeintel_scan_files_in_project": false,
+									"phpExtraPaths":
+									[
+									]
+								},
+								"Python":
+								{
+									"env":
+									{
+									}
+								}
+							},
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_live": true,
+							"codeintel_live_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							{
+								"JavaScript":
+								[
+									"/build/",
+									"/min/"
+								]
+							},
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+								"PyWin32",
+								"jQuery",
+								"Rails"
+							],
+							"codeintel_snippets": true,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"sublime_auto_complete": true,
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 408.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -745,18 +870,150 @@
 				},
 				{
 					"buffer": 5,
-					"file": "code/src/device/switch.py",
+					"file": "code/src/collector/collector_controller.py",
 					"settings":
 					{
-						"buffer_size": 2844,
+						"buffer_size": 4124,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								850,
-								850
+								3180,
+								3180
+							]
+						],
+						"settings":
+						{
+							"codeintel": true,
+							"codeintel_config":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_files_in_project": false,
+									"javascriptExtraPaths":
+									[
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 5,
+									"codeintel_scan_files_in_project": false,
+									"phpExtraPaths":
+									[
+									]
+								},
+								"Python":
+								{
+									"env":
+									{
+									}
+								}
+							},
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_live": true,
+							"codeintel_live_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							{
+								"JavaScript":
+								[
+									"/build/",
+									"/min/"
+								]
+							},
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+								"PyWin32",
+								"jQuery",
+								"Rails"
+							],
+							"codeintel_snippets": true,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"sublime_auto_complete": true,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1231.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "code/src/device/switch.py",
+					"settings":
+					{
+						"buffer_size": 2873,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								129,
+								129
 							]
 						],
 						"settings":
@@ -876,19 +1133,19 @@
 					"type": "text"
 				},
 				{
-					"buffer": 6,
-					"file": "code/src/collector/collector_controller.py",
+					"buffer": 7,
+					"file": "code/src/collector/vacuum_shaker.py",
 					"settings":
 					{
-						"buffer_size": 4124,
+						"buffer_size": 2430,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1367,
+								1367
 							]
 						],
 						"settings":
@@ -1002,25 +1259,25 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1114.0,
+						"translation.y": 306.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
-					"buffer": 7,
-					"file": "code/src/collector/sorter.py",
+					"buffer": 8,
+					"file": "code/src/device/color_sensor.py",
 					"settings":
 					{
-						"buffer_size": 3797,
+						"buffer_size": 2688,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1966,
-								1966
+								2080,
+								2080
 							]
 						],
 						"settings":
@@ -1134,7 +1391,137 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 628.0,
+						"translation.y": 867.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "code/src/lib/logger",
+					"settings":
+					{
+						"buffer_size": 787,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								697,
+								697
+							]
+						],
+						"settings":
+						{
+							"codeintel": true,
+							"codeintel_config":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_files_in_project": false,
+									"javascriptExtraPaths":
+									[
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 5,
+									"codeintel_scan_files_in_project": false,
+									"phpExtraPaths":
+									[
+									]
+								},
+								"Python":
+								{
+									"env":
+									{
+									}
+								}
+							},
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_live": true,
+							"codeintel_live_enabled_languages":
+							[
+								"JavaScript",
+								"Mason",
+								"XBL",
+								"XUL",
+								"RHTML",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"XSLT",
+								"Django",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Smarty",
+								"Node.js",
+								"Tcl",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							{
+								"JavaScript":
+								[
+									"/build/",
+									"/min/"
+								]
+							},
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+								"PyWin32",
+								"jQuery",
+								"Rails"
+							],
+							"codeintel_snippets": true,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"sublime_auto_complete": true,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
