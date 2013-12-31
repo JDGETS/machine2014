@@ -26,7 +26,7 @@ class VacuumShaker(Component):
     def stop(self):
         print "[VacuumShaker.stop] Stoping"
         self.vacuum_servo.stop()
-        
+
     def wait_balls(self):
         self.set_state(self.state_wait_ball);
 
@@ -40,10 +40,10 @@ class VacuumShaker(Component):
             and time.time() < start_time + self.WAIT_TIMEOUT:
             yield
 
+        print "[VacuumShaker.state_push]"
         yield partial(self.state_push, 0)
 
     def state_pull_up(self):
-        print "[VacuumShaker.state_pull_up]"
         if self.load_tank_switch.was_pressed():
             yield self.state_wait_ball
 
@@ -51,7 +51,6 @@ class VacuumShaker(Component):
         yield self.wait(self.PULL_UP_DELAY, partial(self.state_push, 0))
 
     def state_push(self, n):
-        print "[VacuumShaker.state_push]"
         if self.load_tank_switch.was_pressed():
             yield self.state_wait_ball
 
@@ -63,7 +62,6 @@ class VacuumShaker(Component):
             yield self.wait(self.SERVO_DELAY, self.state_pull_up)
 
     def state_pull(self, n):
-        print "[VacuumShaker.state_pull]"
         if self.load_tank_switch.was_pressed():
             yield self.state_wait_ball
 
