@@ -69,7 +69,8 @@ class ColorSensor(ColorSensorWrapped):
 
         return_val = best_match[0]
 
-        self.file.write(str(color)+" => "+str(color_distances)+" => "+str(self.COLOR_TO_STRING[return_val])+"\n")
+        if return_val != self.BLACK:
+            self.file.write(str(color)+" => "+str(color_distances)+" => "+str(self.COLOR_TO_STRING[return_val])+"\n")
 
         return return_val
 
