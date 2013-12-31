@@ -41,7 +41,7 @@ class Switch(object):
             else:
                 for callback in self.falling_edge_callbacks:
                     callback()
-        elif self.edges_detected == GPIO.RAISING:
+        elif self.edges_detected == GPIO.RISING:
             for callback in self.rising_edge_callbacks:
                 callback()
             self.current_detected_pressed_id += 1
