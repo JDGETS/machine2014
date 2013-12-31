@@ -92,6 +92,11 @@ class Camion:
         #Drop camion. Foot on floor so bring it up.
         self.foot_stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_start_position_ticks"], self.foot_up_switch.is_pressed)
 
+        while self.foot_stepper.is_moving():
+            time.sleep(0.01)
+
+        self.drop_foot() # Make sure the foot touch the ground
+
     def drop_foot(self):
         if not self.first_run:
             print "[Camion.drop_foot]"
