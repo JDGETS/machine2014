@@ -24,8 +24,8 @@ devices = {
     # Used by collector/collector_controller
     "gate_servo": {
         "pin": "P8_13", #Servo2
-        "pull_duty": 5,
-        "standby_duty": 5,
+        "pull_duty": 4.8,
+        "standby_duty": 4.8,
         "push_duty": 6.2
     },
     # Used by collector/sorter
