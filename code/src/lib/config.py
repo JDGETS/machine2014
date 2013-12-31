@@ -104,7 +104,7 @@ devices = {
         "reset":"P8_44",    # Stepper1 Reset
         "enable":"P8_46",   # Stepper1 Enable
         "ramp_step":2000,
-        'min_sleep':120
+        'min_sleep':140
     },
 
     # Used by tools/process_spawner. Not used anymore.
