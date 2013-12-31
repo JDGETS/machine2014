@@ -27,14 +27,6 @@ class CamionFoot:
         self.up_switch = Switch(**config.devices[self.FOOT_UP_SWITCH_ID])
 
         self.activate_bindings()
-        
-    def activate_bindings(self):
-        self.down_switch.bind_raising_edge(self.stepper.stop) #Stop the stepper when one of the switch is activated (works with the sequence)
-        self.up_switch.bind_raising_edge(self.stepper.stop) #Stop the stepper when one of the switch is activated (works with the sequence)
-  
-    def deactivate_bindings(self):
-        self.down_switch.clear_bindings() 
-        self.up_switch.clear_bindings() 
 
     def stop(self):
         print "[CamionFoot.stop] Stop foot"
@@ -44,15 +36,12 @@ class CamionFoot:
         print "[CamionFoot.go_to_initial_position] Drop foot then go up a li' bit more"
         self.drop()
         print "[CamionFoot.go_to_initial_position] A lil' bit more.."
-        self.deactivate_bindings() #Hack "Juliette": deactivate bindings
         self.stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
         while self.stepper.is_moving():
             time.sleep(0.01)
-        self.activate_bindings() #/Hack "Juliette": reactivate bindings
 
     def put_in_start_position(self):
         print "[CamionFoot.put_in_start_position]"
-        self.deactivate_bindings() #Hack "Juliette": deactivate bindings
         #Drop camion. Foot on floor so bring it up more than you need to so the switch on the collector is activated.
         self.stepper.move(self.LIFT_FOOT_DIRECTION, 2*self.config["stepper_start_position_ticks"])
 
@@ -60,7 +49,6 @@ class CamionFoot:
             time.sleep(0.01)
 
         time.sleep(1)
-        self.activate_bindings() #/Hack "Juliette": reactivate bindings
 
         self.drop() # Make sure the foot touch the ground
 
