@@ -16,10 +16,10 @@ while True:
   
     if c == 1:
         c = int(raw_input("how much? "))
-        r.stepper.move(0,abs(c))
+        r.stepper.move(0,abs(c), rail.is_away)
     elif c == 2:
         c = int(raw_input("how much? "))
-        r.stepper.move(1,abs(c))
+        r.stepper.move(1,abs(c), rail.is_home)
     elif c == 3:
         print "closing gate"
         gate.push()
