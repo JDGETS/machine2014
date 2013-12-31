@@ -20,7 +20,7 @@ class Camion:
 
         config.devices[self.COLLECTOR_SWITCH_ID]["detect_edges"] = GPIO.BOTH
         self.collector_switch = Switch(**config.devices[self.COLLECTOR_SWITCH_ID])#used by the truck to know when he have to drop the foot
-        self.collector_switch.bind_raising_edge(self.foot.drop)
+        self.collector_switch.bind_rising_edge(self.foot.drop)
         self.collector_switch.bind_falling_edge(self.foot.bring_up)
 
         self.in_position_switch = Switch(**config.devices[self.PLACE_IN_POSITION_SWITCH_ID])
