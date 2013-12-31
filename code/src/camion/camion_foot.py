@@ -42,11 +42,13 @@ class CamionFoot:
 
     def put_in_start_position(self):
         print "[CamionFoot.put_in_start_position]"
-        #Drop camion. Foot on floor so bring it up.
-        self.stepper.move(self.LIFT_FOOT_DIRECTION, self.config["stepper_start_position_ticks"], self.up_switch.is_pressed)
+        #Drop camion. Foot on floor so bring it up more than you need to so the switch on the collector is activated.
+        self.stepper.move(self.LIFT_FOOT_DIRECTION, 2*self.config["stepper_start_position_ticks"])
 
         while self.stepper.is_moving():
             time.sleep(0.01)
+
+        time.sleep(1)
 
         self.drop() # Make sure the foot touch the ground
 
