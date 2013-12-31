@@ -93,6 +93,7 @@ class CollectorController(Component):
         print "[CollectorController.state_wait_sorter]"
 
         self.sorter.last_ball_time = time.time()
+        self.vacuum_shaker.last_button_push = time.time()
 
         while not self.ready_to_drop_balls():
             yield
@@ -101,7 +102,6 @@ class CollectorController(Component):
             print "[CollectorController.state_wait_sorter] Timed out. Dumping "+str(self.sorter.get_ball_count())+" balls!"
 
         self.sorter.reset_ball_count()
-        self.vacuum_shaker.last_button_push = time.time()
 
         yield self.state_open_gate
 
