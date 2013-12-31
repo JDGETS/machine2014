@@ -15,7 +15,7 @@ devices = {
     },
     # Used by collector/vacuum_shaker
     "vacuum_servo": {
-        "pin": "P8_13", #Servo2
+        "pin": "P9_42", #Servo3
         "complete_standby_duty": 8.5,
         "standby_duty": 5.8,
         "pull_duty": 4.0,
@@ -23,7 +23,7 @@ devices = {
     },
     # Used by collector/collector_controller
     "gate_servo": {
-        "pin": "P9_42", #Servo3
+        "pin": "P8_13", #Servo2
         "pull_duty": 6.6,
         "standby_duty": 6.6,
         "push_duty": 7.9
