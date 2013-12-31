@@ -85,8 +85,9 @@ class CollectorController(Component):
         timed_out_cycle = int(time.time() - cycle_time) > self.MAX_DELAY_CYCLE
 
         foot_down = self.foot_down_switch.is_pressed()
+        is_home = self.rail.is_home()
 
-        return foot_down and (done or (halfway_done and timed_out_ball) or timed_out_cycle)
+        return is_home and foot_down and (done or (halfway_done and timed_out_ball) or (timed_out_cycle and balls > 0))
 
     def state_wait_sorter(self):
         print "[CollectorController.state_wait_sorter]"
