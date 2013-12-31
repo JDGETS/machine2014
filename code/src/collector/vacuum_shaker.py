@@ -4,6 +4,7 @@ from lib import config
 from functools import partial
 from vacuum_shaker_piston import VacuumShakerPiston
 import time
+from lib.logger import Logger
 
 class VacuumShaker(Component):
 
