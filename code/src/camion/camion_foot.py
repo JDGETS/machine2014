@@ -18,7 +18,6 @@ class CamionFoot:
 
     def __init__(self):
         print "[Camion.__init__]"
-        self.current_position = self.FOOT_DOWN
         self.config = config.devices[self.CAMION_FOOT_CONFIG_ID]
 
         self.stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
