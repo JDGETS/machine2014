@@ -8,13 +8,17 @@ class Logger(object):
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
             cls._instance = super(Logger, cls).__new__(cls, *args, **kwargs)
+            cls.__real_init();
         return cls._instance
 
     def __init__(self):
+        pass #Don't use this. __new__ fucks it up. Use __real_init
+
+    def __real_init(self):
         self.is_initialized = False
         self.cycle_start_time = None
 
-        date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         directory = 'log/'+date_str
         if not os.path.exists(directory):
             os.makedirs(directory)
