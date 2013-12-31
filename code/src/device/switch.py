@@ -14,6 +14,7 @@ class Switch(object):
         GPIO.setup(pin, GPIO.IN, GPIO.PUD_UP)
         self.rising_edge_callbacks = []
         self.falling_edge_callbacks = []
+        self.edges_detected = detect_edges
         GPIO.add_event_detect(pin, detect_edges, self._edge_event, 50)
     
     def bind_raising_edge(self, funct):
@@ -27,17 +28,27 @@ class Switch(object):
         self.falling_edge_callbacks = []
     
     def _edge_event(self, event = None):
-        inputs = {0:0, 1:0}
-        for i in xrange(0,100):
-            inputs[GPIO.input(self.pin)] += 1
-    
-        if inputs[1] > 2: #Observations de Mathieu et Mathieu
+        #Ugly code - c'est la faute de Lavoie
+        if self.edges_detected == GPIO.BOTH:
+            inputs = {0:0, 1:0}
+            for i in xrange(0,100):
+                inputs[GPIO.input(self.pin)] += 1
+        
+            if inputs[1] > 2: #Observations de Mathieu et Mathieu
+                for callback in self.rising_edge_callbacks:
+                    callback()
+                self.current_detected_pressed_id += 1
+            else:
+                for callback in self.falling_edge_callbacks:
+                    callback()
+        elif self.edges_detected == GPIO.RAISING:
             for callback in self.rising_edge_callbacks:
                 callback()
             self.current_detected_pressed_id += 1
-        else:
+        elif self.edges_detected == GPIO.FALLING:
             for callback in self.falling_edge_callbacks:
                 callback()
+
     
     def is_pressed(self):
         """ Return True if the switch is pressed. """
