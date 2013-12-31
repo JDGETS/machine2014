@@ -6,7 +6,7 @@ import Adafruit_BBIO.GPIO as GPIO
 
 class Switch(object):
 
-    def __init__(self, pin, detect_edges = GPIO.RAISING):
+    def __init__(self, pin, detect_edges = GPIO.RISING):
         """ Create a Switch object that reads input from the given pin. """
         self.pin = pin
         self.last_detected_pressed_id = 0
