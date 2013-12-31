@@ -14,7 +14,7 @@ class ColorSensorWrapped:
 
     COLOR_TO_STRING = ['BLACK','WHITE','ORANGE','UNKNOWN']
 
-    def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val):
+    def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val, error_tolerance):
         ADC.setup()
         self.a_pin = a_pin
         self.b_pin = b_pin
@@ -50,7 +50,7 @@ class ColorSensorWrapped:
         color_distances = map(lambda c: (c[0], compare_colors(color, c[1])), self.colors)
         best_match = sorted(color_distances, key=lambda c: c[1])[0]
 
-        return best_match[0]
+        return best_match[0] if best_match[1] < self.error_tolerance else self.UNKNOWN
 
 class ColorSensor(ColorSensorWrapped):
     """ To dump color hits and look for errors. FOR TEST USE ONLY. """
@@ -67,9 +67,9 @@ class ColorSensor(ColorSensorWrapped):
         color_distances = map(lambda c: (c[0], compare_colors(color, c[1])), self.colors)
         best_match = sorted(color_distances, key=lambda c: c[1])[0]
 
-        return_val = best_match[0]
+        return_val = best_match[0] if best_match[1] < self.error_tolerance else self.UNKNOWN
 
-        if return_val != self.BLACK:
+        if not return_val in [self.BLACK, self.UNKNOWN]:
             self.file.write(str(color)+" => "+str(color_distances)+" => "+str(self.COLOR_TO_STRING[return_val])+"\n")
             self.file.flush()
 
@@ -77,3 +77,5 @@ class ColorSensor(ColorSensorWrapped):
 
     def __exit__(self):
         self.file.close()
+[0.045000001788139343, 0.043888889253139496, 0.064999997615814209] =>
+[(0, 0.0593205351221383), (1, 0.044893598001588361), (2, 0.039044092352420429)] => ORANGE
