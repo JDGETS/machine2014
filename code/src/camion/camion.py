@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from device.switch import Switch
-from camion.camion_foot import CamionFoot
+from camion_foot import CamionFoot
 from lib import config
 import time
 import Adafruit_BBIO.PWM as PWM
