@@ -2,15 +2,15 @@ devices = {
     # Used by collector/sorter
     "white_piston": {
         "pin": "P9_22", #Servo1
-        "pull_duty": 5.6,
+        "pull_duty": 5,
         "standby_duty": 6.3,
-        "push_duty": 7.7
+        "push_duty": 7.2
     },
     # Used by collector/sorter
     "orange_piston": {
         "pin": "P9_14", #Servo0
         "pull_duty": 5.6,
-        "standby_duty": 6.3,
+        "standby_duty": 6.7,
         "push_duty": 7.7
     },
     # Used by collector/vacuum_shaker
@@ -24,9 +24,9 @@ devices = {
     # Used by collector/collector_controller
     "gate_servo": {
         "pin": "P8_13", #Servo2
-        "pull_duty": 6.6,
-        "standby_duty": 6.6,
-        "push_duty": 7.9
+        "pull_duty": 6.4,
+        "standby_duty": 6.4,
+        "push_duty": 7.6
     },
     # Used by collector/sorter
     "color_sensor": {
