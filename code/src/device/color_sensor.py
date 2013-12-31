@@ -22,6 +22,7 @@ class ColorSensorWrapped:
         self.black_val = black_val
         self.white_val = white_val
         self.orange_val = orange_val
+        self.error_tolerance = error_tolerance
 
         self.colors =  \
             [(self.BLACK, self.black_val), \
@@ -54,8 +55,8 @@ class ColorSensorWrapped:
 
 class ColorSensor(ColorSensorWrapped):
     """ To dump color hits and look for errors. FOR TEST USE ONLY. """
-    def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val):
-        ColorSensorWrapped.__init__(self,a_pin, b_pin, c_pin, black_val, white_val, orange_val)
+    def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val, error_tolerance):
+        ColorSensorWrapped.__init__(self,a_pin, b_pin, c_pin, black_val, white_val, orange_val, error_tolerance)
         self.file = open('color_sensor.dump', 'w')
 
     def get_color(self):
