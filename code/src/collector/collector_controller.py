@@ -42,6 +42,8 @@ class CollectorController(Component):
         if not self.start_collect_switch.is_pressed():
             self.start_collect_switch.wait_pressed()
 
+        Logger().start_new_cycle() #Start first cycle here
+
         self.gate.push();
 
         yield self.state_push_truck_home
