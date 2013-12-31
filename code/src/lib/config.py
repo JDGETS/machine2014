@@ -71,7 +71,7 @@ devices = {
 
     #Config du pied
     "camion_foot": {
-       "stepper_start_position_ticks": 3000/4,
+       "stepper_start_position_ticks": 1200,
        "stepper_complete_ticks": 41000/4, #20.5' <- Distance foot to floor
     },
     # Used by camion/camion
