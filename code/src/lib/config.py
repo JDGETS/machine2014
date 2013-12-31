@@ -70,12 +70,7 @@ devices = {
 
 
     "camion_foot": {
-        "stepper_start_position_ticks": 1200,
-        "stepper_complete_ticks": 41000/4, #20.5' <- Distance foot to floor
-    },
     # Used by camion/camion
-    # Left at the left to detect when the camion is on the far left of the rail
-    "camion_collector_switch": {
         "pin":"P8_18", # In5
     },
     # Used by camion/camion

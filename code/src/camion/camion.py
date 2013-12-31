@@ -18,7 +18,8 @@ class Camion:
         print "[Camion.__init__]"
         self.foot = CamionFoot()
 
-        self.collector_switch = Switch(**config.devices[self.COLLECTOR_SWITCH_ID], GPIO.BOTH)#used by the truck to know when he have to drop the foot
+        config.devices[self.COLLECTOR_SWITCH_ID]["detect_edges"] = GPIO.BOTH
+        self.collector_switch = Switch(**config.devices[self.COLLECTOR_SWITCH_ID])#used by the truck to know when he have to drop the foot
         self.collector_switch.bind_raising_edge(self.foot.drop)
         self.collector_switch.bind_falling_edge(self.foot.bring_up)
 
