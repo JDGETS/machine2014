@@ -14,8 +14,11 @@ class Logger(object):
         self.cycle_start_time = None
 
 		date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
-        self.balls_color = open('log/'+date_str+'/color_sensor.dump', 'w')
-        self.cycle_file = open('log/'+date_str+'/cycles.dump', 'w')
+        directory = 'log/'+date_str
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        self.balls_color = open(directory+'/color_sensor.dump', 'w')
+        self.cycle_file = open(directory+'/cycles.dump', 'w')
 
     def initialize(self, collector):
         self.is_initialized = True
