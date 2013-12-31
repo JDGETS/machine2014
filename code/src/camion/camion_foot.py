@@ -35,8 +35,9 @@ class CamionFoot:
     def go_to_initial_position(self):
         print "[CamionFoot.go_to_initial_position] Drop foot then go up a li' bit more"
         self.drop()
-        self.foot_stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
-        while self.foot_stepper.is_moving():
+        print "[CamionFoot.go_to_initial_position] A lil' bit more.."
+        self.stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
+        while self.stepper.is_moving():
             time.sleep(0.01)
         self.current_position = self.STARTING_POSITION
 
