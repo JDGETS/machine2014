@@ -15,6 +15,8 @@ class VacuumShaker(Component):
     VACUUM_SERVO_ID = "vacuum_servo"
     LOAD_TANK_SWITCH = "load_tank_switch"
 
+    SWITCH_TIMEOUT = 1
+
     def __init__(self):
         super(VacuumShaker, self).__init__(self.state_pull_up)
         print "[VacuumShaker.__init__]"
@@ -48,14 +50,14 @@ class VacuumShaker(Component):
         yield partial(self.state_push, 0)
 
     def state_pull_up(self):
-        if self.load_tank_switch.was_pressed():
+        if self.load_tank_switch.was_pressed() and time.time() > self.last_button_push + self.SWITCH_TIMEOUT:
             yield self.state_wait_ball
 
         self.vacuum_servo.standby()
         yield self.wait(self.PULL_UP_DELAY, partial(self.state_push, 0))
 
     def state_push(self, n):
-        if self.load_tank_switch.was_pressed():
+        if self.load_tank_switch.was_pressed() and time.time() > self.last_button_push + self.SWITCH_TIMEOUT:
             yield self.state_wait_ball
 
         self.vacuum_servo.push()
@@ -66,7 +68,7 @@ class VacuumShaker(Component):
             yield self.wait(self.SERVO_DELAY, self.state_pull_up)
 
     def state_pull(self, n):
-        if self.load_tank_switch.was_pressed():
+        if self.load_tank_switch.was_pressed() and time.time() > self.last_button_push + self.SWITCH_TIMEOUT:
             yield self.state_wait_ball
 
         self.vacuum_servo.pull()
