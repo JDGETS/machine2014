@@ -48,7 +48,7 @@ class Camion:
 
         self.wait_for_signal();
         self.activate_bindings(); #Activate the home switch bindings
-        self.in_position_switch.bind_raising_edge(self.force_stop) # After the first push, it is now binded to stop() 
+        self.in_position_switch.bind_rising_edge(self.force_stop) # After the first push, it is now binded to stop() 
 
         print "[Camion.run] Camion started"
 
