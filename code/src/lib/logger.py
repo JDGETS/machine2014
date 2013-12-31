@@ -1,5 +1,6 @@
 import datetime
 import time
+import os
 
 class Logger(object):
     _instance = None
