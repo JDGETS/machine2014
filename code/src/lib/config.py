@@ -2,14 +2,14 @@ devices = {
     # Used by collector/sorter
     "white_piston": {
         "pin": "P9_22", #Servo1
-        "pull_duty": 5,
+        "pull_duty": 5.1,
         "standby_duty": 6.3,
         "push_duty": 7.2
     },
     # Used by collector/sorter
     "orange_piston": {
         "pin": "P9_14", #Servo0
-        "pull_duty": 5.5,
+        "pull_duty": 5.6,
         "standby_duty": 6.7,
         "push_duty": 7.7
     },
