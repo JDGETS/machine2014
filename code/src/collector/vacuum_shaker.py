@@ -9,7 +9,7 @@ class VacuumShaker(Component):
 
     SERVO_DELAY = 0.25
     PULL_UP_DELAY = 0.15
-    WAIT_TIMEOUT = 30.0
+    WAIT_TIMEOUT = 2.0 #IN production: 30s (specs)
     SHAKE_COUNT = 4
 
     VACUUM_SERVO_ID = "vacuum_servo"
