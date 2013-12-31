@@ -44,6 +44,7 @@ class Sorter(Component):
         self.orange_count = 0
 
         self.last_ball_time = time.time();
+        self.cycle_time = time.time();
 
     def stop(self):
         print "[Sorter.stop] Stop pistons"
@@ -60,11 +61,15 @@ class Sorter(Component):
         self.ball_count = 0
         self.white_count = 0
         self.orange_count = 0
+        self.cycle_time = time.time()
 
     def get_ball_count(self):
         return self.ball_count
 
     def get_last_ball_time(self):
+        return self.last_ball_time
+
+    def get_cycle_time(self):
         return self.last_ball_time
 
     def get_ball_count(self):

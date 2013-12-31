@@ -13,6 +13,7 @@ class CollectorController(Component):
     WAIT_TIME_DUMP_BALLS = 1.5
     MAX_BALLS_PER_ROUND = 20
     MAX_DELAY_BETWEEN_BALLS = 2.0
+    MAX_DELAY_CYCLE = 30.0
     START_COLLECT = 'start_collect_switch'
     GATE = 'gate_servo'
     FOOT_UP = 'collector_foot_up'
@@ -76,12 +77,16 @@ class CollectorController(Component):
     def ready_to_drop_balls(self):
         balls = self.sorter.get_ball_count()
         last_ball_time = self.sorter.get_last_ball_time()
+        cycle_time = self.sorter.get_cycle_time()
         
         done = balls >= self.MAX_BALLS_PER_ROUND
         halfway_done = balls >= self.MAX_BALLS_PER_ROUND/2
-        timed_out = int(time.time() - last_ball_time) > self.MAX_DELAY_BETWEEN_BALLS
+        timed_out_ball = int(time.time() - last_ball_time) > self.MAX_DELAY_BETWEEN_BALLS
+        timed_out_cycle = int(time.time() - cycle_time) > self.MAX_DELAY_CYCLE
         
-        return done or (halfway_done and timed_out)
+        foot_up = self.foot_up_switch.is_pressed()
+
+        return foot up and (done or (halfway_done and timed_out_ball) or timed_out_cycle)
         
     def state_wait_sorter(self):
         print "[CollectorController.state_wait_sorter]"
