@@ -68,9 +68,13 @@ devices = {
         "switch_home": "P8_18", # In5
     },
 
-
+    #Config du pied
     "camion_foot": {
+       "stepper_start_position_ticks": 3000/4,
+       "stepper_complete_ticks": 41000/4, #20.5' <- Distance foot to floor
+    },
     # Used by camion/camion
+    "camion_collector_switch": {
         "pin":"P8_18", # In5
     },
     # Used by camion/camion
