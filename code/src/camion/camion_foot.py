@@ -26,8 +26,6 @@ class CamionFoot:
         
         self.up_switch = Switch(**config.devices[self.FOOT_UP_SWITCH_ID])
 
-        self.activate_bindings()
-
     def stop(self):
         print "[CamionFoot.stop] Stop foot"
         self.stepper.stop()
