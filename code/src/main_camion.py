@@ -5,7 +5,7 @@ import sys
 if __name__ == "__main__":
     c = None
     try:
-        print "[main_camion] Start camion"
+        print "[main_camion] Start camion."
         c = Camion()
         c.run()
         

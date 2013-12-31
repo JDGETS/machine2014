@@ -69,10 +69,9 @@ devices = {
     },
 
 
-    "camion": {
-        "foot_standby_time":"3",
+    "camion_foot": {
         "stepper_start_position_ticks": 3000/4,
-        "stepper_foot_complete_ticks": 41000/4, #20.5' <- Distance foot to floor
+        "stepper_complete_ticks": 41000/4, #20.5' <- Distance foot to floor
     },
     # Used by camion/camion
     # Left at the left to detect when the camion is on the far left of the rail
@@ -94,6 +93,11 @@ devices = {
     "camion_foot_down_switch": {
         "pin":"P8_16", # In4
     },
+    # Used by camion/camion when ready to go to init position
+    "camion_in_position_switch": {
+        "pin":"P8_12", # In2
+    },
+
     "camion_stepper": {
         "pin":"GPIO2_6",    # Stepper1 Step
         "direction":"P8_43",# Stepper1 Dir

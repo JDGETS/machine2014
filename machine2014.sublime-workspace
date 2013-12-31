@@ -1,0 +1,162 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 306.0,
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			]
+		],
+		"width": 602.0
+	},
+	"console":
+	{
+		"height": 139.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/data/Websites/_Perso/machine2014/code/src/collector/collector_controller.py",
+		"/data/Websites/_Perso/machine2014/code/src/camion/camion.py",
+		"/data/Websites/_Perso/machine2014/code/src/device/__init__.py",
+		"/etc/gnome/defaults.list",
+		"/home/matt/Desktop/Terminal",
+		"/home/matt/Downloads/LOG121-05_LAB4_BELS21109108_DUPV24099202_CUSN04029202/LOG121-05_LAB3_BELS21109108_DUPV24099202_CUSN04029202/src/lab04/model/Image.java",
+		"/data/Websites/_Perso/machine2014/code/tests/initialize_collector.py",
+		"/data/Websites/_Perso/machine2014/code/tests/servo.py",
+		"/data/Websites/_Perso/machine2014/code/.project",
+		"/data/Websites/_Perso/machine2014/machine2014.sublime-project",
+		"/data/Websites/_Perso/machine2014/code/src/main_camion.py",
+		"/data/Websites/_Perso/machine2014/dump/servo-test.py",
+		"/data/Websites/_Perso/machine2014/.gitignore",
+		"/home/matt/.config/sublime-text-2/Packages/SideBarEnhancements/messages/11.13.2012.1305.0.txt",
+		"/home/matt/.config/user-dirs.dirs",
+		"/etc/fstab",
+		"/media/matt/DATA/Windows/__Telechargements/Buffy The Vampire Slayer/Buffy.the.Vampire.Slayer.s07.2002.dvdrip.x264/Buffy.the.Vampire.Slayer.s07.2002.dvdrip.x264.sfv",
+		"/usr/share/applications/defaults.list",
+		"/media/matt/DATA/Websites/_Perso/machine2014/code/src/camion/camion.py",
+		"/usr/share/applications/sublime.desktop"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"ryth",
+			"gedit",
+			"ged",
+			"transm",
+			"gedit"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"sublime"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 289.0,
+	"status_bar_visible": true
+}
