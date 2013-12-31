@@ -44,9 +44,11 @@ class CamionFoot:
         print "[CamionFoot.go_to_initial_position] Drop foot then go up a li' bit more"
         self.drop()
         print "[CamionFoot.go_to_initial_position] A lil' bit more.."
+        self.deactivate_bindings() #Hack "Juliette": deactivate bindings
         self.stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_start_position_ticks"])
         while self.stepper.is_moving():
             time.sleep(0.01)
+        self.activate_bindings() #/Hack "Juliette": reactivate bindings
 
     def put_in_start_position(self):
         print "[CamionFoot.put_in_start_position]"
