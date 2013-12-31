@@ -47,7 +47,7 @@ class Sorter(Component):
 
     def stop(self):
         print "[Sorter.stop] Stop pistons"
-        
+
         self.white_piston.pull()
         time.sleep(self.PULL_DELAY)
         self.white_piston.stop()
@@ -86,7 +86,7 @@ class Sorter(Component):
         print "[Sorter.state_pushed]"
 
         self.active_piston.standby()
-        print "[Sorter.state_pushed] Piston in standby"
+        print "[Sorter.state_pushed] Piston in standby, w:%d,o:%d,t:%d" % (self.white_countm self.orange_count, self.ball_count)
 
         ball_color = self.color_sensor.get_color()
         while ball_color == ColorSensor.UNKNOWN or ball_color == ColorSensor.BLACK:
