@@ -27,7 +27,7 @@ class Logger(object):
 
     def initialize(self, collector):
         self.is_initialized = True
-        self.collector = collector
+        self.collector = collector #Finalement, je suis pas sur que j'en ai besoin...
 
     def register_color(self, color_read, color_distances, color_detected):
         self.balls_color.write(str(color_read)+" => "+str(color_distances)+" => "+str(color_detected)+"\n")
@@ -35,15 +35,15 @@ class Logger(object):
 
     def start_new_cycle(self):
         self.cycle_start_time = time.time()
+        self.cycle_ball_count = 0
+
+    def set_current_cycle_ball_count(self, ball_count):
+        self.cycle_ball_count = ball_count
 
     def end_current_cycle(self):
-        if not self.is_initialized:
-            raise Exception("You must initialize the logger! Usage: Logger().initialize(collector)")
-
         if self.cycle_start_time != None:
             cycle_time = time.time() - self.cycle_start_time
-            balls_count = self.collector
-            self.__write_cycle(cycle_time, balls_count)
+            self.__write_cycle(cycle_time, self.cycle_ball_count)
 
     def __write_cycle(self, cycle_time, balls_count):
         self.cycle_file.write("{:.4f}".format(cycle_time)+","+str(balls_count)+"\n")
