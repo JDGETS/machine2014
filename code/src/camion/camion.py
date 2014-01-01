@@ -69,7 +69,7 @@ class Camion:
         """Wait for signal here"""
         print "[Camion.wait_for_signal] Waiting for RF"
         self.rf_received = False
-        self.rf_switch.bind_raising_edge(self.set_received_rf)
+        self.rf_switch.bind_rising_edge(self.set_received_rf)
         while not self.rf_received:
             time.sleep(0.01)
         print "[Camion.wait_for_signal] RF received"
