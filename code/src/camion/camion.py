@@ -21,7 +21,10 @@ class Camion:
         config.devices[self.COLLECTOR_SWITCH_ID]["detect_edges"] = GPIO.BOTH
         self.collector_switch = Switch(**config.devices[self.COLLECTOR_SWITCH_ID]) #used by the truck to know when he have to drop the foot
 
+        config.devices[self.PLACE_IN_POSITION_SWITCH_ID]["detect_edges"] = GPIO.RISING
         self.in_position_switch = Switch(**config.devices[self.PLACE_IN_POSITION_SWITCH_ID])
+
+        config.devices[self.RF_SWITCH]["detect_edges"] = GPIO.RISING
         self.rf_switch = Switch(**config.devices[self.RF_SWITCH])
 
     def activate_bindings(self):
