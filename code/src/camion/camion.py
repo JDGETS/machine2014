@@ -43,7 +43,7 @@ class Camion:
 
     def listen_stop_signal(self):
         self.rf_receiver.reset()
-        set_received_rf.wait_for_signal()
+        self.rf_receiver.wait_for_signal()
         self.is_running = False
         self.drop_foot()
 
