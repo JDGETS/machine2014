@@ -1,67 +1,91 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
+from device.switch import Switch
+from camion_foot import CamionFoot
+from lib import config
 import time
-
-from comm import CommCamion
-from device import LimitSwitch
+import Adafruit_BBIO.PWM as PWM
+import Adafruit_BBIO.GPIO as GPIO
+import sys
 
 class Camion:
-    """ Contient la logique du Camion (voir séquence Collector sur Google Drive) """
 
-    COLLECTOR_SWITCH_ID = "foo1"
-    DUMP_SWITCH_ID = "foo2"
+    PLACE_IN_POSITION_SWITCH_ID = "camion_in_position_switch"
+    COLLECTOR_SWITCH_ID = "camion_collector_switch"
+    RF_SWITCH = "camion_rf_switch"
 
     def __init__(self):
-        print "Init Camion()"
-        self.comm = CommCamion()
-        self.comm.add_callback(self.receiveComm)
-        #Présence camion devant trieuse et devant dump (pour dumper les balles)
-        self.switchCollector = LimitSwitch(self.COLLECTOR_SWITCH_ID, self.updateSwitchCollector)
-        self.switchDump = LimitSwitch(self.DUMP_SWITCH_ID, self.updateSwitchDump)
+        print "[Camion.__init__]"
+        self.foot = CamionFoot()
 
-    def start(self):
-        pass
+        config.devices[self.COLLECTOR_SWITCH_ID]["detect_edges"] = GPIO.BOTH
+        self.collector_switch = Switch(**config.devices[self.COLLECTOR_SWITCH_ID]) #used by the truck to know when he have to drop the foot
+
+        config.devices[self.PLACE_IN_POSITION_SWITCH_ID]["detect_edges"] = GPIO.RISING
+        self.in_position_switch = Switch(**config.devices[self.PLACE_IN_POSITION_SWITCH_ID])
+
+        config.devices[self.RF_SWITCH]["detect_edges"] = GPIO.RISING
+        self.rf_switch = Switch(**config.devices[self.RF_SWITCH])
+
+    def activate_bindings(self):
+        self.collector_switch.bind_rising_edge(self.foot.drop)
+        self.collector_switch.bind_falling_edge(self.foot.bring_up)
 
     def stop(self):
-        pass
+        print "[Camion.stop] Stop camion"
+        self.is_running = False
+        self.foot.stop()
+        PWM.cleanup()
 
-    def receiveComm(self, event):
-        if event.message == "START":
-            print "Camion: Starting the collector (pushing the limitswitch)"
-            self.startCollector()
+    def force_stop(self):
+        self.stop()
+        sys.exit(0);
 
-    def updateSwitchCollector(self, event):
-        if event.activated:
-            self.dropWeight()
-        else:
-            self.retrieveWeight()
+    def run(self):
+        self.is_running = True
+        print "[Camion.run] Put camion down and wait for go_to_start_position signal"
 
-    def updateSwitchDump(self, event):
-        if event.activated:
-            self.dropWeight()
-            #wait...
-            self.releaseBalls()
-            #wait...
-            self.retrieveWeight()
-        else:
-            self.holdBalls()
+        self.put_in_initial_position()
 
-    def startCollector(self):
-        """ Hit the switch on the collector to grab the Camion. """
-        pass
+        print "[Camion.run] Start camion - waiting for signal"
 
-    def dropWeight(self):
-        """ Lâcher le poid. """
-        pass
+        self.wait_for_signal();
+        self.activate_bindings(); #Activate the home switch bindings
+        self.in_position_switch.bind_rising_edge(self.force_stop) # After the first push, it is now binded to stop() 
 
-    def retrieveWeight(self):
-        """ Remonter le poids. """
-        pass
+        print "[Camion.run] Camion started"
 
-    def releaseBalls(self):
-        """ Relacher les balles dans la zone dump. """
-        pass
+        self.put_in_start_position();
 
-    def holdBalls(self):
-        """ Refermer le container. """
-        pass
+        while self.is_running:
+            time.sleep(0.01)
+
+        print "[Camion.run] Camion stopped"
+    
+    def put_in_initial_position(self):
+        """Wait to put in position signal here"""
+        print "[Camion.put_in_waiting_for_signal_position] Waiting for start switch"
+        self.in_position_switch.wait_pressed()
+        self.foot.go_to_initial_position()
+
+    def wait_for_signal(self):
+        """Wait for signal here"""
+        print "[Camion.wait_for_signal] Waiting for RF"
+        self.rf_received = False
+        self.rf_switch.bind_rising_edge(self.set_received_rf)
+        while not self.rf_received:
+            time.sleep(0.01)
+        print "[Camion.wait_for_signal] RF received"
+        return
+
+    def set_received_rf(self):
+        self.rf_received = True
+
+    def put_in_start_position(self):
+        self.foot.put_in_start_position()
+
+    def drop_foot(self):
+        self.foot.drop()
+
+    def bring_foot_up(self):
+        self.foot.bring_up()
