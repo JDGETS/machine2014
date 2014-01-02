@@ -27,6 +27,7 @@ class Sorter(Component):
     COLOR_SENSOR_ID = "color_sensor"
     MAX_BALL = 12
     COLOR_TIMEOUT = 2.0
+    BLACK_TIMEOUT = 5.0
 
     def __init__(self):
         super(Sorter, self).__init__(self.state_push)
@@ -95,11 +96,13 @@ class Sorter(Component):
         print "[Sorter.state_pushed] Piston in standby, w:%d,o:%d,t:%d" % (self.white_count, self.orange_count, self.ball_count)
 
         ball_color = self.color_sensor.get_color()
-        detect_timeout = time.time()
+        unknown_timeout = time.time() + self.COLOR_TIMEOUT
+        black_timeout = time.time() + self.BLACK_TIMEOUT
+
         while ball_color in [ColorSensor.UNKNOWN, ColorSensor.BLACK] and \
-        time.time() < detect_timeout + self.COLOR_TIMEOUT:
+        time.time() < unknown_timeout and time.time() < black_timeout:
             if ball_color == ColorSensor.BLACK:
-                detect_timeout = time.time()
+                unknown_timeout = time.time() + self.COLOR_TIMEOUT
             yield
             ball_color = self.color_sensor.get_color()
 
@@ -108,17 +111,20 @@ class Sorter(Component):
         if ball_color == ColorSensor.UNKNOWN:
             print '[Sorter.state_pushed] Unknown ball detected'
 
-        if self.orange_count > self.MAX_BALL or \
+        if ball_color == ColorSensor.BLACK:
+            print '[Sorter.state_pushed] Sorter.state_pushed timed out'
+        elif self.orange_count > self.MAX_BALL or \
         (ball_color == ColorSensor.WHITE and self.white_count <= self.MAX_BALL):
             print "[Sorter.state_pushed] White ball detected"
             self.active_piston = self.white_piston
             self.white_count += 1
+            self.ball_count += 1
         else:
             print "[Sorter.state_pushed] Orange ball detected"
             self.active_piston = self.orange_piston
             self.orange_count += 1
+            self.ball_count += 1
 
-        self.ball_count += 1
         self.last_ball_time = time.time();
         yield partial(self.state_pull, current_piston_pushed)
 
