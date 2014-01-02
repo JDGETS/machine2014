@@ -3,6 +3,7 @@
 from device.switch import Switch
 from camion_foot import CamionFoot
 from lib import config
+from rf_receiver import RFReceiver
 import time
 import Adafruit_BBIO.PWM as PWM
 import Adafruit_BBIO.GPIO as GPIO
@@ -24,8 +25,7 @@ class Camion:
         config.devices[self.PLACE_IN_POSITION_SWITCH_ID]["detect_edges"] = GPIO.RISING
         self.in_position_switch = Switch(**config.devices[self.PLACE_IN_POSITION_SWITCH_ID])
 
-        config.devices[self.RF_SWITCH]["detect_edges"] = GPIO.RISING
-        self.rf_switch = Switch(**config.devices[self.RF_SWITCH])
+        self.rf_receiver = RFReceiver(**config.devices[self.RF_SWITCH])
 
     def activate_bindings(self):
         self.collector_switch.bind_rising_edge(self.foot.drop)
@@ -49,9 +49,11 @@ class Camion:
 
         print "[Camion.run] Start camion - waiting for signal"
 
-        self.wait_for_signal();
+        self.rf_receiver.wait_for_signal()
+        print "[Camion.run] Signal received"
+
         self.activate_bindings(); #Activate the home switch bindings
-        self.in_position_switch.bind_rising_edge(self.force_stop) # After the first push, it is now binded to stop() 
+        self.in_position_switch.bind_rising_edge(self.force_stop) # After the first push, it is now binded to stop()
 
         print "[Camion.run] Camion started"
 
@@ -61,22 +63,12 @@ class Camion:
             time.sleep(0.01)
 
         print "[Camion.run] Camion stopped"
-    
+
     def put_in_initial_position(self):
         """Wait to put in position signal here"""
         print "[Camion.put_in_waiting_for_signal_position] Waiting for start switch"
         self.in_position_switch.wait_pressed()
         self.foot.go_to_initial_position()
-
-    def wait_for_signal(self):
-        """Wait for signal here"""
-        print "[Camion.wait_for_signal] Waiting for RF"
-        self.rf_received = False
-        self.rf_switch.bind_rising_edge(self.set_received_rf)
-        while not self.rf_received:
-            time.sleep(0.01)
-        print "[Camion.wait_for_signal] RF received"
-        return
 
     def set_received_rf(self):
         self.rf_received = True
