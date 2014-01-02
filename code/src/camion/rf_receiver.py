@@ -14,10 +14,12 @@ class RFReceiver:
         while len(self.rising_edges) < 3:
             time.sleep(0.1)
 
+    def reset(self):
+        self.rising_edges = []
+
     def __on_rising_edge(self):
         # clean up expired rising edge
         expiration = time.time() - self.TIME_WINDOW
         self.rising_edges[:] = [edge in self.rising_edges if edge > expiration]
 
         self.rising_edges.append(time.time())
-

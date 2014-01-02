@@ -41,6 +41,12 @@ class Camion:
         self.stop()
         sys.exit(0);
 
+    def listen_stop_signal(self):
+        self.rf_receiver.reset()
+        set_received_rf.wait_for_signal()
+        self.is_running = False
+        self.drop_foot()
+
     def run(self):
         self.is_running = True
         print "[Camion.run] Put camion down and wait for go_to_start_position signal"
@@ -51,6 +57,9 @@ class Camion:
 
         self.rf_receiver.wait_for_signal()
         print "[Camion.run] Signal received"
+
+        stop_listener = threading.Thread(target=self.listen_stop_signal)
+        stop_listener.start()
 
         self.activate_bindings(); #Activate the home switch bindings
         self.in_position_switch.bind_rising_edge(self.force_stop) # After the first push, it is now binded to stop()
