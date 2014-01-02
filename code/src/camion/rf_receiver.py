@@ -3,6 +3,7 @@ import time
 
 class RFReceiver:
     TIME_WINDOW = 5.0 # 5 seconds
+    SIGNAL_COUNT = 3
 
     def __init__(self, pin):
         self.switch = Switch(pin=pin, detect_edges=GPIO.RISING)
@@ -11,7 +12,7 @@ class RFReceiver:
     def wait_for_signal(self):
         self.switch.bind_rising_edge(self.__on_rising_edge)
 
-        while len(self.rising_edges) < 3:
+        while len(self.rising_edges) < self.SIGNAL_COUNT:
             time.sleep(0.1)
 
     def reset(self):
