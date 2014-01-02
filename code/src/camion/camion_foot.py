@@ -16,6 +16,8 @@ class CamionFoot:
     DROP_FOOT_DIRECTION = 1
     LIFT_FOOT_DIRECTION = 0
 
+    __TIMEOUT_PROTECTION_INTERFERENCE = 2.0
+
     def __init__(self):
         print "[Camion.__init__]"
         self.config = config.devices[self.CAMION_FOOT_CONFIG_ID]
@@ -25,6 +27,8 @@ class CamionFoot:
         self.down_switch = Switch(**config.devices[self.FOOT_DOWN_SWITCH_ID])
         
         self.up_switch = Switch(**config.devices[self.FOOT_UP_SWITCH_ID])
+
+        self.__last_time_foot_was_brought_up = None
 
     def stop(self):
         print "[CamionFoot.stop] Stop foot"
@@ -53,6 +57,11 @@ class CamionFoot:
     def drop(self):
         print "[CamionFoot.drop]"
         #Bring it up till it's done!
+        __protection_interference = self.__last_time_foot_was_brought_up
+
+        if __protection_interference and __protection_interference + __TIMEOUT_PROTECTION_INTERFERENCE < time.time():
+            return #Ignorer ce drop
+
         while not self.down_switch.is_pressed():
             self.stepper.move(self.DROP_FOOT_DIRECTION, self.config["stepper_complete_ticks"], self.down_switch.is_pressed)
             while self.stepper.is_moving():
@@ -67,3 +76,4 @@ class CamionFoot:
             while self.stepper.is_moving():
                 time.sleep(0.01) #It's ok, only component on the truck
             time.sleep(0.01)
+        self.__last_time_foot_was_brought_up = time.time()
