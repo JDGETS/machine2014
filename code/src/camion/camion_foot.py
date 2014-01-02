@@ -25,7 +25,7 @@ class CamionFoot:
         self.stepper = Stepper(**config.devices[self.FOOT_STEPPER_ID])
 
         self.down_switch = Switch(**config.devices[self.FOOT_DOWN_SWITCH_ID])
-        
+
         self.up_switch = Switch(**config.devices[self.FOOT_UP_SWITCH_ID])
 
         self.__last_time_foot_was_brought_up = None
@@ -59,7 +59,7 @@ class CamionFoot:
         #Bring it up till it's done!
         __protection_interference = self.__last_time_foot_was_brought_up
 
-        if __protection_interference and __protection_interference + __TIMEOUT_PROTECTION_INTERFERENCE < time.time():
+        if __protection_interference and __protection_interference + __TIMEOUT_PROTECTION_INTERFERENCE > time.time():
             return #Ignorer ce drop
 
         while not self.down_switch.is_pressed():
