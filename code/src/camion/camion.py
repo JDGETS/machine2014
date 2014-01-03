@@ -42,6 +42,7 @@ class Camion:
         sys.exit(0);
 
     def listen_stop_signal(self):
+        time.sleep(60)
         self.rf_receiver.reset()
         self.rf_receiver.wait_for_signal()
         self.is_running = False
