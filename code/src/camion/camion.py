@@ -4,6 +4,7 @@ from device.switch import Switch
 from camion_foot import CamionFoot
 from lib import config
 from rf_receiver import RFReceiver
+import threading
 import time
 import Adafruit_BBIO.PWM as PWM
 import Adafruit_BBIO.GPIO as GPIO
