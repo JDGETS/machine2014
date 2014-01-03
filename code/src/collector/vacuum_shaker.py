@@ -5,6 +5,7 @@ from functools import partial
 from vacuum_shaker_piston import VacuumShakerPiston
 import time
 from lib.logger import Logger
+import Adafruit_BBIO.GPIO as GPIO
 
 class VacuumShaker(Component):
 
