@@ -21,7 +21,7 @@ class ColorSensorWrapped:
 
     COLOR_TO_STRING = ['BLACK','WHITE','ORANGE','UNKNOWN']
 
-    def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val, error_tolerance):
+    def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val, min_norm):
         ADC.setup()
         self.a_pin = a_pin
         self.b_pin = b_pin
@@ -29,7 +29,7 @@ class ColorSensorWrapped:
         self.black_val = black_val
         self.white_val = white_val
         self.orange_val = orange_val
-        self.error_tolerance = error_tolerance
+        self.min_norm = min_norm
 
         self.colors =  \
             [(self.BLACK, self.black_val), \
@@ -55,15 +55,21 @@ class ColorSensorWrapped:
             self.read_color()
 
         color = self.read_color()
-        color_distances = map(lambda c: (c[0], compare_colors(color, c[1])), self.colors)
+        norm = norm(color)
+
+        if norm < self.min_norm:
+            return self.BLACK
+
+        normalized_color = u(color)
+        color_distances = map(lambda c: (c[0], compare_colors(normalized_color, c[1])), self.colors)
         best_match = sorted(color_distances, key=lambda c: c[1])[0]
 
-        return best_match[0] if best_match[1] < self.error_tolerance else self.UNKNOWN
+        return best_match[0]
 
 class ColorSensor(ColorSensorWrapped):
     """ To dump color hits and look for errors. FOR TEST USE ONLY. """
-    def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val, error_tolerance):
-        ColorSensorWrapped.__init__(self,a_pin, b_pin, c_pin, black_val, white_val, orange_val, error_tolerance)
+    def __init__(self, a_pin, b_pin, c_pin, black_val, white_val, orange_val, min_norm):
+        ColorSensorWrapped.__init__(self,a_pin, b_pin, c_pin, black_val, white_val, orange_val, min_norm)
 
     def get_color(self):
         # Need to poll color twice to get last value (bug)
@@ -71,10 +77,16 @@ class ColorSensor(ColorSensorWrapped):
             self.read_color()
 
         color = self.read_color()
-        color_distances = map(lambda c: (c[0], compare_colors(color, c[1])), self.colors)
+        norm = norm(color)
+
+        if norm < self.min_norm:
+            return self.BLACK
+
+        normalized_color = u(color)
+        color_distances = map(lambda c: (c[0], compare_colors(normalized_color, c[1])), self.colors)
         best_match = sorted(color_distances, key=lambda c: c[1])[0]
 
-        return_val = best_match[0] if best_match[1] < self.error_tolerance else self.UNKNOWN
+        return_val = best_match[0]
 
         if not return_val in [self.BLACK, self.UNKNOWN]:
             Logger().register_color(color, color_distances, self.COLOR_TO_STRING[return_val])
