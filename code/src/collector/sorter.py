@@ -81,16 +81,12 @@ class Sorter(Component):
         """State that move one piston to push a ball
         change to 'state_pushed' after a small delay"""
 
-        print "[Sorter.state_push]"
-
         self.active_piston.push()
         yield self.wait(self.PUSH_DELAY, self.state_pushed)
 
     def state_pushed(self):
         """State that wait for a balls. Read ball's color and
         change to 'state_recall' after setting the good piston"""
-
-        print "[Sorter.state_pushed]"
 
         self.active_piston.standby()
         print "[Sorter.state_pushed] Piston in standby, w:%d,o:%d,t:%d" % (self.white_count, self.orange_count, self.ball_count)
@@ -130,8 +126,6 @@ class Sorter(Component):
 
     def state_pull(self, piston_to_recall):
         """move back piston_to_recall. Change to 'state_push' after the PULL_DELAY"""
-
-        print "[Sorter.state_pull]"
 
         piston_to_recall.pull()
         yield self.wait(self.PULL_DELAY, self.state_push)
