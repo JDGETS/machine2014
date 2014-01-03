@@ -77,9 +77,9 @@ class ColorSensor(ColorSensorWrapped):
             self.read_color()
 
         color = self.read_color()
-        norm = norm(color)
+        color_norm = norm(color)
 
-        if norm < self.min_norm:
+        if color_norm < self.min_norm:
             return self.BLACK
 
         normalized_color = u(color)
