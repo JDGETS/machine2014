@@ -23,7 +23,7 @@ class VacuumShaker(Component):
         print "[VacuumShaker.__init__]"
 
         self.vacuum_servo = VacuumShakerPiston(**config.devices[self.VACUUM_SERVO_ID])
-        self.load_tank_switch = Switch(**config.devices[self.LOAD_TANK_SWITCH])
+        self.load_tank_switch = Switch(**config.devices[self.LOAD_TANK_SWITCH], detect_edges=GPIO.RISING)
         self.vacuum_servo.complete_standby()
 
         self.last_button_push = time.time()
