@@ -3,6 +3,12 @@ from math import sqrt
 import time
 from lib.logger import Logger
 
+def norm(v):
+    return sqrt(v[0]**2+v[1]**2+v[2]**2)
+
+def u(v):
+    nv = norm(v)
+    return map(lambda x: x/nv, nv)
 
 def compare_colors(color1, color2):
     return sqrt((color1[0]-color2[0])**2 + (color1[1]-color2[1])**2 + (color1[2]-color2[2])**2)

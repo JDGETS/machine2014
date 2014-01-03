@@ -1,4 +1,5 @@
 import device
+from device.color_sensor import norm, u
 from lib import config
 import time
 
@@ -10,19 +11,22 @@ print "==== Color calibration tool ===="
 sample_size = 5
 
 def sample_info(sample):
-    color_sum = reduce(lambda acc, c: map(sum, zip(acc,c)), sample, [0,0,0])
-    color_mean = map(lambda x: x/len(sample), color_sum)
-    max_distance = max(map(lambda c: device.color_sensor.compare_colors(color_mean, c), sample))
-    return (color_mean, max_distance)
+    norms = map(norm, sample)
+    normalized_sample = map(u, sample)
+
+    color_sum = reduce(lambda acc, c: map(sum, zip(acc,c)), normalized_sample, [0,0,0])
+    color_mean = map(lambda x: x/len(normalized_sample), color_sum)
+    max_distance = max(map(lambda c: device.color_sensor.compare_colors(color_mean, c), normalized_sample))
+    return (color_mean, max_distance, min(norms), max(norms))
 
 def print_sample_info(black_sample, white_sample, orange_sample):
     black_stat = sample_info(black_sample)
     white_stat = sample_info(white_sample)
     orange_stat = sample_info(orange_sample)
 
-    print "Black: {val: %s, max_error: %f}" % black_stat
-    print "White: {val: %s, max_error: %f}" % white_stat
-    print "Orange: {val: %s, max_error: %f}" % orange_stat
+    print "Black: {val: %s, max_error: %f, min_norm: %f, max_norm: %f}" % black_stat
+    print "White: {val: %s, max_error: %f, min_norm: %f, max_norm: %f}" % white_stat
+    print "Orange: {val: %s, max_error: %f, min_norm: %f, max_norm: %f}" % orange_stat
 
     print "Config value: "
     print "\"black_val\": %s,\n\"white_val\": %s,\n\"orange_val\": %s,\n" % (black_stat[0], white_stat[0], orange_stat[0])
