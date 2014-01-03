@@ -59,7 +59,7 @@ class CamionFoot:
         #Bring it up till it's done!
         __protection_interference = self.__last_time_foot_was_brought_up
 
-        if __protection_interference and __protection_interference + __TIMEOUT_PROTECTION_INTERFERENCE > time.time():
+        if __protection_interference and __protection_interference + self.__TIMEOUT_PROTECTION_INTERFERENCE > time.time():
             return #Ignorer ce drop
 
         while not self.down_switch.is_pressed():
