@@ -38,7 +38,11 @@ class CollectorController(Component):
     def state_wait_init(self):
         print "[CollectorController.state_wait_init]"
 
-        #Wait for start switch from truck
+        # Wait for start switch from collector
+        if not self.vacuum_shaker.load_tank_switch.is_pressed():
+            self.vacuum_shaker.load_tank_switch.wait_pressed()
+
+        # Wait for start switch from truck
         if not self.start_collect_switch.is_pressed():
             self.start_collect_switch.wait_pressed()
 
