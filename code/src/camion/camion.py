@@ -47,7 +47,7 @@ class Camion:
         self.rf_receiver.reset()
         self.rf_receiver.wait_for_signal()
         self.is_running = False
-        self.drop_foot()
+        self.bring_foot_up() #Remonter le pied a la fin
 
     def run(self):
         self.is_running = True
@@ -64,8 +64,7 @@ class Camion:
         stop_listener.start()
 
         self.activate_bindings(); #Activate the home switch bindings
-        self.in_position_switch.bind_rising_edge(self.force_stop) # After the first push, it is now binded to stop()
-
+        
         print "[Camion.run] Camion started"
 
         self.put_in_start_position();
