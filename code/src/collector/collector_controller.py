@@ -38,6 +38,17 @@ class CollectorController(Component):
     def state_wait_init(self):
         print "[CollectorController.state_wait_init]"
 
+        #Initialiser la position du collecteur,
+        self.rail.slide_to_home()
+
+        while self.rail.is_moving():
+            yield
+
+        self.rail.slide_to_wait_for_sorting_position()
+
+        while self.rail.is_moving():
+            yield
+
         # Wait for start switch from collector
         if not self.vacuum_shaker.load_tank_switch.is_pressed():
             self.vacuum_shaker.load_tank_switch.wait_pressed()
