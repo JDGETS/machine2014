@@ -3,6 +3,7 @@
 """
 
 import Adafruit_BBIO.GPIO as GPIO
+import time
 
 class Switch(object):
 
@@ -34,6 +35,8 @@ class Switch(object):
             inputs = {0:0, 1:0}
             for i in xrange(0,100):
                 inputs[GPIO.input(self.pin)] += 1
+                if i % 10 == 0:
+                    time.sleep(0.05)
 
             if inputs[1] > 2: #Observations de Mathieu et Mathieu
                 for callback in self.rising_edge_callbacks:

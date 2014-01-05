@@ -60,8 +60,9 @@ class Camion:
         self.rf_receiver.wait_for_signal()
         print "[Camion.run] Signal received"
 
-        stop_listener = threading.Thread(target=self.listen_stop_signal)
-        stop_listener.start()
+        # Removed because of other teams tests.
+        #stop_listener = threading.Thread(target=self.listen_stop_signal)
+        #stop_listener.start()
 
         self.activate_bindings(); #Activate the home switch bindings
         

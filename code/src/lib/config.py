@@ -21,6 +21,14 @@ devices = {
         "pull_duty": 4.0,
         "push_duty": 2.8 #NE PAS DESCENDRE PLUS BAS. Monter PULL_DUTY/COMPLETE_STANDBY_DUTY a la place.
     },
+    # Used by collector/vacuum_shaker
+    "vacuum_servo_competition": {
+        "pin": "P9_42", #Servo3
+        "complete_standby_duty": 8.5,
+        "standby_duty": 5.8,
+        "pull_duty": 4.0,
+        "push_duty": 2.8 #NE PAS DESCENDRE PLUS BAS. Monter PULL_DUTY/COMPLETE_STANDBY_DUTY a la place.
+    },
     # Used by collector/collector_controller
     "gate_servo": {
         "pin": "P8_13", #Servo2
