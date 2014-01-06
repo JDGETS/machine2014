@@ -96,7 +96,15 @@
 			"file": "code/src/device/switch.py",
 			"settings":
 			{
-				"buffer_size": 2910,
+				"buffer_size": 3136,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "code/src/lib/logger.py",
+			"settings":
+			{
+				"buffer_size": 1860,
 				"line_ending": "Unix"
 			}
 		}
@@ -1030,15 +1038,15 @@
 					"file": "code/src/device/switch.py",
 					"settings":
 					{
-						"buffer_size": 2910,
+						"buffer_size": 3136,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1203,
-								1203
+								1083,
+								1083
 							]
 						],
 						"settings":
@@ -1147,6 +1155,34 @@
 							},
 							"codeintel_tooltips": "popup",
 							"sublime_auto_complete": true,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 218.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "code/src/lib/logger.py",
+					"settings":
+					{
+						"buffer_size": 1860,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
 							"syntax": "Packages/Python/Python.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true

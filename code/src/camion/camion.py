@@ -16,6 +16,8 @@ class Camion:
     COLLECTOR_SWITCH_ID = "camion_collector_switch"
     RF_SWITCH = "camion_rf_switch"
 
+    WATCH_FOOT_TIMEOUT = 60
+
     def __init__(self):
         print "[Camion.__init__]"
         self.foot = CamionFoot()
@@ -28,9 +30,11 @@ class Camion:
 
         self.rf_receiver = RFReceiver(**config.devices[self.RF_SWITCH])
 
+        self.safe_lift_foot = None
+
     def activate_bindings(self):
-        self.collector_switch.bind_rising_edge(self.foot.drop)
-        self.collector_switch.bind_falling_edge(self.foot.bring_up)
+        self.collector_switch.bind_rising_edge(self.drop_foot_safe)
+        self.collector_switch.bind_falling_edge(self.bring_foot_up_safe)
 
     def stop(self):
         print "[Camion.stop] Stop camion"
@@ -47,7 +51,7 @@ class Camion:
         self.rf_receiver.reset()
         self.rf_receiver.wait_for_signal()
         self.is_running = False
-        self.bring_foot_up() #Remonter le pied a la fin
+        self.bring_foot_up_safe() #Remonter le pied a la fin
 
     def run(self):
         self.is_running = True
@@ -92,3 +96,25 @@ class Camion:
 
     def bring_foot_up(self):
         self.foot.bring_up()
+
+    def drop_foot_safe(self):
+        self.foot.drop()
+        self.safe_lift_foot = threading.Thread(target=self.__watch_foot_timeout)
+        self.safe_lift_foot.is_running = True
+        self.safe_lift_foot.start()
+
+    def bring_foot_up_safe(self):
+        if self.safe_lift_foot:
+            self.safe_lift_foot.is_running = False
+            self.safe_lift_foot.stop()
+
+        self.foot.bring_up()
+
+    def __watch_foot_timeout(self):
+        start_time = time.time()
+
+        while self.safe_lift_foot.is_running and start_time + self.WATCH_FOOT_TIMEOUT < time.time():
+            sleep(0.25)
+
+        if self.safe_lift_foot.is_running:
+            self.bring_foot_up_safe()
