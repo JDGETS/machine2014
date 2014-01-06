@@ -26,7 +26,6 @@ class VacuumShaker(Component):
         self.vacuum_servo = VacuumShakerPiston(**config.devices[self.VACUUM_SERVO_ID])
         config.devices[self.LOAD_TANK_SWITCH]["detect_edges"] = GPIO.BOTH
         self.load_tank_switch = Switch(**config.devices[self.LOAD_TANK_SWITCH])
-        self.vacuum_servo.complete_standby()
 
         self.last_button_push = time.time()
         self.is_init = False
@@ -39,7 +38,7 @@ class VacuumShaker(Component):
         self.vacuum_servo.complete_standby()
         while not self.is_init:
             yield
-        yield self.state_pull_up
+        yield self.state_push
 
     def wait_balls(self):
         self.set_state(self.state_wait_ball);
