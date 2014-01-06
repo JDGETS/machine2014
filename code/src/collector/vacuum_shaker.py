@@ -11,7 +11,7 @@ class VacuumShaker(Component):
 
     SERVO_DELAY = 0.25
     PULL_UP_DELAY = 0.15
-    WAIT_TIMEOUT = 2.0 #IN production: 30s (specs)
+    WAIT_TIMEOUT = 30.0 #IN production: 30s (specs)
     SHAKE_COUNT = 4
 
     VACUUM_SERVO_ID = "vacuum_servo"
@@ -20,19 +20,26 @@ class VacuumShaker(Component):
     SWITCH_TIMEOUT = 1
 
     def __init__(self):
-        super(VacuumShaker, self).__init__(self.state_pull_up)
+        super(VacuumShaker, self).__init__(self.wait_init)
         print "[VacuumShaker.__init__]"
 
         self.vacuum_servo = VacuumShakerPiston(**config.devices[self.VACUUM_SERVO_ID])
-        config.devices[self.LOAD_TANK_SWITCH]["detect_edges"] = GPIO.RISING
+        config.devices[self.LOAD_TANK_SWITCH]["detect_edges"] = GPIO.BOTH
         self.load_tank_switch = Switch(**config.devices[self.LOAD_TANK_SWITCH])
         self.vacuum_servo.complete_standby()
 
         self.last_button_push = time.time()
+        self.is_init = False
 
     def stop(self):
         print "[VacuumShaker.stop] Stoping"
         self.vacuum_servo.stop()
+
+    def wait_init(self):
+        self.vacuum_servo.complete_standby()
+        while not self.is_init:
+            yield
+        yield self.state_pull_up
 
     def wait_balls(self):
         self.set_state(self.state_wait_ball);

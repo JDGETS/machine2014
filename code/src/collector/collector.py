@@ -38,7 +38,7 @@ class Collector(object):
 
         for c in self.components:
             c.stop()
-            
+
         PWM.cleanup()
 
     def force_stop(self):

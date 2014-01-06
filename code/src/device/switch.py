@@ -33,7 +33,7 @@ class Switch(object):
     def _edge_event(self, event = None):
         #Ugly code - c'est la faute de Lavoie
         if self.edges_detected == GPIO.BOTH:
-            time.sleep(self.DEBOUNCING_TIME) #Might help. Voir Fred pour explications. En gros, le event est envoyé avant le debouncing (?)
+            time.sleep(self.DEBOUNCING_TIME/1000)
             inputs = {0:0, 1:0}
             for i in xrange(0,100):
                 inputs[GPIO.input(self.pin)] += 1
