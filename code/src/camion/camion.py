@@ -106,15 +106,14 @@ class Camion:
     def bring_foot_up_safe(self):
         if self.safe_lift_foot:
             self.safe_lift_foot.is_running = False
-            self.safe_lift_foot.stop()
 
         self.foot.bring_up()
 
     def __watch_foot_timeout(self):
         start_time = time.time()
 
-        while self.safe_lift_foot.is_running and start_time + self.WATCH_FOOT_TIMEOUT < time.time():
-            sleep(0.25)
+        while self.safe_lift_foot.is_running and start_time + self.WATCH_FOOT_TIMEOUT > time.time():
+            time.sleep(0.25)
 
         if self.safe_lift_foot.is_running:
             self.bring_foot_up_safe()

@@ -38,7 +38,9 @@ class VacuumShaker(Component):
         self.vacuum_servo.complete_standby()
         while not self.is_init:
             yield
-        yield self.state_push
+
+        self.last_button_push = time.time() #Ne pas descendre la premiere fois.
+        yield partial(self.state_push, 0)
 
     def wait_balls(self):
         self.set_state(self.state_wait_ball);
