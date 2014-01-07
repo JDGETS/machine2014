@@ -34,8 +34,8 @@ class Sorter(Component):
 
         print "[Sorter.__init__]"
 
-        self.white_piston = Piston(**config.devices[self.WHITE_PISTON_ID])
-        self.orange_piston = Piston(**config.devices[self.ORANGE_PISTON_ID])
+        self.white_piston = Piston(**config.devices[self.ORANGE_PISTON_ID]) #C'EST VOULU QUE CA SOIT INVERSE
+        self.orange_piston = Piston(**config.devices[self.WHITE_PISTON_ID]) #C'EST VOULU QUE CA SOIT INVERSE
 
         self.color_sensor = ColorSensor(**config.devices[self.COLOR_SENSOR_ID])
 

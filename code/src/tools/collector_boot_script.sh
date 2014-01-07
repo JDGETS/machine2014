@@ -1,4 +1,10 @@
 #!/bin/bash
 DIR=/home/root/machine2014/code/src
 export PYTHONPATH=$PYTHONPATH:$DIR
-$DIR/tools/process_spawner.py P8_4 $DIR/main_collector.py 2>&1 >> $DIR/collector.log
+$DIR/main_collector.py 2>&1 >> $DIR/collector.log
+while [ $? -ne 0 ]; do
+  echo "Error: main_collector.py crashed, trying again"
+  sleep 10
+  $DIR/tools/clean_pwm.py
+  $DIR/main_collector.py 2>&1 >> $DIR/collector.log
+done

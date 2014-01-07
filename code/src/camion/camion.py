@@ -16,6 +16,8 @@ class Camion:
     COLLECTOR_SWITCH_ID = "camion_collector_switch"
     RF_SWITCH = "camion_rf_switch"
 
+    WATCH_FOOT_TIMEOUT = 60
+
     def __init__(self):
         print "[Camion.__init__]"
         self.foot = CamionFoot()
@@ -28,9 +30,11 @@ class Camion:
 
         self.rf_receiver = RFReceiver(**config.devices[self.RF_SWITCH])
 
+        self.safe_lift_foot = None
+
     def activate_bindings(self):
-        self.collector_switch.bind_rising_edge(self.foot.drop)
-        self.collector_switch.bind_falling_edge(self.foot.bring_up)
+        self.collector_switch.bind_rising_edge(self.drop_foot_safe)
+        self.collector_switch.bind_falling_edge(self.bring_foot_up_safe)
 
     def stop(self):
         print "[Camion.stop] Stop camion"
@@ -43,11 +47,11 @@ class Camion:
         sys.exit(0);
 
     def listen_stop_signal(self):
-        time.sleep(60)
+        time.sleep(60*14)
         self.rf_receiver.reset()
         self.rf_receiver.wait_for_signal()
         self.is_running = False
-        self.drop_foot()
+        self.bring_foot_up_safe() #Remonter le pied a la fin
 
     def run(self):
         self.is_running = True
@@ -60,12 +64,12 @@ class Camion:
         self.rf_receiver.wait_for_signal()
         print "[Camion.run] Signal received"
 
+        # Removed because of other teams tests.
         stop_listener = threading.Thread(target=self.listen_stop_signal)
         stop_listener.start()
 
         self.activate_bindings(); #Activate the home switch bindings
-        self.in_position_switch.bind_rising_edge(self.force_stop) # After the first push, it is now binded to stop()
-
+        
         print "[Camion.run] Camion started"
 
         self.put_in_start_position();
@@ -92,3 +96,24 @@ class Camion:
 
     def bring_foot_up(self):
         self.foot.bring_up()
+
+    def drop_foot_safe(self):
+        self.foot.drop()
+        self.safe_lift_foot = threading.Thread(target=self.__watch_foot_timeout)
+        self.safe_lift_foot.is_running = True
+        self.safe_lift_foot.start()
+
+    def bring_foot_up_safe(self):
+        if self.safe_lift_foot:
+            self.safe_lift_foot.is_running = False
+
+        self.foot.bring_up()
+
+    def __watch_foot_timeout(self):
+        start_time = time.time()
+
+        while self.safe_lift_foot.is_running and start_time + self.WATCH_FOOT_TIMEOUT > time.time():
+            time.sleep(0.25)
+
+        if self.safe_lift_foot.is_running:
+            self.bring_foot_up_safe()

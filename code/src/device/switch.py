@@ -3,8 +3,10 @@
 """
 
 import Adafruit_BBIO.GPIO as GPIO
+import time
 
 class Switch(object):
+    DEBOUNCING_TIME = 50 #Millis
 
     def __init__(self, pin, detect_edges = None):
         """ Create a Switch object that reads input from the given pin. """
@@ -16,7 +18,7 @@ class Switch(object):
         self.falling_edge_callbacks = []
         self.edges_detected = detect_edges
         if detect_edges != None:
-            GPIO.add_event_detect(pin, detect_edges, self._edge_event, 50)
+            GPIO.add_event_detect(pin, detect_edges, self._edge_event, self.DEBOUNCING_TIME)
 
     def bind_rising_edge(self, funct):
         self.rising_edge_callbacks.append(funct)
@@ -31,9 +33,12 @@ class Switch(object):
     def _edge_event(self, event = None):
         #Ugly code - c'est la faute de Lavoie
         if self.edges_detected == GPIO.BOTH:
+            time.sleep(self.DEBOUNCING_TIME/1000)
             inputs = {0:0, 1:0}
             for i in xrange(0,100):
                 inputs[GPIO.input(self.pin)] += 1
+                if i % 10 == 0:
+                    time.sleep( 0.01 ) #Sleep 10 millis per 10 readings
 
             if inputs[1] > 2: #Observations de Mathieu et Mathieu
                 for callback in self.rising_edge_callbacks:
