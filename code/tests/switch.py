@@ -1,12 +1,18 @@
-from device import LimitSwitch
-import functools
+from device import Switch
+import Adafruit_BBIO.GPIO as GPIO
+import sys, time
 
-def onChange(name, state):
-    print "[%s] State changed: %d" % (name, state)
+pin = sys.argv[1]
+s = Switch(pin, GPIO.BOTH)
 
-name = raw_input("LimitSwitch's GPIO: ")
+def print_rising():
+    print "Rising"
 
-switch = LimitSwitch(name, functools.partial(onChange, name))
-print "LimitSwitch initialized"
+def print_falling():
+    print "Falling"
+
+s.bind_rising_edge(print_rising)
+s.bind_falling_edge(print_falling)
+
 while True:
-    switch.update()
+    time.sleep(1.0)

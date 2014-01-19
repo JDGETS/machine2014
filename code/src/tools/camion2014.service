@@ -1,0 +1,8 @@
+[Unit]
+Description=Start camion script
+
+[Service]
+ExecStart=/home/root/machine2014/code/src/tools/camion_boot_script.sh
+
+[Install]
+WantedBy=multi-user.target
